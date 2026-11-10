@@ -1,0 +1,80 @@
+begin;
+
+drop function if exists public.get_fansubs_with_stats();
+
+create or replace function public.get_fansubs_with_stats()
+returns table (
+  id uuid,
+  name text,
+  slug text,
+  avatar_url text,
+  description text,
+  frame_type text,
+  primary_color text,
+  secondary_color text,
+  custom_background_asset_url text,
+  manga_count bigint,
+  follower_count bigint,
+  has_discover_badge boolean,
+  has_gold_frame boolean,
+  active_frame_id uuid,
+  active_background_id uuid,
+  active_pattern_id uuid,
+  active_profile_effect_id uuid
+)
+language sql
+stable
+set search_path = public
+as $$
+  select
+    f.id,
+    f.name,
+    f.slug,
+    f.avatar_url,
+    f.description,
+    f.frame_type,
+    f.primary_color,
+    f.secondary_color,
+    f.custom_background_asset_url,
+    coalesce((
+      select count(distinct m.id)
+      from public.mangas m
+      where m.is_active = true
+        and m.is_approved = true
+        and (
+          m.fansub_id = f.id
+          or exists (
+            select 1
+            from public.chapters c
+            where c.manga_id = m.id
+              and c.fansub_id = f.id
+              and c.is_active = true
+              and c.is_approved = true
+              and public.is_chapter_publicly_unlocked(c.publish_at)
+          )
+        )
+    ), 0)::bigint as manga_count,
+    coalesce((
+      select count(*)
+      from public.fansub_follows ff
+      where ff.fansub_id = f.id
+    ), 0)::bigint as follower_count,
+    boost.has_discover_badge,
+    boost.has_gold_frame,
+    f.active_frame_id,
+    f.active_background_id,
+    f.active_pattern_id,
+    f.active_profile_effect_id
+  from public.fansubs f
+  left join lateral (
+    select
+      public.fansub_has_boost_capability(f.id, 'hasDiscoverBadge') as has_discover_badge,
+      public.fansub_has_boost_capability(f.id, 'hasGoldFrame') as has_gold_frame
+  ) boost on true
+  where f.is_active = true
+  order by f.name asc;
+$$;
+
+grant execute on function public.get_fansubs_with_stats() to anon, authenticated;
+
+commit;

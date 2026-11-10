@@ -1,0 +1,89 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+.ssr-temp/
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables
+.env
+.env.local
+.env.production
+.dev.vars*
+supabasebilgileri.txt
+
+# Build outputs
+build
+out
+
+# Test and temporary outputs
+test-results/
+playwright-report/
+.npm-cache/
+.wrangler/
+tmp/
+tmp_test.txt
+dev-root-debug.log
+devserver.err
+devserver.log
+_worker.bundle
+.agent/encoding_report.txt
+workspace-local/
+
+# Yerel kaynak paketleri ve ham boost referans gorselleri repoya dahil edilmez
+asset-sources/
+deneme.png
+deneme1.png
+deneme2.png
+deneme3.png
+deneme4.png
+deneme5.png
+
+# Gelistirme artiklari: yerel ciktilar, debug ekran goruntuleri ve uretilen raporlar
+.tmp/
+output/
+backups/
+profileffect/
+supabase/.temp/
+.claude/
+*.bundle
+comments-test-report.json
+comprehensive-test-report.json
+docs/reports/screenshots/
+/design-qa.md
+
+# Yerel Studio referans ekran goruntuleri ve kazara olusan nul artigi repoya dahil edilmez
+/Fansubstudiogörsel/
+/nul
+
+# Kok dizinde biriken yerel ekran goruntuleri (logo.png haric)
+/isimstili.png
+/keşfet.png
+/listedetay.png
+/listeler.png
+/profildüzenlemodal.png
+/romantik.png
+/skeletoprofil.png
+/proil efekt.png
+/takvim.png
+/takvim2.png
+/topluluk.png

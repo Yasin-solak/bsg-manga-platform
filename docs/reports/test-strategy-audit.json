@@ -1,0 +1,1182 @@
+{
+  "summary": {
+    "totalTestFileCount": 141,
+    "contractTestCount": 128,
+    "e2eTestCount": 13,
+    "unitLikeTestCount": 0,
+    "flakyCandidateCount": 15,
+    "mutationTestSupport": true
+  },
+  "pyramid": {
+    "contractTests": [
+      "tests/contracts/admin-comment-moderation-contract.test.mjs",
+      "tests/contracts/admin-community-cockpit-contract.test.mjs",
+      "tests/contracts/api-resilience-contract.test.mjs",
+      "tests/contracts/auth-runtime-cost-hardening-contract.test.mjs",
+      "tests/contracts/auth-session-guard.test.mjs",
+      "tests/contracts/auth-shared-critical-exports.test.mjs",
+      "tests/contracts/avatar-frame-rollout.test.mjs",
+      "tests/contracts/browser-perf-hotspot-hardening-contract.test.mjs",
+      "tests/contracts/chapter-page-r2-contract.test.mjs",
+      "tests/contracts/chapter-version-routing-contract.test.mjs",
+      "tests/contracts/cloudflare-upload-deployment-contract.test.mjs",
+      "tests/contracts/cloudflare-upload-rate-limit-contract.test.mjs",
+      "tests/contracts/comment-spoiler-contract.test.mjs",
+      "tests/contracts/community-create-composer-contract.test.mjs",
+      "tests/contracts/community-detail-density-contract.test.mjs",
+      "tests/contracts/community-expression-preview-contract.test.mjs",
+      "tests/contracts/community-feature-flag-bootstrap-contract.test.mjs",
+      "tests/contracts/community-page-redesign-contract.test.mjs",
+      "tests/contracts/community-rich-detail-platform-contract.test.mjs",
+      "tests/contracts/deep-audit-suite.test.mjs",
+      "tests/contracts/error-boundary-contract.test.mjs",
+      "tests/contracts/explore-page-redesign-contract.test.mjs",
+      "tests/contracts/fansub-audit-trigger-coverage-contract.test.mjs",
+      "tests/contracts/fansub-boost-background-security-contract.test.mjs",
+      "tests/contracts/fansub-boost-capability-governance-matrix-contract.test.mjs",
+      "tests/contracts/fansub-boost-contract.test.mjs",
+      "tests/contracts/fansub-boost-downgrade-governance-contract.test.mjs",
+      "tests/contracts/fansub-boost-preview-hardening-contract.test.mjs",
+      "tests/contracts/fansub-boost-public-bundle-contract.test.mjs",
+      "tests/contracts/fansub-boost-purchase-hardening-contract.test.mjs",
+      "tests/contracts/fansub-economy-rewards-contract.test.mjs",
+      "tests/contracts/fansub-manage-audit-contract.test.mjs",
+      "tests/contracts/fansub-request-flow-v2-contract.test.mjs",
+      "tests/contracts/fansub-requests-contract.test.mjs",
+      "tests/contracts/fansub-schema-compat.test.mjs",
+      "tests/contracts/fansub-showcase-and-supporter-state-contract.test.mjs",
+      "tests/contracts/fansubRewards-contract.test.mjs",
+      "tests/contracts/fansubs-page-redesign-contract.test.mjs",
+      "tests/contracts/fansubyonetoverviewtab-contract.test.mjs",
+      "tests/contracts/feature-flag-registry.test.mjs",
+      "tests/contracts/follow-profile-contracts.test.mjs",
+      "tests/contracts/footer-policies-center-contract.test.mjs",
+      "tests/contracts/homepage-redesign-contract.test.mjs",
+      "tests/contracts/hover-resolver-critical-exports.test.mjs",
+      "tests/contracts/legal-request-center-contract.test.mjs",
+      "tests/contracts/local-avatar-upload-dev-proxy-contract.test.mjs",
+      "tests/contracts/manga-card-standard-contract.test.mjs",
+      "tests/contracts/manga-hover-redesign-contract.test.mjs",
+      "tests/contracts/manga-public-slug-contract.test.mjs",
+      "tests/contracts/observability-guardrails.test.mjs",
+      "tests/contracts/observability-hotspot-cleanup.test.mjs",
+      "tests/contracts/postgrest-filter-sanitization-contract.test.mjs",
+      "tests/contracts/premium-entitlement-hardening-contract.test.mjs",
+      "tests/contracts/profile-background-save-state-contract.test.mjs",
+      "tests/contracts/profile-directory-store-activity-permissions-hotfix-contract.test.mjs",
+      "tests/contracts/profile-edit-modal-preview-contract.test.mjs",
+      "tests/contracts/profile-library-hash-navigation-contract.test.mjs",
+      "tests/contracts/public-image-security-contract.test.mjs",
+      "tests/contracts/reader-history-panel-contract.test.mjs",
+      "tests/contracts/reader-mode-foundation-contract.test.mjs",
+      "tests/contracts/release-schedule-rls-contract.test.mjs",
+      "tests/contracts/repo-health-audit.test.mjs",
+      "tests/contracts/risk-surface-error-contract.test.mjs",
+      "tests/contracts/safe-media-url-contract.test.mjs",
+      "tests/contracts/security-headers-csp-contract.test.mjs",
+      "tests/contracts/security-moderation-privacy-hardening-contract.test.mjs",
+      "tests/contracts/security-privacy-integrity-followup-contract.test.mjs",
+      "tests/contracts/security-read-hardening-contract.test.mjs",
+      "tests/contracts/security-report-hardening-contract.test.mjs",
+      "tests/contracts/seo-document-meta-contract.test.mjs",
+      "tests/contracts/site-mint-primary-theme-contract.test.mjs",
+      "tests/contracts/ssr-prerender-contract.test.mjs",
+      "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+      "tests/contracts/store-card-mosaic-component-contract.test.mjs",
+      "tests/contracts/store-collection-studio-contract.test.mjs",
+      "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+      "tests/contracts/store-commerce-ledger-foundation-contract.test.mjs",
+      "tests/contracts/store-commerce-operations-center-contract.test.mjs",
+      "tests/contracts/store-cosmetic-accent-contract.test.mjs",
+      "tests/contracts/store-explore-sandbox-contract.test.mjs",
+      "tests/contracts/store-search-and-gift-modal-contract.test.mjs",
+      "tests/contracts/store-studio-published-surface-contract.test.mjs",
+      "tests/contracts/store-surface-skeleton-contract.test.mjs",
+      "tests/contracts/store-wishlist-and-user-activity-contract.test.mjs",
+      "tests/contracts/supabase-advisor-performance-policy-cleanup-contract.test.mjs",
+      "tests/contracts/supabase-app-private-definer-execute-scope-contract.test.mjs",
+      "tests/contracts/supabase-app-private-helper-public-execute-cleanup-contract.test.mjs",
+      "tests/contracts/supabase-auth-required-rpc-anon-cleanup-contract.test.mjs",
+      "tests/contracts/supabase-authenticated-definer-private-wrappers-contract.test.mjs",
+      "tests/contracts/supabase-authenticated-policy-helper-private-cleanup-contract.test.mjs",
+      "tests/contracts/supabase-avatar-public-user-path-case-fallback-contract.test.mjs",
+      "tests/contracts/supabase-avatar-storage-owner-fallback-contract.test.mjs",
+      "tests/contracts/supabase-avatar-storage-user-path-policy-contract.test.mjs",
+      "tests/contracts/supabase-avatar-upload-policy-case-short-circuit-contract.test.mjs",
+      "tests/contracts/supabase-community-like-state-invoker-contract.test.mjs",
+      "tests/contracts/supabase-community-post-image-storage-private-helper-contract.test.mjs",
+      "tests/contracts/supabase-community-public-read-rpc-invoker-contract.test.mjs",
+      "tests/contracts/supabase-core-rls-helper-private-policy-rewrite-contract.test.mjs",
+      "tests/contracts/supabase-helper-rpc-direct-grant-cleanup-contract.test.mjs",
+      "tests/contracts/supabase-invoker-rpc-private-helper-body-rewrite-contract.test.mjs",
+      "tests/contracts/supabase-live-advisor-hardening-contract.test.mjs",
+      "tests/contracts/supabase-live-public-runtime-alignment-contract.test.mjs",
+      "tests/contracts/supabase-live-release-schedule-and-session-claim-hotfix-contract.test.mjs",
+      "tests/contracts/supabase-live-runtime-storage-schema-repair-bundle-contract.test.mjs",
+      "tests/contracts/supabase-private-feature-flag-trigger-helper-contract.test.mjs",
+      "tests/contracts/supabase-private-rls-helper-migration-small-batch-contract.test.mjs",
+      "tests/contracts/supabase-public-for-all-policy-split-contract.test.mjs",
+      "tests/contracts/supabase-public-invoker-helper-regression-contract.test.mjs",
+      "tests/contracts/supabase-public-read-rpc-security-invoker-contract.test.mjs",
+      "tests/contracts/supabase-remaining-anon-definer-private-wrappers-contract.test.mjs",
+      "tests/contracts/supabase-remaining-multiple-select-policy-split-contract.test.mjs",
+      "tests/contracts/supabase-rls-initplan-policy-optimization-contract.test.mjs",
+      "tests/contracts/supabase-security-advisor-cleanup-contract.test.mjs",
+      "tests/contracts/supabase-storage-acl-and-helper-grants-repair-contract.test.mjs",
+      "tests/contracts/supabase-storage-and-rpc-hardening-contract.test.mjs",
+      "tests/contracts/supabase-storage-helper-owner-repair-contract.test.mjs",
+      "tests/contracts/supabase-storage-jwt-helper-definer-repair-contract.test.mjs",
+      "tests/contracts/supabase-storage-jwt-sub-identity-repair-contract.test.mjs",
+      "tests/contracts/supabase-storage-policy-definer-jwt-repair-contract.test.mjs",
+      "tests/contracts/supabase-storage-policy-inline-jwt-subject-contract.test.mjs",
+      "tests/contracts/supabase-storage-session-helper-execute-grants-contract.test.mjs",
+      "tests/contracts/supabase-store-purchase-sensitive-update-flag-contract.test.mjs",
+      "tests/contracts/supabase-track-manga-read-counter-guard-contract.test.mjs",
+      "tests/contracts/supabase-unindexed-foreign-key-indexes-contract.test.mjs",
+      "tests/contracts/upload-magic-byte-hardening-contract.test.mjs",
+      "tests/contracts/user-reported-profile-community-regressions.test.mjs",
+      "tests/contracts/userhover-resolve-contract.test.mjs",
+      "tests/contracts/userhovercardsurface-contract.test.mjs"
+    ],
+    "e2eTests": [
+      "tests/e2e/admin-boost-downgrade-smoke.spec.ts",
+      "tests/e2e/chapter-credit-management.spec.ts",
+      "tests/e2e/chapter-credit-visual-smoke.spec.ts",
+      "tests/e2e/comments-verification-test.spec.ts",
+      "tests/e2e/comprehensive-backend-test.spec.ts",
+      "tests/e2e/live-production-tester.spec.ts",
+      "tests/e2e/manga-comment-report.spec.ts",
+      "tests/e2e/onboarding.spec.ts",
+      "tests/e2e/profile-effect-sequence-lab.spec.ts",
+      "tests/e2e/root-render-smoke.spec.ts",
+      "tests/e2e/store-flow.spec.ts",
+      "tests/e2e/store-profile-effect-gift.spec.ts",
+      "tests/e2e/supporter-assets-studio-and-composer-smoke.spec.ts"
+    ],
+    "unitLikeTests": []
+  },
+  "flakyCandidates": [
+    "tests/contracts/api-resilience-contract.test.mjs",
+    "tests/contracts/auth-session-guard.test.mjs",
+    "tests/contracts/store-explore-sandbox-contract.test.mjs",
+    "tests/contracts/store-search-and-gift-modal-contract.test.mjs",
+    "tests/e2e/admin-boost-downgrade-smoke.spec.ts",
+    "tests/e2e/chapter-credit-management.spec.ts",
+    "tests/e2e/chapter-credit-visual-smoke.spec.ts",
+    "tests/e2e/comments-verification-test.spec.ts",
+    "tests/e2e/comprehensive-backend-test.spec.ts",
+    "tests/e2e/live-production-tester.spec.ts",
+    "tests/e2e/manga-comment-report.spec.ts",
+    "tests/e2e/root-render-smoke.spec.ts",
+    "tests/e2e/store-flow.spec.ts",
+    "tests/e2e/store-profile-effect-gift.spec.ts",
+    "tests/e2e/supporter-assets-studio-and-composer-smoke.spec.ts"
+  ],
+  "criticalUntestedModules": [
+    {
+      "relativePath": "src/pages/StoreComponentsLabPage.tsx",
+      "matchedTests": [],
+      "lineCount": 940
+    },
+    {
+      "relativePath": "src/services/fansubBoostService.ts",
+      "matchedTests": [],
+      "lineCount": 887
+    },
+    {
+      "relativePath": "src/pages/storeStudio/storeStudioPreviewConfig.ts",
+      "matchedTests": [],
+      "lineCount": 794
+    },
+    {
+      "relativePath": "src/pages/StorePage.tsx",
+      "matchedTests": [],
+      "lineCount": 779
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetBoostTab.tsx",
+      "matchedTests": [],
+      "lineCount": 775
+    },
+    {
+      "relativePath": "src/services/fansubSupporterAssetService.ts",
+      "matchedTests": [],
+      "lineCount": 771
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetChaptersTab.tsx",
+      "matchedTests": [],
+      "lineCount": 714
+    },
+    {
+      "relativePath": "src/components/common/FansubHoverCard.tsx",
+      "matchedTests": [],
+      "lineCount": 670
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetOverviewPanels.tsx",
+      "matchedTests": [],
+      "lineCount": 670
+    },
+    {
+      "relativePath": "src/services/fansubService/catalog.ts",
+      "matchedTests": [],
+      "lineCount": 665
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetSupporterAssetsTab.tsx",
+      "matchedTests": [],
+      "lineCount": 656
+    },
+    {
+      "relativePath": "src/components/common/FansubModal/FansubModal.tsx",
+      "matchedTests": [],
+      "lineCount": 649
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetNoticesTab.tsx",
+      "matchedTests": [],
+      "lineCount": 631
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetChapterCreditTab.tsx",
+      "matchedTests": [],
+      "lineCount": 627
+    },
+    {
+      "relativePath": "src/components/common/UserHoverCard.tsx",
+      "matchedTests": [],
+      "lineCount": 614
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetPostsTab.tsx",
+      "matchedTests": [],
+      "lineCount": 607
+    },
+    {
+      "relativePath": "src/services/storeService/mutations.ts",
+      "matchedTests": [],
+      "lineCount": 593
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/ReportedPostFixDialog.tsx",
+      "matchedTests": [],
+      "lineCount": 585
+    },
+    {
+      "relativePath": "src/components/common/userHoverCardShared.ts",
+      "matchedTests": [],
+      "lineCount": 552
+    },
+    {
+      "relativePath": "src/contexts/AuthContext.tsx",
+      "matchedTests": [],
+      "lineCount": 551
+    }
+  ],
+  "allCriticalUntestedModules": [
+    {
+      "relativePath": "src/pages/StoreComponentsLabPage.tsx",
+      "matchedTests": [],
+      "lineCount": 940
+    },
+    {
+      "relativePath": "src/services/fansubBoostService.ts",
+      "matchedTests": [],
+      "lineCount": 887
+    },
+    {
+      "relativePath": "src/pages/storeStudio/storeStudioPreviewConfig.ts",
+      "matchedTests": [],
+      "lineCount": 794
+    },
+    {
+      "relativePath": "src/pages/StorePage.tsx",
+      "matchedTests": [],
+      "lineCount": 779
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetBoostTab.tsx",
+      "matchedTests": [],
+      "lineCount": 775
+    },
+    {
+      "relativePath": "src/services/fansubSupporterAssetService.ts",
+      "matchedTests": [],
+      "lineCount": 771
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetChaptersTab.tsx",
+      "matchedTests": [],
+      "lineCount": 714
+    },
+    {
+      "relativePath": "src/components/common/FansubHoverCard.tsx",
+      "matchedTests": [],
+      "lineCount": 670
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetOverviewPanels.tsx",
+      "matchedTests": [],
+      "lineCount": 670
+    },
+    {
+      "relativePath": "src/services/fansubService/catalog.ts",
+      "matchedTests": [],
+      "lineCount": 665
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetSupporterAssetsTab.tsx",
+      "matchedTests": [],
+      "lineCount": 656
+    },
+    {
+      "relativePath": "src/components/common/FansubModal/FansubModal.tsx",
+      "matchedTests": [],
+      "lineCount": 649
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetNoticesTab.tsx",
+      "matchedTests": [],
+      "lineCount": 631
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetChapterCreditTab.tsx",
+      "matchedTests": [],
+      "lineCount": 627
+    },
+    {
+      "relativePath": "src/components/common/UserHoverCard.tsx",
+      "matchedTests": [],
+      "lineCount": 614
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetPostsTab.tsx",
+      "matchedTests": [],
+      "lineCount": 607
+    },
+    {
+      "relativePath": "src/services/storeService/mutations.ts",
+      "matchedTests": [],
+      "lineCount": 593
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/ReportedPostFixDialog.tsx",
+      "matchedTests": [],
+      "lineCount": 585
+    },
+    {
+      "relativePath": "src/components/common/userHoverCardShared.ts",
+      "matchedTests": [],
+      "lineCount": 552
+    },
+    {
+      "relativePath": "src/contexts/AuthContext.tsx",
+      "matchedTests": [],
+      "lineCount": 551
+    },
+    {
+      "relativePath": "src/pages/StoreExploreSandboxPage.tsx",
+      "matchedTests": [],
+      "lineCount": 534
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetStatsTab.tsx",
+      "matchedTests": [],
+      "lineCount": 529
+    },
+    {
+      "relativePath": "src/components/profileEffects/ProfileEffectCommerceDialogs.tsx",
+      "matchedTests": [],
+      "lineCount": 521
+    },
+    {
+      "relativePath": "src/pages/FansubsPage.tsx",
+      "matchedTests": [],
+      "lineCount": 503
+    },
+    {
+      "relativePath": "src/pages/FansubYonetPage.tsx",
+      "matchedTests": [],
+      "lineCount": 500
+    },
+    {
+      "relativePath": "src/services/userService/profiles.ts",
+      "matchedTests": [],
+      "lineCount": 499
+    },
+    {
+      "relativePath": "src/services/fansubChapterCreditService.ts",
+      "matchedTests": [],
+      "lineCount": 496
+    },
+    {
+      "relativePath": "src/components/common/FansubRequestModal/FansubRequestSteps.tsx",
+      "matchedTests": [],
+      "lineCount": 487
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubNoticeComposerDialog.tsx",
+      "matchedTests": [],
+      "lineCount": 435
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubSupporterAssetEditorDialog.tsx",
+      "matchedTests": [],
+      "lineCount": 431
+    },
+    {
+      "relativePath": "src/services/fansubNoticeService.ts",
+      "matchedTests": [],
+      "lineCount": 429
+    },
+    {
+      "relativePath": "src/components/common/StoreProductModal/StoreProductModal.tsx",
+      "matchedTests": [],
+      "lineCount": 407
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/ChapterCreditOverrideDialog.tsx",
+      "matchedTests": [],
+      "lineCount": 403
+    },
+    {
+      "relativePath": "src/pages/FansubTierPage.tsx",
+      "matchedTests": [],
+      "lineCount": 399
+    },
+    {
+      "relativePath": "src/components/common/FansubHoverCardSurface.tsx",
+      "matchedTests": [],
+      "lineCount": 396
+    },
+    {
+      "relativePath": "src/services/fansubManageService/types.ts",
+      "matchedTests": [],
+      "lineCount": 395
+    },
+    {
+      "relativePath": "src/services/storeItemLiteDirectory.ts",
+      "matchedTests": [],
+      "lineCount": 394
+    },
+    {
+      "relativePath": "src/components/common/FansubRequestModal/FansubRequestModal.tsx",
+      "matchedTests": [],
+      "lineCount": 391
+    },
+    {
+      "relativePath": "src/pages/HoverThemeLabPage.tsx",
+      "matchedTests": [],
+      "lineCount": 368
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubPostDialogs.tsx",
+      "matchedTests": [],
+      "lineCount": 366
+    },
+    {
+      "relativePath": "src/pages/AuthPage.tsx",
+      "matchedTests": [],
+      "lineCount": 357
+    },
+    {
+      "relativePath": "src/components/common/FansubRewardTasksPanel.tsx",
+      "matchedTests": [],
+      "lineCount": 356
+    },
+    {
+      "relativePath": "src/services/storeUserActivityService.ts",
+      "matchedTests": [],
+      "lineCount": 341
+    },
+    {
+      "relativePath": "src/services/fansubManageService/reportedContent.ts",
+      "matchedTests": [],
+      "lineCount": 325
+    },
+    {
+      "relativePath": "src/services/fansubLiteDirectory.ts",
+      "matchedTests": [],
+      "lineCount": 323
+    },
+    {
+      "relativePath": "src/pages/FansubDetailPage.tsx",
+      "matchedTests": [],
+      "lineCount": 320
+    },
+    {
+      "relativePath": "src/services/hoverCardService/types.ts",
+      "matchedTests": [],
+      "lineCount": 318
+    },
+    {
+      "relativePath": "src/pages/ProfilePage.tsx",
+      "matchedTests": [],
+      "lineCount": 314
+    },
+    {
+      "relativePath": "src/pages/storeExplore/StoreTopBarActivityActions.tsx",
+      "matchedTests": [],
+      "lineCount": 300
+    },
+    {
+      "relativePath": "src/components/common/FansubModal/FansubModalInventoryTab.tsx",
+      "matchedTests": [],
+      "lineCount": 297
+    },
+    {
+      "relativePath": "src/components/profileEffects/ProfileEffectSequencePreview.tsx",
+      "matchedTests": [],
+      "lineCount": 294
+    },
+    {
+      "relativePath": "src/lib/fansubBoostPolicy.ts",
+      "matchedTests": [],
+      "lineCount": 282
+    },
+    {
+      "relativePath": "src/services/fansubIdentityTagService.ts",
+      "matchedTests": [],
+      "lineCount": 278
+    },
+    {
+      "relativePath": "src/lib/fansubBoostCapabilityGovernance.ts",
+      "matchedTests": [],
+      "lineCount": 267
+    },
+    {
+      "relativePath": "src/services/fansubManageService/stats.ts",
+      "matchedTests": [],
+      "lineCount": 259
+    },
+    {
+      "relativePath": "src/components/common/hoverFollowActions.ts",
+      "matchedTests": [],
+      "lineCount": 257
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubStudioSidebarNav.tsx",
+      "matchedTests": [],
+      "lineCount": 256
+    },
+    {
+      "relativePath": "src/components/common/HoverThemePicker.tsx",
+      "matchedTests": [],
+      "lineCount": 249
+    },
+    {
+      "relativePath": "src/data/storeProducts.ts",
+      "matchedTests": [],
+      "lineCount": 245
+    },
+    {
+      "relativePath": "src/services/fansubManageService/chaptersOverview.ts",
+      "matchedTests": [],
+      "lineCount": 239
+    },
+    {
+      "relativePath": "src/services/storeService/catalog.ts",
+      "matchedTests": [],
+      "lineCount": 237
+    },
+    {
+      "relativePath": "src/services/fansubMembershipService/invites.ts",
+      "matchedTests": [],
+      "lineCount": 231
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetKasaTab.tsx",
+      "matchedTests": [],
+      "lineCount": 226
+    },
+    {
+      "relativePath": "src/services/fansubManageService/posts.ts",
+      "matchedTests": [],
+      "lineCount": 221
+    },
+    {
+      "relativePath": "src/services/profileEffectMediaMeta.ts",
+      "matchedTests": [],
+      "lineCount": 218
+    },
+    {
+      "relativePath": "src/services/profileEffectManifest.ts",
+      "matchedTests": [],
+      "lineCount": 214
+    },
+    {
+      "relativePath": "src/pages/storeExplore/StoreExploreTopNavigation.tsx",
+      "matchedTests": [],
+      "lineCount": 210
+    },
+    {
+      "relativePath": "src/services/fansubManageService/chapters.ts",
+      "matchedTests": [],
+      "lineCount": 210
+    },
+    {
+      "relativePath": "src/services/authService/credentials.ts",
+      "matchedTests": [],
+      "lineCount": 204
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubNoticeTargetSelector.tsx",
+      "matchedTests": [],
+      "lineCount": 198
+    },
+    {
+      "relativePath": "src/pages/TestStorePage.tsx",
+      "matchedTests": [],
+      "lineCount": 195
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/ReportedChapterFixDialog.tsx",
+      "matchedTests": [],
+      "lineCount": 194
+    },
+    {
+      "relativePath": "src/components/profileEffects/ProfileEffectLayer.tsx",
+      "matchedTests": [],
+      "lineCount": 192
+    },
+    {
+      "relativePath": "src/services/fansubManageService/communityDesk.ts",
+      "matchedTests": [],
+      "lineCount": 190
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/chapterCreditHelpers.ts",
+      "matchedTests": [],
+      "lineCount": 189
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/fansubStudioNavigation.ts",
+      "matchedTests": [],
+      "lineCount": 176
+    },
+    {
+      "relativePath": "src/components/profileEffects/ProfileEffectManifestRenderer.tsx",
+      "matchedTests": [],
+      "lineCount": 168
+    },
+    {
+      "relativePath": "src/services/fansubMembershipService/joinRequests.ts",
+      "matchedTests": [],
+      "lineCount": 165
+    },
+    {
+      "relativePath": "src/components/common/FansubModal/FansubModalTabPanels.types.ts",
+      "matchedTests": [],
+      "lineCount": 160
+    },
+    {
+      "relativePath": "src/services/storePackageService/mutations.ts",
+      "matchedTests": [],
+      "lineCount": 160
+    },
+    {
+      "relativePath": "src/components/common/FansubBoostChrome.tsx",
+      "matchedTests": [],
+      "lineCount": 159
+    },
+    {
+      "relativePath": "src/components/common/ProfileHoverLink.tsx",
+      "matchedTests": [],
+      "lineCount": 159
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/fansubNoticeTargetOptions.ts",
+      "matchedTests": [],
+      "lineCount": 157
+    },
+    {
+      "relativePath": "src/components/common/RequireFansubRoleRoute.tsx",
+      "matchedTests": [],
+      "lineCount": 154
+    },
+    {
+      "relativePath": "src/components/common/FansubCard.tsx",
+      "matchedTests": [],
+      "lineCount": 153
+    },
+    {
+      "relativePath": "src/components/common/userHoverModerationActions.ts",
+      "matchedTests": [],
+      "lineCount": 151
+    },
+    {
+      "relativePath": "src/services/profileEffectAssetResolver.ts",
+      "matchedTests": [],
+      "lineCount": 147
+    },
+    {
+      "relativePath": "src/components/common/hoverCardTheme.ts",
+      "matchedTests": [],
+      "lineCount": 145
+    },
+    {
+      "relativePath": "src/services/authService/sessionGuardUtils.ts",
+      "matchedTests": [],
+      "lineCount": 142
+    },
+    {
+      "relativePath": "src/services/fansubManageService/overviewCockpit.ts",
+      "matchedTests": [],
+      "lineCount": 142
+    },
+    {
+      "relativePath": "src/services/hoverCardService/mangaHover.ts",
+      "matchedTests": [],
+      "lineCount": 142
+    },
+    {
+      "relativePath": "src/components/common/FansubRequestModal/FansubRequestPreview.tsx",
+      "matchedTests": [],
+      "lineCount": 137
+    },
+    {
+      "relativePath": "src/services/fansubCosmeticService/map.ts",
+      "matchedTests": [],
+      "lineCount": 136
+    },
+    {
+      "relativePath": "src/components/common/FansubModal/FansubModalTabPanels.tsx",
+      "matchedTests": [],
+      "lineCount": 133
+    },
+    {
+      "relativePath": "src/hooks/useProfileEffectPlaybackStage.ts",
+      "matchedTests": [],
+      "lineCount": 132
+    },
+    {
+      "relativePath": "src/components/home/HomeFansubSection.tsx",
+      "matchedTests": [],
+      "lineCount": 127
+    },
+    {
+      "relativePath": "src/lib/fansubBoostPresentation.ts",
+      "matchedTests": [],
+      "lineCount": 127
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetHeader.tsx",
+      "matchedTests": [],
+      "lineCount": 125
+    },
+    {
+      "relativePath": "src/services/storePackageService/catalog.ts",
+      "matchedTests": [],
+      "lineCount": 125
+    },
+    {
+      "relativePath": "src/components/common/userHoverState.ts",
+      "matchedTests": [],
+      "lineCount": 124
+    },
+    {
+      "relativePath": "src/services/storeAdminService/types.sales.ts",
+      "matchedTests": [],
+      "lineCount": 123
+    },
+    {
+      "relativePath": "src/components/common/FansubModal/FansubModalGeneralTab.tsx",
+      "matchedTests": [],
+      "lineCount": 120
+    },
+    {
+      "relativePath": "src/services/storeAdminService/salesDetails.queries.item.ts",
+      "matchedTests": [],
+      "lineCount": 118
+    },
+    {
+      "relativePath": "src/pages/storeStudio/StudioComponentSidebar.tsx",
+      "matchedTests": [],
+      "lineCount": 117
+    },
+    {
+      "relativePath": "src/components/common/FansubListItem.tsx",
+      "matchedTests": [],
+      "lineCount": 110
+    },
+    {
+      "relativePath": "src/lib/fansubNotices.ts",
+      "matchedTests": [],
+      "lineCount": 109
+    },
+    {
+      "relativePath": "src/services/authService/sessionDeviceContext.ts",
+      "matchedTests": [],
+      "lineCount": 107
+    },
+    {
+      "relativePath": "src/components/profileEffects/ProfileEffectPreviewCards.tsx",
+      "matchedTests": [],
+      "lineCount": 103
+    },
+    {
+      "relativePath": "src/pages/storeExplore/storeExploreSandboxData.ts",
+      "matchedTests": [],
+      "lineCount": 103
+    },
+    {
+      "relativePath": "src/services/storeAdminService/salesSummary.ts",
+      "matchedTests": [],
+      "lineCount": 103
+    },
+    {
+      "relativePath": "src/lib/fansubIdentityTags.ts",
+      "matchedTests": [],
+      "lineCount": 102
+    },
+    {
+      "relativePath": "src/components/common/FansubModal/FansubModalMembersTab.tsx",
+      "matchedTests": [],
+      "lineCount": 101
+    },
+    {
+      "relativePath": "src/services/hoverCardService/fansubHover.ts",
+      "matchedTests": [],
+      "lineCount": 99
+    },
+    {
+      "relativePath": "src/components/common/FansubIdentityTagChip.tsx",
+      "matchedTests": [],
+      "lineCount": 97
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/useFansubYonetState.ts",
+      "matchedTests": [],
+      "lineCount": 94
+    },
+    {
+      "relativePath": "src/services/badgeService/fansubBadges.ts",
+      "matchedTests": [],
+      "lineCount": 91
+    },
+    {
+      "relativePath": "src/components/common/FansubModal/FansubModalBadgesTab.tsx",
+      "matchedTests": [],
+      "lineCount": 90
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/ChapterCreditPreviewPanel.tsx",
+      "matchedTests": [],
+      "lineCount": 89
+    },
+    {
+      "relativePath": "src/services/fansubMembershipService/types.ts",
+      "matchedTests": [],
+      "lineCount": 88
+    },
+    {
+      "relativePath": "src/pages/StoreComponentSandboxPage.tsx",
+      "matchedTests": [],
+      "lineCount": 85
+    },
+    {
+      "relativePath": "src/services/communityCosmeticService/fansubCosmetics.ts",
+      "matchedTests": [],
+      "lineCount": 85
+    },
+    {
+      "relativePath": "src/lib/fansubSupporterAssetTokens.ts",
+      "matchedTests": [],
+      "lineCount": 84
+    },
+    {
+      "relativePath": "src/services/rewardService/fansubTasks.ts",
+      "matchedTests": [],
+      "lineCount": 81
+    },
+    {
+      "relativePath": "src/services/storePackageService/types.ts",
+      "matchedTests": [],
+      "lineCount": 81
+    },
+    {
+      "relativePath": "src/services/fansubMembershipService/memberships.ts",
+      "matchedTests": [],
+      "lineCount": 77
+    },
+    {
+      "relativePath": "src/components/common/fansubNameStyle.ts",
+      "matchedTests": [],
+      "lineCount": 76
+    },
+    {
+      "relativePath": "src/lib/fansubVanityUrl.ts",
+      "matchedTests": [],
+      "lineCount": 76
+    },
+    {
+      "relativePath": "src/services/authService/types.ts",
+      "matchedTests": [],
+      "lineCount": 76
+    },
+    {
+      "relativePath": "src/services/fansubManageService/index.ts",
+      "matchedTests": [],
+      "lineCount": 76
+    },
+    {
+      "relativePath": "src/components/common/FansubModal/FansubModalMangasTab.tsx",
+      "matchedTests": [],
+      "lineCount": 75
+    },
+    {
+      "relativePath": "src/lib/fansubChapterCredit.ts",
+      "matchedTests": [],
+      "lineCount": 73
+    },
+    {
+      "relativePath": "src/services/hoverCardService/fansubHover.metrics.ts",
+      "matchedTests": [],
+      "lineCount": 70
+    },
+    {
+      "relativePath": "src/services/fansubService.ts",
+      "matchedTests": [],
+      "lineCount": 69
+    },
+    {
+      "relativePath": "src/lib/fansubSupporterAssetPresentation.ts",
+      "matchedTests": [],
+      "lineCount": 67
+    },
+    {
+      "relativePath": "src/services/storeStudioPublicationService.ts",
+      "matchedTests": [],
+      "lineCount": 57
+    },
+    {
+      "relativePath": "src/components/common/FansubModal/FansubModalTabsHeader.tsx",
+      "matchedTests": [],
+      "lineCount": 56
+    },
+    {
+      "relativePath": "src/services/storeAdminService/discounts.ts",
+      "matchedTests": [],
+      "lineCount": 56
+    },
+    {
+      "relativePath": "src/components/common/FansubRequestModal/FansubRequestStepNav.tsx",
+      "matchedTests": [],
+      "lineCount": 55
+    },
+    {
+      "relativePath": "src/services/storeService/types.ts",
+      "matchedTests": [],
+      "lineCount": 55
+    },
+    {
+      "relativePath": "src/components/profileEffects/ProfileEffectSequenceLayers.tsx",
+      "matchedTests": [],
+      "lineCount": 54
+    },
+    {
+      "relativePath": "src/components/common/hoverMenuActions.ts",
+      "matchedTests": [],
+      "lineCount": 51
+    },
+    {
+      "relativePath": "src/services/storeHomeConfigService/types.ts",
+      "matchedTests": [],
+      "lineCount": 48
+    },
+    {
+      "relativePath": "src/components/common/MangaHoverCard.tsx",
+      "matchedTests": [],
+      "lineCount": 46
+    },
+    {
+      "relativePath": "src/lib/fansubAvatarPlaceholder.ts",
+      "matchedTests": [],
+      "lineCount": 41
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubStudioShell.tsx",
+      "matchedTests": [],
+      "lineCount": 41
+    },
+    {
+      "relativePath": "src/services/storeAdminService/salesDetails.queries.lookups.ts",
+      "matchedTests": [],
+      "lineCount": 41
+    },
+    {
+      "relativePath": "src/services/storeAnalyticsService.ts",
+      "matchedTests": [],
+      "lineCount": 38
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubStudioTabHeader.tsx",
+      "matchedTests": [],
+      "lineCount": 35
+    },
+    {
+      "relativePath": "src/pages/fansubYonetChapterEditUtils.ts",
+      "matchedTests": [],
+      "lineCount": 35
+    },
+    {
+      "relativePath": "src/services/fansubCosmeticService/types.ts",
+      "matchedTests": [],
+      "lineCount": 35
+    },
+    {
+      "relativePath": "src/services/storeUserActivityEvents.ts",
+      "matchedTests": [],
+      "lineCount": 32
+    },
+    {
+      "relativePath": "src/services/storeProfileEffectService/types.ts",
+      "matchedTests": [],
+      "lineCount": 31
+    },
+    {
+      "relativePath": "src/services/storeProfileEffectService/write.ts",
+      "matchedTests": [],
+      "lineCount": 31
+    },
+    {
+      "relativePath": "src/services/hoverCardService.ts",
+      "matchedTests": [],
+      "lineCount": 30
+    },
+    {
+      "relativePath": "src/services/storeAdminService/salesDetails.mappers.item.ts",
+      "matchedTests": [],
+      "lineCount": 30
+    },
+    {
+      "relativePath": "src/services/fansubMembershipService/index.ts",
+      "matchedTests": [],
+      "lineCount": 28
+    },
+    {
+      "relativePath": "src/services/storeAdminService/salesDetails.mappers.ts",
+      "matchedTests": [],
+      "lineCount": 26
+    },
+    {
+      "relativePath": "src/services/storeAdminService/salesDetails.queries.types.ts",
+      "matchedTests": [],
+      "lineCount": 24
+    },
+    {
+      "relativePath": "src/services/storeAdminService/salesDetails.ts",
+      "matchedTests": [],
+      "lineCount": 18
+    },
+    {
+      "relativePath": "src/services/storeService/index.ts",
+      "matchedTests": [],
+      "lineCount": 16
+    },
+    {
+      "relativePath": "src/services/authService/index.ts",
+      "matchedTests": [],
+      "lineCount": 12
+    },
+    {
+      "relativePath": "src/services/storeHomeConfigService/index.ts",
+      "matchedTests": [],
+      "lineCount": 11
+    },
+    {
+      "relativePath": "src/services/storeAdminService/salesDetails.mappers.users.ts",
+      "matchedTests": [],
+      "lineCount": 10
+    },
+    {
+      "relativePath": "src/services/storePackageService/index.ts",
+      "matchedTests": [],
+      "lineCount": 9
+    },
+    {
+      "relativePath": "src/services/storeProfileEffectService/index.ts",
+      "matchedTests": [],
+      "lineCount": 8
+    },
+    {
+      "relativePath": "src/services/storeAdminService/index.ts",
+      "matchedTests": [],
+      "lineCount": 7
+    },
+    {
+      "relativePath": "src/services/storeAdminService/types.discount.ts",
+      "matchedTests": [],
+      "lineCount": 5
+    },
+    {
+      "relativePath": "src/services/storeAdminService/types.ts",
+      "matchedTests": [],
+      "lineCount": 4
+    },
+    {
+      "relativePath": "src/components/common/StoreProductModal/index.ts",
+      "matchedTests": [],
+      "lineCount": 3
+    },
+    {
+      "relativePath": "src/components/profileEffects/index.ts",
+      "matchedTests": [],
+      "lineCount": 3
+    },
+    {
+      "relativePath": "src/services/fansubCosmeticService/index.ts",
+      "matchedTests": [],
+      "lineCount": 3
+    },
+    {
+      "relativePath": "src/services/storeAdminService/salesDetails.queries.ts",
+      "matchedTests": [],
+      "lineCount": 3
+    },
+    {
+      "relativePath": "src/components/common/FansubModal/index.ts",
+      "matchedTests": [],
+      "lineCount": 2
+    },
+    {
+      "relativePath": "src/components/common/FansubRequestModal/index.ts",
+      "matchedTests": [],
+      "lineCount": 2
+    },
+    {
+      "relativePath": "src/services/authService.ts",
+      "matchedTests": [],
+      "lineCount": 2
+    },
+    {
+      "relativePath": "src/services/fansubCosmeticService.ts",
+      "matchedTests": [],
+      "lineCount": 2
+    },
+    {
+      "relativePath": "src/services/fansubManageService.ts",
+      "matchedTests": [],
+      "lineCount": 2
+    },
+    {
+      "relativePath": "src/services/fansubMembershipService.ts",
+      "matchedTests": [],
+      "lineCount": 2
+    },
+    {
+      "relativePath": "src/services/storeAdminService.ts",
+      "matchedTests": [],
+      "lineCount": 2
+    },
+    {
+      "relativePath": "src/services/storeService.ts",
+      "matchedTests": [],
+      "lineCount": 2
+    }
+  ],
+  "gaps": [
+    "Bazi kritik moduller icin eslesen test bulunamadi."
+  ]
+}

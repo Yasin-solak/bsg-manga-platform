@@ -1,0 +1,41 @@
+/* Magaza canli kartlari: hafif, yalniz canli katmanlarda calisan anahtar kareler. */
+@keyframes shop-live-kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+
+.shop-live-kenburns {
+  animation: shop-live-kenburns 6s ease-out both;
+}
+
+@keyframes shop-live-sweep {
+  from { transform: translateX(-120%) skewX(-16deg); }
+  to { transform: translateX(220%) skewX(-16deg); }
+}
+
+.shop-live-sweep {
+  animation: shop-live-sweep 1.6s ease-in-out infinite;
+}
+
+@keyframes shop-live-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(-4deg); }
+}
+
+.shop-live-float {
+  animation: shop-live-float 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shop-live-kenburns,
+  .shop-live-sweep,
+  .shop-live-float {
+    animation: none;
+  }
+}
+
+/* Vitrin: one cikan slaytin kalan suresi. */
+@keyframes shop-spotlight-progress {
+  from { width: 0; }
+  to { width: 100%; }
+}

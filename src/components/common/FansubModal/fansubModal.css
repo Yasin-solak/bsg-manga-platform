@@ -1,0 +1,289 @@
+.fansub-modal-tabs {
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.tab-btn {
+  background: transparent;
+  color: #888;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-btn.active {
+  color: #000;
+  background: #ffd600;
+  box-shadow: 0 4px 15px rgba(255, 214, 0, 0.3);
+  font-weight: 700;
+}
+
+.spm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.spm-row {
+  display: flex;
+  gap: 20px;
+}
+
+.spm-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.spm-field label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ccc;
+  margin-left: 4px;
+}
+
+.spm-input {
+  background: #252525;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: #fff;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+  outline: none;
+}
+
+.spm-input:focus {
+  border-color: #ffd600;
+  background: #2a2a2a;
+  box-shadow: 0 0 0 3px rgba(255, 214, 0, 0.1);
+}
+
+.spm-input::placeholder {
+  color: #555;
+}
+
+.spm-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.spm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.spm-btn {
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+}
+
+.spm-btn-cancel {
+  background: transparent;
+  color: #aaa;
+  border: 1px solid #444;
+}
+
+.spm-btn-cancel:hover {
+  color: #fff;
+  border-color: #666;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.spm-btn-save {
+  background: #ffd600;
+  color: #000;
+}
+
+.spm-btn-save:hover {
+  background: #ffdb1a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 214, 0, 0.2);
+}
+
+.spm-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.admin-store-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.admin-store-card {
+  background: #252525;
+  border: 1px solid #333;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.admin-store-card:hover {
+  transform: translateY(-4px);
+  border-color: #555;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.admin-store-card.active-item {
+  border-color: #ffd600;
+  box-shadow: 0 0 15px rgba(255, 214, 0, 0.15);
+}
+
+.admin-store-card-image {
+  height: 120px;
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.admin-store-card-content {
+  padding: 12px;
+}
+
+.action-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn.edit {
+  background: rgba(255, 214, 0, 0.1);
+  color: #ffd600;
+  border: 1px solid rgba(255, 214, 0, 0.2);
+}
+
+.action-btn.edit:hover:not(.disabled) {
+  background: #ffd600;
+  color: #000;
+}
+
+.action-btn.delete {
+  background: rgba(255, 77, 79, 0.1);
+  color: #ff4d4f;
+  border: 1px solid rgba(255, 77, 79, 0.2);
+}
+
+.action-btn.delete:hover {
+  background: #ff4d4f;
+  color: #fff;
+}
+
+.spm-member-item {
+  transition: all 0.2s;
+}
+
+.spm-member-item:hover {
+  background: #2a2a2a !important;
+  border-color: #444 !important;
+}
+
+.spm-preset-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  background-size: cover;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.spm-preset-btn:hover {
+  transform: scale(1.1);
+  border-color: #ffd600;
+}
+
+.spm-presets {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.economy-header {
+  background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%) !important;
+  border: 1px solid #333;
+}
+
+.spm-manga-group {
+  background: #252525;
+  border: 1px solid #333;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.spm-manga-header {
+  padding: 12px 16px;
+  background: #2a2a2a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.spm-manga-header:hover {
+  background: #333;
+}
+
+.spm-chapter-list {
+  padding: 8px;
+  background: #1f1f1f;
+}
+
+.spm-chapter-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid #333;
+  color: #ddd;
+  font-size: 0.9rem;
+}
+
+.spm-chapter-item:last-child {
+  border-bottom: none;
+}
+
+.spm-chapter-date {
+  font-size: 0.8rem;
+  color: #888;
+}

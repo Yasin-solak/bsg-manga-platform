@@ -1,0 +1,145 @@
+{
+  "summary": {
+    "authSurfaceCount": 3,
+    "storageTouchCount": 18,
+    "supabaseAuthFileCount": 8,
+    "multiTabSupportCount": 7,
+    "authUserFacingGapCount": 0
+  },
+  "storageFiles": [
+    {
+      "relativePath": "src/components/community/communityUiShared.ts",
+      "usesLocalStorage": false,
+      "usesSessionStorage": true,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/components/ui/sidebar.tsx",
+      "usesLocalStorage": false,
+      "usesSessionStorage": false,
+      "usesDocumentCookie": true
+    },
+    {
+      "relativePath": "src/contexts/ThemeContext.tsx",
+      "usesLocalStorage": true,
+      "usesSessionStorage": false,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/hooks/useSidebarCollapsed.ts",
+      "usesLocalStorage": true,
+      "usesSessionStorage": false,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/hooks/useTheme.ts",
+      "usesLocalStorage": true,
+      "usesSessionStorage": false,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/lib/communityExpressionFavorites.ts",
+      "usesLocalStorage": true,
+      "usesSessionStorage": false,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/pages/community/communityPageInteractions.ts",
+      "usesLocalStorage": true,
+      "usesSessionStorage": false,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/pages/mangaReader/readerChapterRouting.ts",
+      "usesLocalStorage": false,
+      "usesSessionStorage": true,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/pages/storeStudio/storeStudioPreviewConfig.ts",
+      "usesLocalStorage": true,
+      "usesSessionStorage": false,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/services/authService/sessionDeviceContext.ts",
+      "usesLocalStorage": true,
+      "usesSessionStorage": false,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/services/dbSchemaCapability.ts",
+      "usesLocalStorage": true,
+      "usesSessionStorage": false,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/services/featureFlagService.ts",
+      "usesLocalStorage": true,
+      "usesSessionStorage": false,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/services/readTrackingService.ts",
+      "usesLocalStorage": true,
+      "usesSessionStorage": false,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/services/readerPreferencesService.ts",
+      "usesLocalStorage": true,
+      "usesSessionStorage": false,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/services/releaseScheduleUserStateService.ts",
+      "usesLocalStorage": true,
+      "usesSessionStorage": false,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/services/selfAccountEconomyService.ts",
+      "usesLocalStorage": false,
+      "usesSessionStorage": true,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/services/storeService/mutations.ts",
+      "usesLocalStorage": false,
+      "usesSessionStorage": true,
+      "usesDocumentCookie": false
+    },
+    {
+      "relativePath": "src/services/supabase.ts",
+      "usesLocalStorage": true,
+      "usesSessionStorage": true,
+      "usesDocumentCookie": false
+    }
+  ],
+  "supabaseAuthFiles": [
+    "src/contexts/AuthContext.tsx",
+    "src/services/accountCenterService.ts",
+    "src/services/authService/credentials.ts",
+    "src/services/authService/session.ts",
+    "src/services/authService/shared.ts",
+    "src/services/fansubSupporterAssetService.ts",
+    "src/services/storageService/uploads.ts",
+    "src/services/userService/selfIdentity.ts"
+  ],
+  "multiTabSupport": [
+    "src/components/profileEffects/ProfileEffectLayer.tsx",
+    "src/contexts/AuthContext.tsx",
+    "src/hooks/useReaderPreferences.ts",
+    "src/pages/mangaReader/useMangaReaderData.ts",
+    "src/pages/storeStudio/storeStudioPreviewConfig.ts",
+    "src/services/authService/sessionDeviceContext.ts",
+    "src/services/featureFlagService.ts"
+  ],
+  "passwordResetInvalidationFiles": [],
+  "cookieFlagFiles": [],
+  "authUserFacingGaps": [],
+  "notes": [
+    "Parola degisimi sonrasi tum aktif oturumlarin kapatildigina dair yerel kanit bulunamadi.",
+    "Cookie flag denetimi icin belirgin bir kod referansi yok; Supabase tarafinda harici ayar olabilir."
+  ]
+}

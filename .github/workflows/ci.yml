@@ -1,0 +1,338 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    # Go RED at 20 minutes rather than hanging for 6 hours; the longest
+    # job normally takes 2.5 minutes, so this limit does not cut a real run.
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Text lint
+        run: npm run lint:text
+
+      - name: Build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL != '' && secrets.VITE_SUPABASE_URL || 'https://placeholder.supabase.co' }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY != '' && secrets.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key' }}
+        run: npm run build
+
+      - name: Contract tests
+        run: npm run test:contracts
+
+      - name: Repo health strict
+        run: npm run health:repo:strict
+
+      - name: Deep audit strict
+        run: npm run audit:deep:strict
+
+  preflight:
+    runs-on: ubuntu-latest
+    # Go RED at 20 minutes rather than hanging for 6 hours; the longest
+    # job normally takes 2.5 minutes, so this limit does not cut a real run.
+    timeout-minutes: 20
+    outputs:
+      has_follow_rpc: ${{ steps.secrets.outputs.has_follow_rpc }}
+      has_core_flows: ${{ steps.secrets.outputs.has_core_flows }}
+      has_e2e: ${{ steps.secrets.outputs.has_e2e }}
+      has_chapter_credit: ${{ steps.secrets.outputs.has_chapter_credit }}
+    steps:
+      - name: Resolve smoke secret availability
+        id: secrets
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          AUTH_SMOKE_EMAIL_A: ${{ secrets.AUTH_SMOKE_EMAIL_A }}
+          AUTH_SMOKE_PASSWORD_A: ${{ secrets.AUTH_SMOKE_PASSWORD_A }}
+          AUTH_SMOKE_EMAIL_B: ${{ secrets.AUTH_SMOKE_EMAIL_B }}
+          AUTH_SMOKE_PASSWORD_B: ${{ secrets.AUTH_SMOKE_PASSWORD_B }}
+          AUTH_SMOKE_FANSUB_ID: ${{ secrets.AUTH_SMOKE_FANSUB_ID }}
+        run: |
+          follow=false; core=false; e2e=false; chapter=false
+          if [ -n "$VITE_SUPABASE_URL" ] && [ -n "$VITE_SUPABASE_ANON_KEY" ] && [ -n "$AUTH_SMOKE_EMAIL_A" ] && [ -n "$AUTH_SMOKE_PASSWORD_A" ]; then follow=true; fi
+          if [ -n "$VITE_SUPABASE_URL" ] && [ -n "$VITE_SUPABASE_ANON_KEY" ] && [ -n "$SUPABASE_SERVICE_ROLE_KEY" ] && [ -n "$AUTH_SMOKE_EMAIL_B" ] && [ -n "$AUTH_SMOKE_PASSWORD_B" ]; then core=true; fi
+          if [ -n "$VITE_SUPABASE_URL" ] && [ -n "$VITE_SUPABASE_ANON_KEY" ] && [ -n "$SUPABASE_SERVICE_ROLE_KEY" ]; then e2e=true; fi
+          if [ -n "$VITE_SUPABASE_URL" ] && [ -n "$VITE_SUPABASE_ANON_KEY" ] && [ -n "$SUPABASE_SERVICE_ROLE_KEY" ] && [ -n "$AUTH_SMOKE_FANSUB_ID" ]; then chapter=true; fi
+          {
+            echo "has_follow_rpc=$follow"
+            echo "has_core_flows=$core"
+            echo "has_e2e=$e2e"
+            echo "has_chapter_credit=$chapter"
+          } >> "$GITHUB_OUTPUT"
+
+  smoke_follow_rpc:
+    runs-on: ubuntu-latest
+    # Go RED at 20 minutes rather than hanging for 6 hours; the longest
+    # job normally takes 2.5 minutes, so this limit does not cut a real run.
+    timeout-minutes: 20
+    needs: [quality, preflight]
+    if: needs.preflight.outputs.has_follow_rpc == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Run follow RPC smoke test
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          AUTH_SMOKE_EMAIL_A: ${{ secrets.AUTH_SMOKE_EMAIL_A }}
+          AUTH_SMOKE_PASSWORD_A: ${{ secrets.AUTH_SMOKE_PASSWORD_A }}
+          AUTH_SMOKE_USER_PUBLIC_ID: ${{ secrets.AUTH_SMOKE_USER_PUBLIC_ID }}
+          AUTH_SMOKE_TARGET_PUBLIC_ID: ${{ secrets.AUTH_SMOKE_TARGET_PUBLIC_ID }}
+          AUTH_SMOKE_MANGA_ID: ${{ secrets.AUTH_SMOKE_MANGA_ID }}
+          AUTH_SMOKE_FANSUB_ID: ${{ secrets.AUTH_SMOKE_FANSUB_ID }}
+        run: npm run smoke:follow-rpc
+
+  smoke_core_flows:
+    runs-on: ubuntu-latest
+    # Go RED at 20 minutes rather than hanging for 6 hours; the longest
+    # job normally takes 2.5 minutes, so this limit does not cut a real run.
+    timeout-minutes: 20
+    needs: [quality, preflight]
+    if: needs.preflight.outputs.has_core_flows == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Run core flow smoke test
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          AUTH_SMOKE_EMAIL_B: ${{ secrets.AUTH_SMOKE_EMAIL_B }}
+          AUTH_SMOKE_PASSWORD_B: ${{ secrets.AUTH_SMOKE_PASSWORD_B }}
+          AUTH_SMOKE_MANGA_ID: ${{ secrets.AUTH_SMOKE_MANGA_ID }}
+        run: npm run smoke:core-flows
+
+  e2e_browser_smoke:
+    runs-on: ubuntu-latest
+    # Go RED at 20 minutes rather than hanging for 6 hours; the longest
+    # job normally takes 2.5 minutes, so this limit does not cut a real run.
+    timeout-minutes: 20
+    needs: [quality, preflight]
+    if: needs.preflight.outputs.has_e2e == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      # Chromium comes FROM CACHE.
+      #
+      # WHY: `playwright install --with-deps` downloaded ~150 MB of Chromium
+      # on each run and also installed system libraries with `apt-get`.
+      # On 2026-08-18/19 this step hung INDEFINITELY nine times in a row
+      # (23-82 min), blocking merges each time and needing a manual cancel.
+      # The tests themselves passed in 17 seconds locally; the download was the problem.
+      # On a cache hit this step does not touch the network AT ALL.
+      #
+      # The key follows the Playwright version (package-lock): on a version change
+      # the cache renews naturally, nothing is tested with an old browser.
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      # System libraries install even on a cache hit (not `--only-shell`,
+      # deps are separate): even with browser binaries cached OS dependencies
+      # may be missing from the runner image.
+      - name: Install Playwright system deps
+        run: npx playwright install-deps chromium
+
+      - name: Install Playwright Chromium
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install chromium
+
+      - name: Run browser smoke E2E
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          AUTH_SMOKE_MANGA_ID: ${{ secrets.AUTH_SMOKE_MANGA_ID }}
+        run: npm run e2e:browser-smoke
+
+  chapter_credit_regression:
+    runs-on: ubuntu-latest
+    # Go RED at 20 minutes rather than hanging for 6 hours; the longest
+    # job normally takes 2.5 minutes, so this limit does not cut a real run.
+    timeout-minutes: 20
+    needs: [quality, preflight]
+    if: needs.preflight.outputs.has_chapter_credit == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      # Chromium comes FROM CACHE.
+      #
+      # WHY: `playwright install --with-deps` downloaded ~150 MB of Chromium
+      # on each run and also installed system libraries with `apt-get`.
+      # On 2026-08-18/19 this step hung INDEFINITELY nine times in a row
+      # (23-82 min), blocking merges each time and needing a manual cancel.
+      # The tests themselves passed in 17 seconds locally; the download was the problem.
+      # On a cache hit this step does not touch the network AT ALL.
+      #
+      # The key follows the Playwright version (package-lock): on a version change
+      # the cache renews naturally, nothing is tested with an old browser.
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      # System libraries install even on a cache hit (not `--only-shell`,
+      # deps are separate): even with browser binaries cached OS dependencies
+      # may be missing from the runner image.
+      - name: Install Playwright system deps
+        run: npx playwright install-deps chromium
+
+      - name: Install Playwright Chromium
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install chromium
+
+      - name: Run chapter credit regression smoke
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          AUTH_SMOKE_FANSUB_ID: ${{ secrets.AUTH_SMOKE_FANSUB_ID }}
+          AUTH_SMOKE_READER_PATH: ${{ secrets.AUTH_SMOKE_READER_PATH }}
+        run: npm run smoke:chapter-credit
+
+      - name: Upload chapter credit regression artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chapter-credit-regression-artifacts
+          if-no-files-found: warn
+          path: |
+            playwright-report
+            test-results
+            docs/reports/chapter-credit-smoke
+
+  boost_policy_regression:
+    runs-on: ubuntu-latest
+    # Go RED at 20 minutes rather than hanging for 6 hours; the longest
+    # job normally takes 2.5 minutes, so this limit does not cut a real run.
+    timeout-minutes: 20
+    needs: quality
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      # Chromium comes FROM CACHE.
+      #
+      # WHY: `playwright install --with-deps` downloaded ~150 MB of Chromium
+      # on each run and also installed system libraries with `apt-get`.
+      # On 2026-08-18/19 this step hung INDEFINITELY nine times in a row
+      # (23-82 min), blocking merges each time and needing a manual cancel.
+      # The tests themselves passed in 17 seconds locally; the download was the problem.
+      # On a cache hit this step does not touch the network AT ALL.
+      #
+      # The key follows the Playwright version (package-lock): on a version change
+      # the cache renews naturally, nothing is tested with an old browser.
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      # System libraries install even on a cache hit (not `--only-shell`,
+      # deps are separate): even with browser binaries cached OS dependencies
+      # may be missing from the runner image.
+      - name: Install Playwright system deps
+        run: npx playwright install-deps chromium
+
+      - name: Install Playwright Chromium
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install chromium
+
+      - name: Run boost policy regression
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL != '' && secrets.VITE_SUPABASE_URL || 'https://placeholder.supabase.co' }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY != '' && secrets.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key' }}
+        run: npm run smoke:boost-policy
+
+      - name: Upload boost policy regression artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: boost-policy-regression-artifacts
+          if-no-files-found: warn
+          path: |
+            playwright-report
+            test-results

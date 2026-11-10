@@ -1,0 +1,68 @@
+/*
+  Murek piksel hareketleri: hepsi steps() ile kare kare; yumusak gecis yerine sprite hissi.
+  SVG ogelerinde CSS translate birimi kullanici birimidir: 1px = bir piksel hucresi.
+*/
+.murek svg { image-rendering: pixelated; }
+.murek .murek-feet-b { opacity: 0; }
+.murek .murek-eyes-blink { opacity: 0; }
+.murek .murek-eyes-open { animation: murek-blink-open 4.2s steps(1, end) infinite; }
+.murek .murek-eyes-blink { animation: murek-blink-closed 4.2s steps(1, end) infinite; }
+
+.murek-motion-bob .murek-body { animation: murek-bob 1.2s steps(1, end) infinite; }
+.murek-motion-walk .murek-body { animation: murek-bob 0.36s steps(1, end) infinite; }
+.murek-motion-walk .murek-feet-a { animation: murek-frame-a 0.36s steps(1, end) infinite; }
+.murek-motion-walk .murek-feet-b { animation: murek-frame-b 0.36s steps(1, end) infinite; }
+.murek-motion-jump .murek-body { animation: murek-jump 0.6s steps(1, end) 3; }
+.murek-motion-jump .murek-shadow { animation: murek-shadow-jump 0.6s steps(1, end) 3; transform-box: fill-box; transform-origin: 50% 50%; }
+.murek-motion-wobble .murek-body { animation: murek-wobble 0.5s steps(1, end) 2; }
+
+@keyframes murek-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1px); }
+}
+@keyframes murek-jump {
+  0%, 100% { transform: translateY(0); }
+  20% { transform: translateY(-2px); }
+  40% { transform: translateY(-4px); }
+  60% { transform: translateY(-3px); }
+  80% { transform: translateY(-1px); }
+}
+@keyframes murek-shadow-jump {
+  0%, 100% { transform: scaleX(1); }
+  20%, 80% { transform: scaleX(0.8); }
+  40%, 60% { transform: scaleX(0.6); }
+}
+@keyframes murek-wobble {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1px); }
+  75% { transform: translateX(1px); }
+}
+@keyframes murek-frame-a {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes murek-frame-b {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+}
+@keyframes murek-blink-open {
+  0%, 94% { opacity: 1; }
+  95%, 100% { opacity: 0; }
+}
+@keyframes murek-blink-closed {
+  0%, 94% { opacity: 0; }
+  95%, 100% { opacity: 1; }
+}
+
+/* Gokkusagi rengi: govdenin tonu kare kare doner (aksesuar haric; gozler siyah kalir). */
+.murek-rainbow .murek-body > g:not(.murek-accessory) { animation: murek-rainbow 3.6s steps(12, end) infinite; }
+@keyframes murek-rainbow {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .murek * { animation: none !important; }
+  .murek .murek-feet-b,
+  .murek .murek-eyes-blink { opacity: 0 !important; }
+}

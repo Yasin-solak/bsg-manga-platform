@@ -1,0 +1,186 @@
+{
+  "generatedAt": "2026-04-04T01:01:44.176Z",
+  "outputDir": "C:\\projeler\\managa proje - v0.002\\public\\boost\\tab",
+  "assets": [
+    {
+      "name": "scene-progress-rail",
+      "source": "deneme4.png",
+      "file": "C:\\projeler\\managa proje - v0.002\\public\\boost\\tab\\scene-progress-rail.png",
+      "cropBox": {
+        "left": 685,
+        "top": 22,
+        "width": 790,
+        "height": 145
+      },
+      "finalSize": {
+        "width": 790,
+        "height": 145
+      }
+    },
+    {
+      "name": "scene-tier-base",
+      "source": "deneme5.png",
+      "file": "C:\\projeler\\managa proje - v0.002\\public\\boost\\tab\\scene-tier-base.png",
+      "cropBox": {
+        "left": 6,
+        "top": 8,
+        "width": 292,
+        "height": 285
+      },
+      "finalSize": {
+        "width": 292,
+        "height": 285
+      }
+    },
+    {
+      "name": "scene-tier-rising",
+      "source": "deneme5.png",
+      "file": "C:\\projeler\\managa proje - v0.002\\public\\boost\\tab\\scene-tier-rising.png",
+      "cropBox": {
+        "left": 312,
+        "top": 8,
+        "width": 292,
+        "height": 285
+      },
+      "finalSize": {
+        "width": 292,
+        "height": 285
+      }
+    },
+    {
+      "name": "scene-tier-empowered",
+      "source": "deneme5.png",
+      "file": "C:\\projeler\\managa proje - v0.002\\public\\boost\\tab\\scene-tier-empowered.png",
+      "cropBox": {
+        "left": 922,
+        "top": 8,
+        "width": 284,
+        "height": 285
+      },
+      "finalSize": {
+        "width": 284,
+        "height": 285
+      }
+    },
+    {
+      "name": "scene-tier-legend",
+      "source": "deneme5.png",
+      "file": "C:\\projeler\\managa proje - v0.002\\public\\boost\\tab\\scene-tier-legend.png",
+      "cropBox": {
+        "left": 1222,
+        "top": 8,
+        "width": 300,
+        "height": 300
+      },
+      "finalSize": {
+        "width": 300,
+        "height": 300
+      }
+    },
+    {
+      "name": "reward-xp-crystal",
+      "source": "deneme4.png",
+      "file": "C:\\projeler\\managa proje - v0.002\\public\\boost\\tab\\reward-xp-crystal.png",
+      "cropBox": {
+        "left": 980,
+        "top": 555,
+        "width": 215,
+        "height": 150
+      },
+      "finalSize": {
+        "width": 215,
+        "height": 150
+      }
+    },
+    {
+      "name": "chest-silver-closed",
+      "source": "deneme.png",
+      "file": "C:\\projeler\\managa proje - v0.002\\public\\boost\\tab\\chest-silver-closed.png",
+      "cropBox": {
+        "left": 18,
+        "top": 18,
+        "width": 260,
+        "height": 210
+      },
+      "finalSize": {
+        "width": 200,
+        "height": 144
+      }
+    },
+    {
+      "name": "chest-gold-closed",
+      "source": "deneme.png",
+      "file": "C:\\projeler\\managa proje - v0.002\\public\\boost\\tab\\chest-gold-closed.png",
+      "cropBox": {
+        "left": 18,
+        "top": 492,
+        "width": 280,
+        "height": 225
+      },
+      "finalSize": {
+        "width": 280,
+        "height": 225
+      }
+    },
+    {
+      "name": "chest-gold-open",
+      "source": "deneme.png",
+      "file": "C:\\projeler\\managa proje - v0.002\\public\\boost\\tab\\chest-gold-open.png",
+      "cropBox": {
+        "left": 585,
+        "top": 25,
+        "width": 255,
+        "height": 200
+      },
+      "finalSize": {
+        "width": 231,
+        "height": 162
+      }
+    },
+    {
+      "name": "chest-gold-open-coins",
+      "source": "deneme.png",
+      "file": "C:\\projeler\\managa proje - v0.002\\public\\boost\\tab\\chest-gold-open-coins.png",
+      "cropBox": {
+        "left": 565,
+        "top": 530,
+        "width": 285,
+        "height": 200
+      },
+      "finalSize": {
+        "width": 285,
+        "height": 182
+      }
+    },
+    {
+      "name": "chest-prismatic-open-coins",
+      "source": "deneme.png",
+      "file": "C:\\projeler\\managa proje - v0.002\\public\\boost\\tab\\chest-prismatic-open-coins.png",
+      "cropBox": {
+        "left": 1160,
+        "top": 15,
+        "width": 360,
+        "height": 260
+      },
+      "finalSize": {
+        "width": 297,
+        "height": 171
+      }
+    },
+    {
+      "name": "digits-gold-sheet",
+      "source": "deneme5.png",
+      "file": "C:\\projeler\\managa proje - v0.002\\public\\boost\\tab\\digits-gold-sheet.png",
+      "cropBox": {
+        "left": 610,
+        "top": 845,
+        "width": 695,
+        "height": 90
+      },
+      "finalSize": {
+        "width": 695,
+        "height": 90
+      }
+    }
+  ]
+}

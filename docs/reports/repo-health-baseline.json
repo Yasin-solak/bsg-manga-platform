@@ -1,0 +1,2056 @@
+{
+  "generatedAt": "2026-07-09T19:39:25.817Z",
+  "summary": {
+    "totalLines": 393385,
+    "appCodeLines": 211016,
+    "testFileCount": 145,
+    "consoleCount": 866,
+    "featureFlagCount": 20,
+    "unusedFeatureFlagCount": 0,
+    "structuredLoggerFileCount": 116,
+    "userFacingErrorFileCount": 69,
+    "requestContextFileCount": 83,
+    "untestedCriticalExportCount": 8
+  },
+  "largeFiles": [
+    {
+      "relativePath": "src/pages/StoreComponentsLabPage.tsx",
+      "lineCount": 940,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "sert-refactor"
+    },
+    {
+      "relativePath": "src/pages/fansub/FansubBoostOverview.tsx",
+      "lineCount": 896,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "sert-refactor"
+    },
+    {
+      "relativePath": "src/services/fansubBoostService.ts",
+      "lineCount": 887,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "sert-refactor"
+    },
+    {
+      "relativePath": "src/services/communityService/posts.rich.ts",
+      "lineCount": 872,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "sert-refactor"
+    },
+    {
+      "relativePath": "src/pages/fansub/FansubContentTabs.tsx",
+      "lineCount": 871,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "sert-refactor"
+    },
+    {
+      "relativePath": "src/testing/e2eMocks.ts",
+      "lineCount": 851,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "sert-refactor"
+    },
+    {
+      "relativePath": "src/services/authService/shared.ts",
+      "lineCount": 829,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/community/useCommunityPageController.ts",
+      "lineCount": 828,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/admin/StoreManagementSection.tsx",
+      "lineCount": 822,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/communityDetail/useCommunityDetailController.ts",
+      "lineCount": 810,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/community/CommunityPostCard.tsx",
+      "lineCount": 806,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/fansub/FansubEditModal.tsx",
+      "lineCount": 805,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/storeStudio/storeStudioPreviewConfig.ts",
+      "lineCount": 794,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/StorePage.tsx",
+      "lineCount": 778,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/MangaListsPage.tsx",
+      "lineCount": 777,
+      "consoleCount": 2,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetBoostTab.tsx",
+      "lineCount": 775,
+      "consoleCount": 2,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/profile/ProfileEditDialog.tsx",
+      "lineCount": 772,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/services/fansubSupporterAssetService.ts",
+      "lineCount": 771,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/MangaDetailPage.tsx",
+      "lineCount": 765,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/admin/sections/AdminCommentModerationSection.tsx",
+      "lineCount": 763,
+      "consoleCount": 2,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/admin/AdminRewardsSection.tsx",
+      "lineCount": 753,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/fansub/useFansubDetailController.ts",
+      "lineCount": 739,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/ReleaseSchedulePage.tsx",
+      "lineCount": 738,
+      "consoleCount": 6,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/data/nameTextEffects.ts",
+      "lineCount": 736,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/services/storageService/uploads.ts",
+      "lineCount": 736,
+      "consoleCount": 1,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/common/CommentThread/CommentThread.tsx",
+      "lineCount": 727,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/MangaReaderPage.tsx",
+      "lineCount": 726,
+      "consoleCount": 4,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/fansub/FansubSupporterWall.tsx",
+      "lineCount": 720,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/HomePage.tsx",
+      "lineCount": 719,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetChaptersTab.tsx",
+      "lineCount": 715,
+      "consoleCount": 1,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/store/avatar-frame-card/AvatarFrameStorePrototypeLab.tsx",
+      "lineCount": 708,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/admin/sections/community/AdminCommunityContentPanel.tsx",
+      "lineCount": 697,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/community/CommunityQuickCreate.tsx",
+      "lineCount": 691,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/common/UserRewardTasksPanel.tsx",
+      "lineCount": 689,
+      "consoleCount": 1,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/store/useStorePageController.ts",
+      "lineCount": 679,
+      "consoleCount": 1,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/admin/rewards/AdminQuestManagementCard.tsx",
+      "lineCount": 672,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/common/FansubHoverCard.tsx",
+      "lineCount": 670,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/communityDetail/CommunityDetailContent.tsx",
+      "lineCount": 670,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetOverviewPanels.tsx",
+      "lineCount": 670,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/services/fansubService/catalog.ts",
+      "lineCount": 665,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetSupporterAssetsTab.tsx",
+      "lineCount": 656,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/common/FansubModal/FansubModal.tsx",
+      "lineCount": 649,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/common/NameStylePickerPanel.tsx",
+      "lineCount": 632,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/home/HomeRightSidebar.tsx",
+      "lineCount": 631,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetNoticesTab.tsx",
+      "lineCount": 631,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetChapterCreditTab.tsx",
+      "lineCount": 627,
+      "consoleCount": 1,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/ExplorePage.tsx",
+      "lineCount": 618,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/common/UserHoverCard.tsx",
+      "lineCount": 614,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/services/adminSupporterAssetControlService.ts",
+      "lineCount": 608,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetPostsTab.tsx",
+      "lineCount": 607,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/services/storeService/mutations.ts",
+      "lineCount": 605,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    },
+    {
+      "relativePath": "src/components/admin/mangaManagement/useMangaDetailControl.ts",
+      "lineCount": 602,
+      "consoleCount": 0,
+      "isTestFile": false,
+      "isAppCode": true,
+      "isDocOrSql": false,
+      "severity": "uyari"
+    }
+  ],
+  "consoleHotspots": [
+    {
+      "relativePath": "tests/e2e/live-production-tester.spec.ts",
+      "lineCount": 232,
+      "consoleCount": 27,
+      "isTestFile": true,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/audit-clean-store-assets.mjs",
+      "lineCount": 450,
+      "consoleCount": 26,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/smoke-follow-rpc.mjs",
+      "lineCount": 168,
+      "consoleCount": 23,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/migrate-legacy-media-to-r2.mjs",
+      "lineCount": 494,
+      "consoleCount": 22,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/migrate-store-assets-to-r2.mjs",
+      "lineCount": 308,
+      "consoleCount": 22,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/seed-karanlik-koridor-showcase.mjs",
+      "lineCount": 302,
+      "consoleCount": 20,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/seed-store-assets.mjs",
+      "lineCount": 294,
+      "consoleCount": 18,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/audit-anon-exposure.mjs",
+      "lineCount": 108,
+      "consoleCount": 17,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/purge-junk-content.mjs",
+      "lineCount": 158,
+      "consoleCount": 16,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/seed-auth-users.mjs",
+      "lineCount": 215,
+      "consoleCount": 16,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/smoke-core-flows.mjs",
+      "lineCount": 453,
+      "consoleCount": 15,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/audit-idor-mutations.mjs",
+      "lineCount": 125,
+      "consoleCount": 14,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/smoke-storage-auth.mjs",
+      "lineCount": 279,
+      "consoleCount": 14,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "tests/e2e/comments-verification-test.spec.ts",
+      "lineCount": 264,
+      "consoleCount": 14,
+      "isTestFile": true,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "tests/e2e/comprehensive-backend-test.spec.ts",
+      "lineCount": 382,
+      "consoleCount": 14,
+      "isTestFile": true,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/audit-privilege-escalation.mjs",
+      "lineCount": 96,
+      "consoleCount": 11,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/reset-and-seed-manga-showcase.mjs",
+      "lineCount": 665,
+      "consoleCount": 11,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/seed-rich-catalog.mjs",
+      "lineCount": 204,
+      "consoleCount": 11,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/inspect-live-admin-browser.mjs",
+      "lineCount": 156,
+      "consoleCount": 10,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    },
+    {
+      "relativePath": "scripts/repo-health-audit.mjs",
+      "lineCount": 710,
+      "consoleCount": 9,
+      "isTestFile": false,
+      "isAppCode": false,
+      "isDocOrSql": false
+    }
+  ],
+  "appConsoleFiles": [
+    "src/pages/admin/useAdminCommunityHandlers.ts",
+    "src/components/admin/ops/AdminOpsSecurityAlertsPanel.tsx",
+    "src/components/fansub/FansubMembershipPanel.tsx",
+    "src/pages/ReleaseSchedulePage.tsx",
+    "src/services/adminService/mangaControl.mutations.feedback.ts",
+    "src/services/adminService/mangaControl.mutations.manga.ts",
+    "src/services/communityService/moderation.ts",
+    "src/services/mangaListService/lists.ts",
+    "src/services/redeemCodeService/adminUsage.ts",
+    "src/components/admin/AdminOpsSection.tsx",
+    "src/components/admin/ops/AdminOpsSecuritySection.tsx",
+    "src/services/communityService/comments.ts",
+    "src/services/communityService/posts.queries.public.ts",
+    "src/components/admin/CoinCodeManagementSection.tsx",
+    "src/components/admin/storeManagement/StorePackageManagementSection.tsx",
+    "src/pages/MangaReaderPage.tsx",
+    "src/services/adminMangaListService/queries.ts",
+    "src/services/adminService/mangaControl.detail.ts",
+    "src/services/badgeService/userBadges.ts",
+    "src/services/exploreConfigService.ts",
+    "src/services/wrappedService/summary.fetch.ts",
+    "src/components/admin/storeManagement/PremiumRuntimeConfigPanel.tsx",
+    "src/components/fansub/chapterCreate/useChapterCreateForm.ts",
+    "src/pages/admin/useAdminAnnouncementHandlers.ts",
+    "src/pages/admin/useAdminPageState.ts",
+    "src/pages/FansubYonetPage.tsx",
+    "src/services/adminService/fansubs.history.ts",
+    "src/services/adminService/fansubs.list.ts",
+    "src/services/adminService/mangaControl.mutations.chapter.ts",
+    "src/services/adminService/shared.queries.manga.ts",
+    "src/services/adminService/shared.queries.search.ts",
+    "src/services/announcementService/mutations.ts",
+    "src/services/badgeService/fansubBadges.ts",
+    "src/services/communityMentionService/search.ts",
+    "src/services/communityService/posts.queries.admin.ts",
+    "src/services/fansubMembershipService/memberships.ts",
+    "src/services/mangaListPageConfigService.ts",
+    "src/services/mangaListService/detail.ts",
+    "src/services/mangaMetaService.ts",
+    "src/services/mangaService/discovery.latest.ts",
+    "src/services/mangaService/discovery.list.ts",
+    "src/services/mangaService/moderation.pending.ts",
+    "src/services/redeemCodeService/adminCodes.ts",
+    "src/components/admin/AdminUsersSection.tsx",
+    "src/components/admin/sections/AdminBoostSection.tsx",
+    "src/components/admin/sections/AdminCommentModerationSection.tsx",
+    "src/components/fansub/FansubIdentityTagManagementPanel.tsx",
+    "src/components/fansub/mangaCreate/useMangaCreateForm.ts",
+    "src/pages/admin/useAdminPendingHandlers.ts",
+    "src/pages/fansubYonet/FansubYonetBoostTab.tsx",
+    "src/pages/MangaListsPage.tsx",
+    "src/pages/OnboardingPage.tsx",
+    "src/pages/WrappedPage.tsx",
+    "src/services/adminOpsService/audit.ts",
+    "src/services/adminOpsService/featureFlags.ts",
+    "src/services/adminService/fansubs.assets.ts",
+    "src/services/adminService/shared.audit.ts",
+    "src/services/announcementService/queries.ts",
+    "src/services/badgeService/catalog.ts",
+    "src/services/commentService/queries.ts",
+    "src/services/communityMentionService/shared.ts",
+    "src/services/fansubManageService/manga.ts",
+    "src/services/mangaService/discovery.fansub.ts",
+    "src/services/premiumPackageAdminService/packages.ts",
+    "src/services/storageService/shared.ts",
+    "src/services/storeHomeConfigService/admin.ts",
+    "src/components/common/FansubRequestModal/FansubRequestModal.tsx",
+    "src/components/common/QuestModal/QuestModal.tsx",
+    "src/components/common/ReportModal/ReportModal.tsx",
+    "src/components/common/UserRewardTasksPanel.tsx",
+    "src/hooks/useInlineAutocomplete.ts",
+    "src/pages/admin/useAdminReportHandlers.ts",
+    "src/pages/fansub/FansubReleaseSchedulePanel.tsx",
+    "src/pages/FansubTierPage.tsx",
+    "src/pages/fansubYonet/FansubYonetChapterCreditTab.tsx",
+    "src/pages/fansubYonet/FansubYonetChaptersTab.tsx",
+    "src/pages/profile/ProfileCompletedTasksPanel.tsx",
+    "src/pages/profile/profileDataLoaders.ts",
+    "src/pages/store/useStorePageController.ts",
+    "src/services/adminCommentModerationService/mutations.ts",
+    "src/services/adminService/mangaControl.list.ts",
+    "src/services/adminService/settingsUsers.ts",
+    "src/services/adminService/shared.queries.settings.ts",
+    "src/services/communityService/posts.popularTags.ts",
+    "src/services/communityService/posts.similarity.ts",
+    "src/services/followFeedService/shared.ts",
+    "src/services/globalSearchService.ts",
+    "src/services/homeService/shared.chapters.ts",
+    "src/services/imageOptimizationService.ts",
+    "src/services/mangaListService/shared.comments.ts",
+    "src/services/mangaService/creation.ts",
+    "src/services/premiumPackagePublicService.ts",
+    "src/services/releaseScheduleService.ts",
+    "src/services/reportService/actions.ts",
+    "src/services/storageService/uploads.ts",
+    "src/services/storeAnalyticsService.ts",
+    "src/services/storeHomeConfigService/public.ts",
+    "src/services/storeProfileEffectService/read.ts",
+    "src/services/storeProfileEffectService/write.ts"
+  ],
+  "appConsoleInventory": [
+    {
+      "relativePath": "src/pages/admin/useAdminCommunityHandlers.ts",
+      "consoleCount": 9
+    },
+    {
+      "relativePath": "src/components/admin/ops/AdminOpsSecurityAlertsPanel.tsx",
+      "consoleCount": 7
+    },
+    {
+      "relativePath": "src/components/fansub/FansubMembershipPanel.tsx",
+      "consoleCount": 7
+    },
+    {
+      "relativePath": "src/pages/ReleaseSchedulePage.tsx",
+      "consoleCount": 6
+    },
+    {
+      "relativePath": "src/services/adminService/mangaControl.mutations.feedback.ts",
+      "consoleCount": 6
+    },
+    {
+      "relativePath": "src/services/adminService/mangaControl.mutations.manga.ts",
+      "consoleCount": 6
+    },
+    {
+      "relativePath": "src/services/communityService/moderation.ts",
+      "consoleCount": 6
+    },
+    {
+      "relativePath": "src/services/mangaListService/lists.ts",
+      "consoleCount": 6
+    },
+    {
+      "relativePath": "src/services/redeemCodeService/adminUsage.ts",
+      "consoleCount": 6
+    },
+    {
+      "relativePath": "src/components/admin/AdminOpsSection.tsx",
+      "consoleCount": 5
+    },
+    {
+      "relativePath": "src/components/admin/ops/AdminOpsSecuritySection.tsx",
+      "consoleCount": 5
+    },
+    {
+      "relativePath": "src/services/communityService/comments.ts",
+      "consoleCount": 5
+    },
+    {
+      "relativePath": "src/services/communityService/posts.queries.public.ts",
+      "consoleCount": 5
+    },
+    {
+      "relativePath": "src/components/admin/CoinCodeManagementSection.tsx",
+      "consoleCount": 4
+    },
+    {
+      "relativePath": "src/components/admin/storeManagement/StorePackageManagementSection.tsx",
+      "consoleCount": 4
+    },
+    {
+      "relativePath": "src/pages/MangaReaderPage.tsx",
+      "consoleCount": 4
+    },
+    {
+      "relativePath": "src/services/adminMangaListService/queries.ts",
+      "consoleCount": 4
+    },
+    {
+      "relativePath": "src/services/adminService/mangaControl.detail.ts",
+      "consoleCount": 4
+    },
+    {
+      "relativePath": "src/services/badgeService/userBadges.ts",
+      "consoleCount": 4
+    },
+    {
+      "relativePath": "src/services/exploreConfigService.ts",
+      "consoleCount": 4
+    },
+    {
+      "relativePath": "src/services/wrappedService/summary.fetch.ts",
+      "consoleCount": 4
+    },
+    {
+      "relativePath": "src/components/admin/storeManagement/PremiumRuntimeConfigPanel.tsx",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/components/fansub/chapterCreate/useChapterCreateForm.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/pages/admin/useAdminAnnouncementHandlers.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/pages/admin/useAdminPageState.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/pages/FansubYonetPage.tsx",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/adminService/fansubs.history.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/adminService/fansubs.list.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/adminService/mangaControl.mutations.chapter.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/adminService/shared.queries.manga.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/adminService/shared.queries.search.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/announcementService/mutations.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/badgeService/fansubBadges.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/communityMentionService/search.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/communityService/posts.queries.admin.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/fansubMembershipService/memberships.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/mangaListPageConfigService.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/mangaListService/detail.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/mangaMetaService.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/mangaService/discovery.latest.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/mangaService/discovery.list.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/mangaService/moderation.pending.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/services/redeemCodeService/adminCodes.ts",
+      "consoleCount": 3
+    },
+    {
+      "relativePath": "src/components/admin/AdminUsersSection.tsx",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/components/admin/sections/AdminBoostSection.tsx",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/components/admin/sections/AdminCommentModerationSection.tsx",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/components/fansub/FansubIdentityTagManagementPanel.tsx",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/components/fansub/mangaCreate/useMangaCreateForm.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/pages/admin/useAdminPendingHandlers.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetBoostTab.tsx",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/pages/MangaListsPage.tsx",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/pages/OnboardingPage.tsx",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/pages/WrappedPage.tsx",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/services/adminOpsService/audit.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/services/adminOpsService/featureFlags.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/services/adminService/fansubs.assets.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/services/adminService/shared.audit.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/services/announcementService/queries.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/services/badgeService/catalog.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/services/commentService/queries.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/services/communityMentionService/shared.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/services/fansubManageService/manga.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/services/mangaService/discovery.fansub.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/services/premiumPackageAdminService/packages.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/services/storageService/shared.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/services/storeHomeConfigService/admin.ts",
+      "consoleCount": 2
+    },
+    {
+      "relativePath": "src/components/common/FansubRequestModal/FansubRequestModal.tsx",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/components/common/QuestModal/QuestModal.tsx",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/components/common/ReportModal/ReportModal.tsx",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/components/common/UserRewardTasksPanel.tsx",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/hooks/useInlineAutocomplete.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/pages/admin/useAdminReportHandlers.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/pages/fansub/FansubReleaseSchedulePanel.tsx",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/pages/FansubTierPage.tsx",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetChapterCreditTab.tsx",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetChaptersTab.tsx",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/pages/profile/ProfileCompletedTasksPanel.tsx",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/pages/profile/profileDataLoaders.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/pages/store/useStorePageController.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/adminCommentModerationService/mutations.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/adminService/mangaControl.list.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/adminService/settingsUsers.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/adminService/shared.queries.settings.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/communityService/posts.popularTags.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/communityService/posts.similarity.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/followFeedService/shared.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/globalSearchService.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/homeService/shared.chapters.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/imageOptimizationService.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/mangaListService/shared.comments.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/mangaService/creation.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/premiumPackagePublicService.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/releaseScheduleService.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/reportService/actions.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/storageService/uploads.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/storeAnalyticsService.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/storeHomeConfigService/public.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/storeProfileEffectService/read.ts",
+      "consoleCount": 1
+    },
+    {
+      "relativePath": "src/services/storeProfileEffectService/write.ts",
+      "consoleCount": 1
+    }
+  ],
+  "structuredLoggerFiles": [
+    "src/components/admin/AdminRewardsSection.tsx",
+    "src/components/admin/fansubs/useFansubManagementActions.ts",
+    "src/components/admin/fansubs/useFansubManagementState.ts",
+    "src/components/admin/mangaManagement/mangaDetailControlErrors.ts",
+    "src/components/admin/rewards/AdminEventManagementCard.tsx",
+    "src/components/admin/rewards/useAdminReadingStreakRewards.ts",
+    "src/components/common/AppErrorBoundary.tsx",
+    "src/components/common/EventQuestsPanel.tsx",
+    "src/components/common/FansubHoverCard.tsx",
+    "src/components/common/FansubModal/FansubModal.tsx",
+    "src/components/common/hoverFollowActions.ts",
+    "src/components/common/RequireFansubRoleRoute.tsx",
+    "src/components/common/UserHoverCard.tsx",
+    "src/components/common/userHoverModerationActions.ts",
+    "src/components/community/CommunitySidebar.tsx",
+    "src/components/layout/account/useAccountSecurityPanelState.ts",
+    "src/components/layout/appSidebar/useAppSidebarData.ts",
+    "src/contexts/AuthContext.tsx",
+    "src/hooks/useResolvedAdminAccess.ts",
+    "src/pages/community/useCommunityAnnouncements.ts",
+    "src/pages/community/useCommunityPageController.ts",
+    "src/pages/communityDetail/useCommunityDetailController.ts",
+    "src/pages/fansub/fansubDetailErrors.ts",
+    "src/pages/FansubsPage.tsx",
+    "src/pages/HomePage.tsx",
+    "src/pages/MangaDetailPage.tsx",
+    "src/pages/MangaListDetailPage.tsx",
+    "src/pages/mangaReader/useMangaReaderData.ts",
+    "src/pages/onboarding/OnboardingFansubsStep.tsx",
+    "src/pages/profile/profilePageErrors.ts",
+    "src/pages/profile/useProfileEditMutations.ts",
+    "src/pages/store/useStoreGiftAndPackageActions.ts",
+    "src/services/adminBoostControlService.ts",
+    "src/services/adminMangaListService/mutations.ts",
+    "src/services/adminSecurityService/alerts.ts",
+    "src/services/adminSecurityService/events.ts",
+    "src/services/adminService/fansubs.mutations.ts",
+    "src/services/adminService/shared.dashboard.ts",
+    "src/services/adminSupporterAssetControlService.ts",
+    "src/services/adminUserService/queries.ts",
+    "src/services/authService/credentials.ts",
+    "src/services/authService/economy.ts",
+    "src/services/authService/runtime.ts",
+    "src/services/authService/session.ts",
+    "src/services/authService/shared.ts",
+    "src/services/badgeService/purchase.ts",
+    "src/services/commentService/mutations.ts",
+    "src/services/commentService/shared.ts",
+    "src/services/communityExpressionPickerService.ts",
+    "src/services/communityGifProviderService.ts",
+    "src/services/communityService/posts.mutations.ts",
+    "src/services/communityService/posts.queries.interactions.ts",
+    "src/services/communityService/posts.rich.ts",
+    "src/services/communityService/shared.auth.ts",
+    "src/services/fansubBoostService.ts",
+    "src/services/fansubChapterCreditService.ts",
+    "src/services/fansubIdentityTagService.ts",
+    "src/services/fansubLiteDirectory.ts",
+    "src/services/fansubManageService/chapters.ts",
+    "src/services/fansubManageService/communityDesk.ts",
+    "src/services/fansubManageService/overviewCockpit.ts",
+    "src/services/fansubManageService/posts.ts",
+    "src/services/fansubManageService/reportedContent.ts",
+    "src/services/fansubManageService/stats.ts",
+    "src/services/fansubMembershipService/invites.ts",
+    "src/services/fansubMembershipService/joinRequests.ts",
+    "src/services/fansubMembershipService/management.ts",
+    "src/services/fansubNoticeService.ts",
+    "src/services/fansubService/catalog.ts",
+    "src/services/fansubService/economy.ts",
+    "src/services/fansubService/management.ts",
+    "src/services/fansubService/requests.ts",
+    "src/services/fansubSupporterAssetService.ts",
+    "src/services/featureFlagService.ts",
+    "src/services/homepageConfigService.ts",
+    "src/services/homeService/feed.ts",
+    "src/services/hoverCardService/fansubHover.resolve.data.ts",
+    "src/services/hoverCardService/fansubHover.resolve.row.ts",
+    "src/services/hoverCardService/fansubHover.resolve.ts",
+    "src/services/hoverCardService/mangaHover.ts",
+    "src/services/hoverCardService/userHover.resolve.ts",
+    "src/services/legalRequestService/actions.ts",
+    "src/services/legalRequestService/moderation.ts",
+    "src/services/logger.ts",
+    "src/services/mangaListService/comments.ts",
+    "src/services/mangaListService/mutations.ts",
+    "src/services/mangaListService/shared.auth.ts",
+    "src/services/mangaLiteDirectory.ts",
+    "src/services/mangaService/details.ts",
+    "src/services/mangaService/discovery.catalog.ts",
+    "src/services/notificationService/notifications.ts",
+    "src/services/notificationService/preferences.ts",
+    "src/services/premiumPackageAdminService/options.ts",
+    "src/services/publicUserDirectoryLite.ts",
+    "src/services/pushNotificationService.ts",
+    "src/services/recommendationService.ts",
+    "src/services/reportService/moderation.ts",
+    "src/services/rewardService/fansubRewards.ts",
+    "src/services/siteSettingsPublicSnapshot.ts",
+    "src/services/storeAdminService/discounts.ts",
+    "src/services/storeAdminService/operations.ts",
+    "src/services/storeAdminService/salesDetails.queries.item.ts",
+    "src/services/storeAdminService/salesDetails.queries.lookups.ts",
+    "src/services/storeAdminService/salesSummary.ts",
+    "src/services/storeItemLiteDirectory.ts",
+    "src/services/storePackageService/catalog.ts",
+    "src/services/storePackageService/mutations.ts",
+    "src/services/storeService/catalog.ts",
+    "src/services/storeService/mutations.ts",
+    "src/services/storeUserActivityService.ts",
+    "src/services/userFacingError.ts",
+    "src/services/userService/activity.ts",
+    "src/services/userService/blocks.ts",
+    "src/services/userService/privacy.ts",
+    "src/services/userService/profiles.ts",
+    "src/services/userService/selfIdentity.ts"
+  ],
+  "featureFlags": [
+    {
+      "key": "home.follow_feed",
+      "owner": "urun-akisi",
+      "amac": "Ana sayfada takip feedi yayini kontrol eder.",
+      "cleanupNotu": "Feed tum kullanicilara acildiginda kaldirilacak.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 1,
+      "usageFiles": [
+        "src/pages/HomePage.tsx"
+      ]
+    },
+    {
+      "key": "home.recommendations",
+      "owner": "urun-akisi",
+      "amac": "Ana sayfadaki \"Senin icin\" rayini ve kisisel oneri kaynagini acar.",
+      "cleanupNotu": "Oneri motoru kalici olursa varsayilani acik yap; sezgisel fallback korunur.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 1,
+      "usageFiles": [
+        "src/services/recommendationService.ts"
+      ]
+    },
+    {
+      "key": "reader.comments",
+      "owner": "okuyucu-deneyimi",
+      "amac": "Bolum okuyucusunda yorum yuzeyini acar.",
+      "cleanupNotu": "Yorum sistemi kalici olursa registry kaydi arsive cekilecek.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 4,
+      "usageFiles": [
+        "src/pages/MangaDetailPage.tsx",
+        "src/pages/MangaReaderPage.tsx",
+        "src/services/commentService/mutations.ts",
+        "src/services/commentService/shared.ts"
+      ]
+    },
+    {
+      "key": "notifications.center",
+      "owner": "bildirimler",
+      "amac": "Bildirim merkezi deneyimini kontrol eder.",
+      "cleanupNotu": "Eski bildirim girisleri tamamen kalktiginda sadeleştir.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 1,
+      "usageFiles": [
+        "src/components/layout/appSidebar/useAppSidebarData.ts"
+      ]
+    },
+    {
+      "key": "notifications.web_push",
+      "owner": "bildirimler",
+      "amac": "Tarayici web push aboneligi (opt-in UI) ve gonderimini acar.",
+      "cleanupNotu": "Push kalici olursa varsayilani acik yap; opt-in UI korunur.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 2,
+      "usageFiles": [
+        "src/components/common/PushAdoptionNudge.tsx",
+        "src/services/pushNotificationService.ts"
+      ]
+    },
+    {
+      "key": "economy.coin_codes",
+      "owner": "ekonomi",
+      "amac": "Coin kodu kullanma akislarini acar.",
+      "cleanupNotu": "Kod kampanyasi kalici olursa dogrudan urunlestir.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 4,
+      "usageFiles": [
+        "src/components/common/RedeemCodeActivationPanel.tsx",
+        "src/components/layout/appSidebar/useAppSidebarData.ts",
+        "src/services/fansubService/economy.ts",
+        "src/services/redeemCodeService/redeem.ts"
+      ]
+    },
+    {
+      "key": "economy.fansub_wallet_purchase",
+      "owner": "ekonomi",
+      "amac": "Fansub cuzdan satin alma akislarini acar.",
+      "cleanupNotu": "Cuzdan satin alma stabil oldugunda kaldirilacak.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 3,
+      "usageFiles": [
+        "src/pages/store/useStorePageController.ts",
+        "src/services/fansubService/economy.ts",
+        "src/services/storeService/mutations.ts"
+      ]
+    },
+    {
+      "key": "economy.fansub_donations",
+      "owner": "ekonomi",
+      "amac": "Fansub bagis akislarini kontrol eder.",
+      "cleanupNotu": "Bagis akisi default oldugunda flag kaldirilacak.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 3,
+      "usageFiles": [
+        "src/components/admin/sections/adminBoost/adminBoostSection.shared.tsx",
+        "src/components/admin/sections/AdminBoostSection.tsx",
+        "src/services/fansubService/economy.ts"
+      ]
+    },
+    {
+      "key": "boost.system",
+      "owner": "fansub-takviye",
+      "amac": "Fansub boost planlari, supporter state ve tier capability akislarini acar.",
+      "cleanupNotu": "Takviye sistemi genel kullanima acildiginda rollout flagi sadeleştirilecek.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 5,
+      "usageFiles": [
+        "src/components/admin/sections/adminBoost/adminBoostSection.shared.tsx",
+        "src/components/admin/sections/AdminBoostSection.tsx",
+        "src/pages/fansub/useFansubDetailController.ts",
+        "src/pages/FansubYonetPage.tsx",
+        "src/pages/MangaReaderPage.tsx"
+      ]
+    },
+    {
+      "key": "boost.fansub_manage_tab",
+      "owner": "fansub-takviye",
+      "amac": "Fansub yonetim panelindeki gecici Takviye sekmesini gorunur tutar.",
+      "cleanupNotu": "Gercek site-admin boost merkezi tamamlandiginda bu tarihsel yuzey kaldirilacak.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 2,
+      "usageFiles": [
+        "src/components/admin/sections/adminBoost/adminBoostSection.shared.tsx",
+        "src/pages/FansubYonetPage.tsx"
+      ]
+    },
+    {
+      "key": "economy.store_purchase",
+      "owner": "magaza",
+      "amac": "Magaza satin alma akislarini kontrol eder.",
+      "cleanupNotu": "Magaza satin alma kalici oldugunda cleanup backloguna alinacak.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 4,
+      "usageFiles": [
+        "src/pages/store/useStorePageController.ts",
+        "src/services/badgeService/purchase.ts",
+        "src/services/fansubService/economy.ts",
+        "src/services/storeService/mutations.ts"
+      ]
+    },
+    {
+      "key": "community.posting",
+      "owner": "topluluk",
+      "amac": "Toplulukta gonderi olusturma ve cevap akisini acar.",
+      "cleanupNotu": "Topluluk akisi tam rollout sonrasi sadeleştirilecek.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 6,
+      "usageFiles": [
+        "src/pages/community/useCommunityPageController.ts",
+        "src/pages/communityDetail/communityDetailController.shared.ts",
+        "src/pages/communityDetail/useCommunityDetailController.ts",
+        "src/services/communityService/comments.ts",
+        "src/services/communityService/posts.mutations.ts",
+        "src/services/fansubManageService/posts.ts"
+      ]
+    },
+    {
+      "key": "community.rich_detail",
+      "owner": "topluluk",
+      "amac": "Topluluk detay sayfasindaki zengin article, anket ve baglam modullerini acar.",
+      "cleanupNotu": "Detay yenilemesi kalici oldugunda tek route davranisina gomulecek.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 2,
+      "usageFiles": [
+        "src/pages/communityDetail/communityDetailController.shared.ts",
+        "src/pages/communityDetail/useCommunityDetailController.ts"
+      ]
+    },
+    {
+      "key": "community.polls",
+      "owner": "topluluk",
+      "amac": "Topluluk postlarinda tek secimli anket olusturma ve oy verme akislarini acar.",
+      "cleanupNotu": "Anket altyapisi default oldugunda opsiyonel rollout flag olarak sadeleştir.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 5,
+      "usageFiles": [
+        "src/pages/community/useCommunityPageController.ts",
+        "src/pages/communityDetail/communityDetailController.shared.ts",
+        "src/pages/communityDetail/useCommunityDetailController.ts",
+        "src/services/communityService/posts.mutations.ts",
+        "src/services/fansubManageService/posts.ts"
+      ]
+    },
+    {
+      "key": "community.gifs",
+      "owner": "topluluk",
+      "amac": "Provider tabanli GIF arama, secme ve detay render akislarini acar.",
+      "cleanupNotu": "GIF provider karari kalici oldugunda rollout bayragi kaldirilabilir.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 5,
+      "usageFiles": [
+        "src/pages/community/useCommunityPageController.ts",
+        "src/pages/communityDetail/communityDetailController.shared.ts",
+        "src/pages/communityDetail/useCommunityDetailController.ts",
+        "src/services/communityService/posts.mutations.ts",
+        "src/services/fansubManageService/posts.ts"
+      ]
+    },
+    {
+      "key": "community.emoji_reactions",
+      "owner": "topluluk",
+      "amac": "Topluluk post ve yorum composer yuzeylerindeki emoji yardimlarini ve post reaction railini acar.",
+      "cleanupNotu": "Reaction rail tum kullanicilara acildiginda sadece acil kapama amacli tutulur.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 3,
+      "usageFiles": [
+        "src/pages/community/useCommunityPageController.ts",
+        "src/pages/communityDetail/communityDetailController.shared.ts",
+        "src/pages/communityDetail/useCommunityDetailController.ts"
+      ]
+    },
+    {
+      "key": "moderation.reports",
+      "owner": "moderasyon",
+      "amac": "Raporlama yuzeylerini ve aksiyonlarini kontrol eder.",
+      "cleanupNotu": "Yeni moderasyon merkezi tamamlandiginda tek kapidan yonetilecek.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 8,
+      "usageFiles": [
+        "src/components/common/userHoverModerationActions.ts",
+        "src/pages/admin/useAdminPageState.ts",
+        "src/pages/communityDetail/communityDetailController.shared.ts",
+        "src/pages/communityDetail/useCommunityDetailController.ts",
+        "src/pages/MangaDetailPage.tsx",
+        "src/pages/MangaListDetailPage.tsx",
+        "src/pages/MangaReaderPage.tsx",
+        "src/services/reportService/actions.ts"
+      ]
+    },
+    {
+      "key": "rewards.user_tasks",
+      "owner": "odul-sistemi",
+      "amac": "Kullanici gorevleri ve odul akislarini acar.",
+      "cleanupNotu": "Gorev sistemi default hale geldiginde registry kaydi kaldirilacak.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 3,
+      "usageFiles": [
+        "src/components/layout/appSidebar/useAppSidebarData.ts",
+        "src/services/rewardService/quests.ts",
+        "src/services/rewardService/userTasks.ts"
+      ]
+    },
+    {
+      "key": "rewards.fansub_tasks",
+      "owner": "odul-sistemi",
+      "amac": "Fansub gorevleri ve ilerleme akislarini acar.",
+      "cleanupNotu": "Fansub gorevleri genel kullanima acildiginda kaldirilacak.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 2,
+      "usageFiles": [
+        "src/services/rewardService/fansubTasks.ts",
+        "src/services/rewardService/quests.ts"
+      ]
+    },
+    {
+      "key": "admin.operations_center",
+      "owner": "admin-paneli",
+      "amac": "Admin operasyon merkezi rotasini ve yuzeylerini kontrol eder.",
+      "cleanupNotu": "Yeni admin navigasyon kalici oldugunda kaldirilacak.",
+      "sonKullanmaTarihi": null,
+      "usageCount": 1,
+      "usageFiles": [
+        "src/pages/admin/useAdminPageState.ts"
+      ]
+    }
+  ],
+  "featureFlagIssues": [],
+  "criticalAreas": [
+    {
+      "key": "auth-session",
+      "label": "Auth ve session",
+      "files": [
+        "src/services/authService/shared.ts",
+        "src/contexts/AuthContext.tsx"
+      ],
+      "relatedTests": [
+        "auth",
+        "session"
+      ],
+      "matchedTests": [
+        "tests/contracts/auth-runtime-cost-hardening-contract.test.mjs",
+        "tests/contracts/auth-session-guard.test.mjs",
+        "tests/contracts/auth-shared-critical-exports.test.mjs",
+        "tests/contracts/supabase-auth-required-rpc-anon-cleanup-contract.test.mjs",
+        "tests/contracts/supabase-authenticated-definer-private-wrappers-contract.test.mjs",
+        "tests/contracts/supabase-authenticated-policy-helper-private-cleanup-contract.test.mjs",
+        "tests/contracts/supabase-live-release-schedule-and-session-claim-hotfix-contract.test.mjs",
+        "tests/contracts/supabase-storage-session-helper-execute-grants-contract.test.mjs"
+      ],
+      "covered": true
+    },
+    {
+      "key": "fansub-hover-detail",
+      "label": "Fansub hover/detail",
+      "files": [
+        "src/components/common/FansubHoverCard.tsx",
+        "src/pages/FansubDetailPage.tsx"
+      ],
+      "relatedTests": [
+        "fansub"
+      ],
+      "matchedTests": [
+        "tests/contracts/fansub-audit-trigger-coverage-contract.test.mjs",
+        "tests/contracts/fansub-boost-background-security-contract.test.mjs",
+        "tests/contracts/fansub-boost-capability-governance-matrix-contract.test.mjs",
+        "tests/contracts/fansub-boost-contract.test.mjs",
+        "tests/contracts/fansub-boost-downgrade-governance-contract.test.mjs",
+        "tests/contracts/fansub-boost-preview-hardening-contract.test.mjs",
+        "tests/contracts/fansub-boost-public-bundle-contract.test.mjs",
+        "tests/contracts/fansub-boost-purchase-hardening-contract.test.mjs",
+        "tests/contracts/fansub-economy-rewards-contract.test.mjs",
+        "tests/contracts/fansub-manage-audit-contract.test.mjs",
+        "tests/contracts/fansub-request-flow-v2-contract.test.mjs",
+        "tests/contracts/fansub-requests-contract.test.mjs",
+        "tests/contracts/fansub-schema-compat.test.mjs",
+        "tests/contracts/fansub-showcase-and-supporter-state-contract.test.mjs",
+        "tests/contracts/fansubRewards-contract.test.mjs",
+        "tests/contracts/fansubs-page-redesign-contract.test.mjs",
+        "tests/contracts/fansubyonetoverviewtab-contract.test.mjs"
+      ],
+      "covered": true
+    },
+    {
+      "key": "avatar-hover-rollout",
+      "label": "Avatar poster-hover rollout",
+      "files": [
+        "src/components/common/AvatarFrame/AvatarFrame.tsx",
+        "src/components/common/CommentThread/CommentThread.tsx"
+      ],
+      "relatedTests": [
+        "avatar",
+        "hover",
+        "frame"
+      ],
+      "matchedTests": [
+        "tests/contracts/avatar-frame-rollout.test.mjs",
+        "tests/contracts/hover-resolver-critical-exports.test.mjs",
+        "tests/contracts/local-avatar-upload-dev-proxy-contract.test.mjs",
+        "tests/contracts/manga-hover-redesign-contract.test.mjs",
+        "tests/contracts/supabase-avatar-public-user-path-case-fallback-contract.test.mjs",
+        "tests/contracts/supabase-avatar-storage-owner-fallback-contract.test.mjs",
+        "tests/contracts/supabase-avatar-storage-user-path-policy-contract.test.mjs",
+        "tests/contracts/supabase-avatar-upload-policy-case-short-circuit-contract.test.mjs",
+        "tests/contracts/userhover-resolve-contract.test.mjs",
+        "tests/contracts/userhovercardsurface-contract.test.mjs"
+      ],
+      "covered": true
+    }
+  ],
+  "criticalExportCoverage": {
+    "files": [
+      "src/services/authService/shared.ts",
+      "src/services/requestContext.ts",
+      "src/services/userFacingError.ts",
+      "src/pages/profile/profilePageErrors.ts",
+      "src/pages/profile/useProfileEditMutations.ts",
+      "src/pages/fansub/fansubDetailErrors.ts",
+      "src/services/hoverCardService/userHover.resolve.ts",
+      "src/services/hoverCardService/fansubHover.resolve.ts",
+      "src/services/hoverCardService/fansubHover.resolve.data.ts",
+      "src/services/hoverCardService/fansubHover.resolve.row.ts",
+      "src/services/hoverCardService/mangaHover.ts"
+    ],
+    "testedExports": [
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "activateSingleSession"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "buildMfaRequiredError"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "ensureAuthenticatedClientState"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "ensureExpectedSession"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "ensureUserProfile"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "getMfaStateSummary"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "getPendingMfaChallenge"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "isMfaRequiredError"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "isSessionReplacedError"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "normalizeUsernameInput"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "readSessionIdFromAccessToken"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "releaseExpiredOwnBanIfNeeded"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "settleAuthenticatedSession"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "syncSessionContext"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "toFriendlyAuthError"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "validateUsernameInput"
+      },
+      {
+        "relativePath": "src/services/requestContext.ts",
+        "exportName": "createRequestContext"
+      },
+      {
+        "relativePath": "src/services/requestContext.ts",
+        "exportName": "toRequestContextLogContext"
+      },
+      {
+        "relativePath": "src/services/userFacingError.ts",
+        "exportName": "buildUserFacingErrorPayload"
+      },
+      {
+        "relativePath": "src/services/userFacingError.ts",
+        "exportName": "reportUserFacingError"
+      },
+      {
+        "relativePath": "src/services/userFacingError.ts",
+        "exportName": "toUserFacingErrorMessage"
+      },
+      {
+        "relativePath": "src/pages/profile/profilePageErrors.ts",
+        "exportName": "reportProfilePageError"
+      },
+      {
+        "relativePath": "src/pages/profile/profilePageErrors.ts",
+        "exportName": "warnProfilePageIssue"
+      },
+      {
+        "relativePath": "src/pages/profile/useProfileEditMutations.ts",
+        "exportName": "useProfileEditMutations"
+      },
+      {
+        "relativePath": "src/pages/fansub/fansubDetailErrors.ts",
+        "exportName": "reportFansubDetailError"
+      },
+      {
+        "relativePath": "src/pages/fansub/fansubDetailErrors.ts",
+        "exportName": "warnFansubDetailIssue"
+      },
+      {
+        "relativePath": "src/services/hoverCardService/userHover.resolve.ts",
+        "exportName": "runUserHoverNetworkResolve"
+      },
+      {
+        "relativePath": "src/services/hoverCardService/fansubHover.resolve.ts",
+        "exportName": "runFansubHoverNetworkResolve"
+      },
+      {
+        "relativePath": "src/services/hoverCardService/fansubHover.resolve.data.ts",
+        "exportName": "fetchResolvedFansubHoverData"
+      },
+      {
+        "relativePath": "src/services/hoverCardService/fansubHover.resolve.row.ts",
+        "exportName": "fetchFansubRow"
+      },
+      {
+        "relativePath": "src/services/hoverCardService/mangaHover.ts",
+        "exportName": "resolveMangaHoverData"
+      }
+    ],
+    "untestedExports": [
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "clearCurrentAuthSessionSnapshotCache"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "clearMfaStateSummaryCache"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "getCurrentAccessToken"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "getCurrentAccountSecurityAuthSnapshot"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "getCurrentAuthenticatedEmail"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "getCurrentAuthSessionId"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "getCurrentAuthSessionSnapshot"
+      },
+      {
+        "relativePath": "src/services/authService/shared.ts",
+        "exportName": "getCurrentAuthUserId"
+      }
+    ]
+  },
+  "observabilityHotspots": [
+    {
+      "relativePath": "src/pages/admin/useAdminCommunityHandlers.ts",
+      "consoleCount": 9,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 38
+    },
+    {
+      "relativePath": "src/components/admin/ops/AdminOpsSecurityAlertsPanel.tsx",
+      "consoleCount": 7,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 30
+    },
+    {
+      "relativePath": "src/components/fansub/FansubMembershipPanel.tsx",
+      "consoleCount": 7,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 30
+    },
+    {
+      "relativePath": "src/pages/ReleaseSchedulePage.tsx",
+      "consoleCount": 6,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 26
+    },
+    {
+      "relativePath": "src/services/adminService/mangaControl.mutations.feedback.ts",
+      "consoleCount": 6,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 26
+    },
+    {
+      "relativePath": "src/services/adminService/mangaControl.mutations.manga.ts",
+      "consoleCount": 6,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 26
+    },
+    {
+      "relativePath": "src/services/communityService/moderation.ts",
+      "consoleCount": 6,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 26
+    },
+    {
+      "relativePath": "src/services/mangaListService/lists.ts",
+      "consoleCount": 6,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 26
+    },
+    {
+      "relativePath": "src/services/redeemCodeService/adminUsage.ts",
+      "consoleCount": 6,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 26
+    },
+    {
+      "relativePath": "src/components/admin/AdminOpsSection.tsx",
+      "consoleCount": 5,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 22
+    },
+    {
+      "relativePath": "src/components/admin/ops/AdminOpsSecuritySection.tsx",
+      "consoleCount": 5,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 22
+    },
+    {
+      "relativePath": "src/services/communityService/comments.ts",
+      "consoleCount": 5,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 22
+    },
+    {
+      "relativePath": "src/services/communityService/posts.queries.public.ts",
+      "consoleCount": 5,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 22
+    },
+    {
+      "relativePath": "src/components/admin/CoinCodeManagementSection.tsx",
+      "consoleCount": 4,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 18
+    },
+    {
+      "relativePath": "src/components/admin/storeManagement/StorePackageManagementSection.tsx",
+      "consoleCount": 4,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 18
+    },
+    {
+      "relativePath": "src/pages/MangaReaderPage.tsx",
+      "consoleCount": 4,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 18
+    },
+    {
+      "relativePath": "src/services/adminMangaListService/queries.ts",
+      "consoleCount": 4,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 18
+    },
+    {
+      "relativePath": "src/services/adminService/mangaControl.detail.ts",
+      "consoleCount": 4,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 18
+    },
+    {
+      "relativePath": "src/services/badgeService/userBadges.ts",
+      "consoleCount": 4,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 18
+    },
+    {
+      "relativePath": "src/services/exploreConfigService.ts",
+      "consoleCount": 4,
+      "hasLogger": false,
+      "hasUserFacingError": false,
+      "hasRequestContext": false,
+      "hasSuspiciousUiCatch": false,
+      "score": 18
+    }
+  ],
+  "loggerCoverage": {
+    "criticalFiles": [
+      "src/services/authService/shared.ts",
+      "src/contexts/AuthContext.tsx",
+      "src/pages/profile/profilePageErrors.ts",
+      "src/pages/profile/useProfileEditMutations.ts",
+      "src/pages/fansub/fansubDetailErrors.ts",
+      "src/services/hoverCardService/userHover.resolve.ts",
+      "src/services/hoverCardService/fansubHover.resolve.ts",
+      "src/services/hoverCardService/fansubHover.resolve.data.ts",
+      "src/services/hoverCardService/fansubHover.resolve.row.ts",
+      "src/services/hoverCardService/mangaHover.ts"
+    ],
+    "criticalFilesWithCoverage": [
+      "src/services/authService/shared.ts",
+      "src/contexts/AuthContext.tsx",
+      "src/pages/profile/profilePageErrors.ts",
+      "src/pages/profile/useProfileEditMutations.ts",
+      "src/pages/fansub/fansubDetailErrors.ts",
+      "src/services/hoverCardService/userHover.resolve.ts",
+      "src/services/hoverCardService/fansubHover.resolve.ts",
+      "src/services/hoverCardService/fansubHover.resolve.data.ts",
+      "src/services/hoverCardService/fansubHover.resolve.row.ts",
+      "src/services/hoverCardService/mangaHover.ts"
+    ],
+    "criticalFilesWithoutCoverage": []
+  },
+  "userFacingErrorCoverage": {
+    "filesWithCoverage": 69,
+    "filesWithoutCoverage": 1107,
+    "criticalFiles": [
+      "src/contexts/AuthContext.tsx",
+      "src/pages/profile/profilePageErrors.ts",
+      "src/pages/profile/useProfileEditMutations.ts",
+      "src/pages/fansub/fansubDetailErrors.ts"
+    ],
+    "criticalFilesWithCoverage": [
+      "src/contexts/AuthContext.tsx",
+      "src/pages/profile/profilePageErrors.ts",
+      "src/pages/profile/useProfileEditMutations.ts",
+      "src/pages/fansub/fansubDetailErrors.ts"
+    ],
+    "criticalFilesWithoutCoverage": [],
+    "suspiciousUiCatchSurfaces": [
+      "src/components/common/CommunityCreateModal/CommunityCreateModal.tsx",
+      "src/components/community/CommunityQuickCreate.tsx",
+      "src/pages/fansub/FansubContentTabs.tsx"
+    ]
+  },
+  "requestContextCoverage": {
+    "filesWithCoverage": 83,
+    "filesWithoutCoverage": 1093,
+    "criticalFiles": [
+      "src/contexts/AuthContext.tsx",
+      "src/pages/profile/profilePageErrors.ts",
+      "src/pages/profile/useProfileEditMutations.ts",
+      "src/pages/fansub/fansubDetailErrors.ts",
+      "src/services/hoverCardService/userHover.resolve.ts",
+      "src/services/hoverCardService/fansubHover.resolve.ts",
+      "src/services/hoverCardService/fansubHover.resolve.data.ts",
+      "src/services/hoverCardService/fansubHover.resolve.row.ts",
+      "src/services/hoverCardService/mangaHover.ts"
+    ],
+    "criticalFilesWithCoverage": [
+      "src/contexts/AuthContext.tsx",
+      "src/pages/profile/profilePageErrors.ts",
+      "src/pages/profile/useProfileEditMutations.ts",
+      "src/pages/fansub/fansubDetailErrors.ts",
+      "src/services/hoverCardService/userHover.resolve.ts",
+      "src/services/hoverCardService/fansubHover.resolve.ts",
+      "src/services/hoverCardService/fansubHover.resolve.data.ts",
+      "src/services/hoverCardService/fansubHover.resolve.row.ts",
+      "src/services/hoverCardService/mangaHover.ts"
+    ],
+    "criticalFilesWithoutCoverage": []
+  },
+  "newViolations": {
+    "newAppConsoleFiles": [],
+    "increasedConsoleCounts": [],
+    "newOversizedFiles": [],
+    "newFeatureFlagIssues": [],
+    "newSuspiciousUiCatchSurfaces": [],
+    "newCriticalUserFacingErrorGaps": [],
+    "newRequestContextGaps": []
+  }
+}

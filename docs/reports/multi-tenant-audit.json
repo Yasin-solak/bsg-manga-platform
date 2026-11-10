@@ -1,0 +1,8 @@
+{
+  "summary": {
+    "tenantSurfaceCount": 0,
+    "status": "na"
+  },
+  "tenantFiles": [],
+  "finding": "Repo icinde tenant_id veya multi-tenant modeli gosteren belirgin bir yuzey bulunmadi; bu alan N/A kabul edildi."
+}

@@ -1,0 +1,71 @@
+{
+  "aciklama": "Guvenlik skorunun temeli. Bilerek verilmis kararlar burada KABUL olarak kaydedilir ve puan dusurmez; yalnizca burada olmayan bulgu puan yer. Deep-audit baseline deseninin guvenlik karsiligi.",
+  "kural": "Her kaydin gerekcesi, kim kabul etti ve ne zaman bilgisi ZORUNLU. Gerekcesiz kayit, kaydi copluge cevirir.",
+  "olusturuldu": "2026-08-06",
+  "kaynak": "supabase advisors (security) + docs/guvenlik-denetimi-policysiz-tablolar-2026-08-06.md",
+  "kabul_edilenler": [
+    {
+      "kural": "authenticated_security_definer_function_executable",
+      "adet": 54,
+      "gerekce": "app_private.* yardimcilari ve public RPC sarmalayicilari BILEREK authenticated'a acik. 208 numarali RLS helper duzeninin temeli bu: tablolar kapali, erisim DEFINER fonksiyondan ve yetki kontrolu fonksiyonun icinde.",
+      "kabul_eden": "proje sahibi",
+      "tarih": "2026-08-06",
+      "gozden_gecir": "Yeni bir DEFINER fonksiyon eklendiginde adet artar; artis incelenmeli."
+    },
+    {
+      "kural": "anon_security_definer_function_executable",
+      "adet": 40,
+      "gerekce": "Public okuma yollari (katalog, ana sayfa snapshot, feature flag okuma) anon icin acik olmak zorunda. Hepsi DEFINER ve search_path sabit.",
+      "kabul_eden": "proje sahibi",
+      "tarih": "2026-08-06",
+      "gozden_gecir": "Yeni anon RPC'si eklendiginde bu sayinin artmasi beklenir; her artis tek tek dogrulanmali."
+    },
+    {
+      "kural": "rls_enabled_no_policy",
+      "adet": 7,
+      "tablolar": [
+        "app_private.user_xp_events",
+        "private.web_push_config",
+        "public.storefront_home_assets",
+        "public.storefront_home_campaigns",
+        "public.storefront_home_collections",
+        "public.storefront_homepage_drafts",
+        "public.storefront_homepage_snapshots"
+      ],
+      "gerekce": "Yedisi de KASITLI kapali. anon/authenticated yetkisi YOK, istemci kodu hicbirine dokunmuyor, erisim yalnizca DEFINER fonksiyonlardan ve yetki kontrolu impl icinde. Ilk ikisi zaten public semada degil. Denetim: docs/guvenlik-denetimi-policysiz-tablolar-2026-08-06.md",
+      "kabul_eden": "proje sahibi",
+      "tarih": "2026-08-06",
+      "gozden_gecir": "Bu tablolardan birine anon/authenticated yetkisi verilirse kabul DUSER; o an gercek bir aciga doner."
+    }
+  ],
+  "telafi_edici_kontrolle_kapatilanlar": [
+    {
+      "kural": "auth_leaked_password_protection",
+      "durum": "Supabase ozelligi HALA KAPALI (Pro plan yok) ama koruma UYGULAMA TARAFINDA kuruldu.",
+      "tarih": "2026-08-06",
+      "telafi_edici_kontrol": "src/services/leakedPasswordService.ts — HaveIBeenPwned Pwned Passwords range API, k-anonymity. Parola ve TAM ozeti asla aga cikmaz; yalnizca SHA-1 ozetinin ilk 5 hanesi gider, eslesme tarayicida yapilir. Cevap satirlari zod ile dogrulanir.",
+      "ek": "src/lib/passwordPolicy.ts — en az uzunluk 6'dan 8'e cikti; tek-karakter tekrari ve kimlik iceren parola reddediliyor. Kompozisyon kurali BILEREK yok (NIST 800-63B).",
+      "dogrulama": "Gercek API'ye karsi olculdu: 'password' -> 52.372.427 sizinti, '123456' -> 210.461.208; rastgele parolalar temiz. Sozlesme: tests/contracts/passwordpolicy-contract.test.mjs, 7 mutasyonla dogrulandi.",
+      "sinir": "Denetim ACIK DUSER: HIBP erisilemezse kayit engellenmez. Yalnizca KAYIT akisinda calisir; Supabase'in yerlesik ozelligi parola degisiminde de calisirdi. Pro plana gecilirse yerlesik ozellik acilip bu kontrol ikinci katman olarak birakilabilir."
+    }
+  ],
+  "acik_bulgular": [
+    {
+      "kural": "extension_in_public",
+      "oncelik": "dusuk",
+      "aciklama": "pg_net uzantisi public semada. Web push gonderimi bu uzantiyi kullaniyor.",
+      "cozum": "Uzantiyi ayri semaya tasimak; once bagimliliklar cikarilmali, calisan akisi kirma riski var."
+    }
+  ],
+  "incelendi_aksiyon_gerekmiyor": [
+    {
+      "konu": "DEFINER fonksiyon govdelerinde public.is_admin() / public.current_public_user_id() kullanimi",
+      "ilk_degerlendirme": "YANLISTI. Yalnizca 11 storefront fonksiyonuna bakilip 'kurala aykiri ve kirilgan, migration ile duzeltilmeli' denmisti.",
+      "olcum": "public.is_admin() -> 130 fonksiyon; public.current_public_user_id() -> 158 fonksiyon. app_private.is_admin() -> 29 fonksiyon. RLS POLICY tarafi: public.* kullanan 0, app_private.* kullanan 255.",
+      "dogru_okuma": "Kural 'public.* hic kullanilmasin' degil, 'POLICY ve default'larda app_private.* kullanilsin'. Policy'ler INVOKER olarak calisir; 208'de revoke edilen fonksiyon orada 'permission denied' verir. DEFINER fonksiyon govdeleri sahibinin yetkisiyle calistigi icin etkilenmez. Policy tarafi %100 dogru (255/255).",
+      "karar": "AKSIYON GEREKMIYOR. Storefront fonksiyonlari kuraldan sapmiyor; 130 fonksiyonluk yerlesik desenin parcasi. 11'ini degistirmek onlari digerlerinden AYRISTIRIRDI.",
+      "kirilganlik_notu": "public.is_admin() 130 fonksiyonun bagimliligi; 'temizlik' diye dusurulmesi dusunulemez. Yine de dusurulurse yikim genis olur — bu yuzden dusurulmemesi gerektigi burada kayitli.",
+      "tarih": "2026-08-09"
+    }
+  ]
+}

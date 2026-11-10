@@ -1,0 +1,12 @@
+.cv2-role-form fieldset{display:grid;gap:14px;min-width:0;border:1px solid var(--border);padding:14px;border-radius:10px}
+.cv2-role-form select,.cv2-filter-grid input{width:100%;min-height:38px;border:1px solid var(--border);border-radius:8px;background:var(--background);padding:8px;color:inherit}
+.cv2-role-form label{display:grid;gap:6px}.cv2-role-form .cv2-check{display:flex;align-items:center;gap:8px}
+.cv2-role-form small{color:var(--muted-foreground);line-height:1.5}
+.cv2-filter-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.cv2-search-result{display:grid;width:100%;text-align:left;gap:6px;border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;overflow-wrap:anywhere}
+.cv2-search-result time,.cv2-search-result small{font-size:12px;color:var(--muted-foreground)}
+.cv2-presence{min-height:24px;padding:3px 16px;display:flex;justify-content:space-between;gap:12px;font-size:11px;color:var(--muted-foreground)}
+.cv2-member-with-icon{display:flex;align-items:center;gap:3px}.cv2-member-with-icon>span{font-size:13px;flex-shrink:0}
+.cv2-server-banner{width:100%;max-height:180px;object-fit:cover;border-radius:10px}.cv2-rules{white-space:pre-wrap;overflow-wrap:anywhere}
+.cv2-blocked-message{padding:12px;color:var(--muted-foreground);font-style:italic}
+@media(max-width:480px){.cv2-filter-grid{grid-template-columns:1fr}.cv2-presence{flex-wrap:wrap}.cv2-top-actions{flex-wrap:wrap}}

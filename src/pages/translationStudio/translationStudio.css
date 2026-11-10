@@ -1,0 +1,63 @@
+/*
+  Ceviri Studyosu V3 gorsel dili (handoff "Ceviri Studyosu v3").
+  Degiskenler studyo kapsaminda tanimlanir; sitenin tema degiskenlerini ezmez.
+  Studyo tasarim geregi her zaman koyu calisir.
+*/
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,900&display=swap');
+/* Yazi fontlari: src/components/translation/letteringFonts.css */
+
+.tl-studio {
+  --tl-bg: oklch(0.09 0 0);
+  --tl-sb: oklch(0.11 0 0);
+  --tl-card: oklch(0.12 0 0);
+  --tl-acc: oklch(0.17 0 0);
+  --tl-acc2: oklch(0.205 0 0);
+  --tl-fg: oklch(0.93 0 0);
+  --tl-fg2: oklch(0.78 0 0);
+  --tl-mut: oklch(0.62 0 0);
+  --tl-dim: oklch(0.5 0 0);
+  --tl-line: oklch(1 0 0 / 12%);
+  --tl-line2: oklch(1 0 0 / 20%);
+  --tl-p: oklch(0.832 0.074 186.1);
+  --tl-p15: oklch(0.832 0.074 186.1 / 15%);
+  --tl-p35: oklch(0.832 0.074 186.1 / 35%);
+  --tl-pfg: oklch(0.11 0 0);
+  --tl-green: oklch(0.78 0.13 155);
+  --tl-amber: oklch(0.83 0.15 85);
+  --tl-red: oklch(0.64 0.2 25);
+
+  background: var(--tl-bg);
+  color: var(--tl-fg);
+  color-scheme: dark;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.tl-studio .tl-serif {
+  font-family: 'Source Serif 4', serif;
+  font-weight: 900;
+}
+
+.tl-studio .tl-screen {
+  animation: tl-screen-in 0.25s ease;
+}
+
+.tl-studio .tl-hatch {
+  background-color: var(--tl-acc);
+  background-image: repeating-linear-gradient(135deg, oklch(1 0 0 / 4%) 0 6px, transparent 6px 12px);
+}
+
+@keyframes tl-screen-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-studio .tl-screen { animation: none; }
+}
+
+/* Editor secimi: hareketli kesik cizgi (Photoshop "yuruyen karincalar"). */
+.tl-studio .tl-marching-ants { animation: tl-ants 0.8s linear infinite; }
+@keyframes tl-ants { to { stroke-dashoffset: -20; } }
+@media (prefers-reduced-motion: reduce) {
+  .tl-studio .tl-marching-ants { animation: none; }
+}

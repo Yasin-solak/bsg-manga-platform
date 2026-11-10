@@ -1,0 +1,27 @@
+/* Profil temasi: aurora lekeleri yavasca suzulur (yalniz transform; hareket azaltmada durur). */
+@keyframes profile-aurora-drift {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(6%, 4%, 0) scale(1.08); }
+  100% { transform: translate3d(-4%, 2%, 0) scale(0.96); }
+}
+
+.profile-aurora-blob {
+  animation: profile-aurora-drift 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.profile-aurora-blob--slow {
+  animation-duration: 30s;
+  animation-direction: alternate-reverse;
+}
+
+.profile-aurora-blob--late {
+  animation-duration: 26s;
+  animation-delay: -8s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-aurora-blob {
+    animation: none;
+  }
+}

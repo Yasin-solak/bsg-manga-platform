@@ -1,0 +1,46 @@
+{
+  "createdAt": "2026-04-06",
+  "sources": [
+    {
+      "vendor": "Kenney",
+      "pack": "UI Pack: RPG Expansion",
+      "license": "CC0",
+      "sourceUrl": "https://kenney.nl/assets/ui-pack-rpg-expansion"
+    },
+    {
+      "vendor": "gaspardani87",
+      "pack": "Ultimate Fantasy RPG Icons Pack",
+      "license": "CC0",
+      "sourceUrl": "https://gaspardani87.itch.io/ultimate-fantasy-rpg-icons"
+    }
+  ],
+  "selectedAssets": {
+    "kenney-ui": [
+      "panel_beige.png",
+      "panel_beigeLight.png",
+      "panelInset_beige.png",
+      "panelInset_beigeLight.png",
+      "barBack_horizontalLeft.png",
+      "barBack_horizontalMid.png",
+      "barBack_horizontalRight.png",
+      "barYellow_horizontalLeft.png",
+      "barYellow_horizontalMid.png",
+      "barYellow_horizontalRight.png",
+      "iconCircle_beige.png",
+      "iconCheck_bronze.png"
+    ],
+    "gaspard-icons": [
+      "Chest_00001_.png",
+      "Chest_00002_.png",
+      "Chest_00003_.png",
+      "Chest_00004_.png",
+      "Spellbook_00001_.png",
+      "Spellbook_00002_.png"
+    ]
+  },
+  "notes": [
+    "Kenney seti panel, rail, durum rozeti ve yuvarlak node kabugu icin secildi.",
+    "gaspard seti sandik ve odul/relic adaylari icin secildi.",
+    "Lisansi acik dogrulanamayan paketler kalici klasore alinmadi."
+  ]
+}

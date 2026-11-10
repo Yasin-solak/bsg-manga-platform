@@ -1,0 +1,4 @@
+# Security contact (RFC 9116). Deployments of this software should publish their own.
+Contact: https://github.com/Yasin-solak/bsg-manga-platform/security/advisories/new
+Expires: 2027-12-31T00:00:00.000Z
+Preferred-Languages: en, tr

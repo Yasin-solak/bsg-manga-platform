@@ -1,0 +1,1100 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+/* Isim stili display fontlari: her stil kendi karakterini tasir */
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Baloo+2:wght@700&family=Cinzel:wght@700&family=Orbitron:wght@700&family=Pirata+One&family=Press+Start+2P&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+ * ============================================
+ * BSGMANGA — Modern Tema (shadcn/ui + Tailwind v4)
+ * Dark-first tasarım, manga platformu UX
+ * ============================================
+ */
+
+@custom-variant dark (&:is(.dark *));
+
+/* === shadcn/ui Tema Değişkenleri (Tailwind v4 @theme) === */
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* BSG Manga özel font ailesi */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Inter', system-ui, sans-serif;
+
+  /* Wrapped bileşenleri için gölge (comic stil) */
+  --shadow-comic: none;
+}
+
+/* ===========================
+   LIGHT TEMA (varsayılan)
+   =========================== */
+:root {
+  --radius: 0.625rem;
+  --background: oklch(0.985 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.6 0.082 186.1);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.955 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.955 0 0);
+  --muted-foreground: oklch(0.50 0 0);
+  --accent: oklch(0.955 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.912 0 0);
+  --input: oklch(0.912 0 0);
+  --ring: oklch(0.6 0.082 186.1);
+  --chart-1: oklch(0.6 0.082 186.1);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.975 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.6 0.082 186.1);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.94 0.024 186.1);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.912 0 0);
+  --sidebar-ring: oklch(0.6 0.082 186.1);
+}
+
+/* ===========================
+   DARK TEMA
+   =========================== */
+.dark {
+  /* Görseldeki derin siyah arka plan — mor tint yok */
+  --background: oklch(0.09 0 0);
+  --foreground: oklch(0.93 0 0);
+  --card: oklch(0.13 0 0);
+  --card-foreground: oklch(0.93 0 0);
+  --popover: oklch(0.14 0 0);
+  --popover-foreground: oklch(0.93 0 0);
+  --primary: oklch(0.832 0.074 186.1);
+  --primary-foreground: oklch(0.11 0 0);
+  --secondary: oklch(0.17 0 0);
+  --secondary-foreground: oklch(0.93 0 0);
+  --muted: oklch(0.17 0 0);
+  --muted-foreground: oklch(0.55 0 0);
+  --accent: oklch(0.17 0 0);
+  --accent-foreground: oklch(0.93 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 7%);
+  --input: oklch(1 0 0 / 10%);
+  --ring: oklch(0.832 0.074 186.1);
+  --chart-1: oklch(0.832 0.074 186.1);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.18 45);
+  --chart-5: oklch(0.69 0.09 202);
+  /* Sidebar — ana arka plandan bir ton açık */
+  --sidebar: oklch(0.105 0 0);
+  --sidebar-foreground: oklch(0.93 0 0);
+  --sidebar-primary: oklch(0.832 0.074 186.1);
+  --sidebar-primary-foreground: oklch(0.11 0 0);
+  --sidebar-accent: oklch(0.18 0.026 186.1);
+  --sidebar-accent-foreground: oklch(0.93 0 0);
+  --sidebar-border: oklch(1 0 0 / 7%);
+  --sidebar-ring: oklch(0.832 0.074 186.1);
+}
+
+/* ===========================
+   ESKİ CSS DEĞİŞKEN UYUMLULUK KATMANI
+   Kalan eski CSS dosyaları bu değişkenleri kullanıyor.
+   Yeni tema renklerine eşleniyor, böylece tüm sayfalar
+   tek seferde düzgün görünür.
+   =========================== */
+:root {
+  /* Renkler - eski isimlendirme -> mint commerce tema */
+  --color-primary: oklch(0.6 0.082 186.1);
+  --color-primary-foreground: oklch(0.985 0 0);
+  --color-secondary: oklch(0.92 0 0);
+  --color-secondary-dark: oklch(0.88 0 0);
+  --color-cream: oklch(0.98 0 0);
+  --color-cream-dark: oklch(0.96 0 0);
+  --legacy-black: oklch(0.15 0 0);
+  --legacy-white: oklch(0.99 0 0);
+  --color-dark: oklch(0.2 0 0);
+  --color-gray-light: oklch(0.7 0 0);
+  --color-gray: oklch(0.5 0 0);
+  --color-danger: oklch(0.577 0.245 27.325);
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 1.75rem;
+  --space-8: 2rem;
+
+  /* Tipografi */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --font-heading: 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* Border / Radius / Shadow */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --border-black: oklch(0.15 0 0);
+  --shadow-comic: none;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 5%);
+  --shadow-md: 0 4px 6px rgb(0 0 0 / 10%);
+
+  /* Geçiş */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}
+
+.dark {
+  --color-primary: oklch(0.832 0.074 186.1);
+  --color-primary-foreground: oklch(0.11 0 0);
+  --color-secondary: oklch(0.17 0 0);
+  --color-secondary-dark: oklch(0.13 0 0);
+  --color-cream: oklch(0.13 0 0);
+  --color-cream-dark: oklch(0.10 0 0);
+  --legacy-black: oklch(0.93 0 0);
+  --legacy-white: oklch(0.93 0 0);
+  --color-dark: oklch(0.09 0 0);
+  --color-gray-light: oklch(0.55 0 0);
+  --color-gray: oklch(0.45 0 0);
+  --color-danger: oklch(0.704 0.191 22.216);
+  --border-black: oklch(1 0 0 / 7%);
+  --shadow-comic: none;
+}
+
+/* ===========================
+   TEMEL STİLLER
+   =========================== */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply scroll-smooth antialiased;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scrollbar-gutter: stable;
+  }
+}
+
+/* ===========================
+   AVATAR FRAME SİSTEMİ (KORUNAN)
+   Mevcut AvatarFrame CSS'i kendi dosyasında kalıyor.
+   Buradaki sadece global seviyede gerekli destek.
+   =========================== */
+
+/* Erişilebilirlik */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===========================
+   SCROLLBAR STİLLERİ (Modern)
+   =========================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.5 0 0 / 30%);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.5 0 0 / 50%);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: oklch(0.8 0 0 / 20%);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.8 0 0 / 35%);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.5 0 0 / 30%) transparent;
+}
+
+/* Reward task particle burst animasyonu — UserRewardTasksPanel */
+@keyframes reward-task-particle-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(
+      calc(-50% + var(--particle-x, 0px)),
+      calc(-50% + var(--particle-y, 0px))
+    ) scale(1);
+  }
+}
+
+.animate-reward-particle {
+  animation: reward-task-particle-burst 820ms ease-out forwards;
+  animation-delay: var(--particle-delay, 0ms);
+}
+
+/* Store ürün kartı dekoratif animasyonlar */
+@keyframes store-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes badge-glow-ping {
+  0%   { transform: scale(1);    opacity: 0.7; }
+  70%  { transform: scale(1.55); opacity: 0; }
+  100% { transform: scale(1.55); opacity: 0; }
+}
+
+@keyframes badge-float {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50%       { transform: translateY(-5px) scale(1.04); }
+}
+
+@keyframes store-shimmer {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+
+@keyframes store-nav-aurora {
+  0% { background-position: 0% 50%; }
+  22% { background-position: 100% 34%; }
+  48% { background-position: 12% 78%; }
+  74% { background-position: 88% 18%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes store-nav-premium-label-fire {
+  0%, 100% {
+    filter: drop-shadow(0 0 12px rgba(249, 115, 22, 0.24)) brightness(1);
+    text-shadow:
+      0 0 14px rgba(249, 115, 22, 0.34),
+      0 0 26px rgba(239, 68, 68, 0.18);
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(249, 115, 22, 0.52)) brightness(1.18);
+    text-shadow:
+      0 0 18px rgba(249, 115, 22, 0.52),
+      0 0 34px rgba(239, 68, 68, 0.3);
+  }
+}
+
+/* Store purchase modal ve success burst animasyonları */
+@keyframes store-purchase-modal-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes store-purchase-core-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  22% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+@keyframes store-purchase-success-label-fade {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 6px) scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -4px) scale(1.04);
+  }
+}
+
+@keyframes store-purchase-particle-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  14% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(
+      calc(-50% + var(--particle-x, 0px)),
+      calc(-50% + var(--particle-y, 0px))
+    ) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-store-modal-in,
+  .animate-store-core-pop,
+  .animate-store-label-fade,
+  .animate-store-particle {
+    animation: none !important;
+  }
+}
+
+/* ===========================
+   WRAPPED BİLEŞEN ANİMASYONLARI
+   Keyframe animasyonları Tailwind ile ifade edilemeyen efektler için
+   =========================== */
+@keyframes wrapped-shimmer-v2 {
+  0% {
+    transform: translateX(-35%);
+  }
+  100% {
+    transform: translateX(35%);
+  }
+}
+
+@keyframes wrapped-card-in-v2 {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-wrapped-shimmer {
+  animation: wrapped-shimmer-v2 2.1s linear infinite;
+}
+
+.animate-wrapped-card-in {
+  animation: wrapped-card-in-v2 260ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-wrapped-shimmer,
+  .animate-wrapped-card-in {
+    animation: none !important;
+  }
+}
+
+/* ===========================
+   ANASAYFA — Hero & Scroll Animasyonları
+   =========================== */
+@keyframes hero-fade-in-kf {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Name text effects (hover + profile previews) */
+@keyframes name-effect-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+    filter: saturate(1.1) brightness(1);
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: saturate(1.45) brightness(1.12);
+  }
+  100% {
+    background-position: 200% 50%;
+    filter: saturate(1.1) brightness(1);
+  }
+}
+
+@keyframes name-effect-neon-pulse {
+  0%,
+  100% {
+    text-shadow:
+      0 0 4px var(--name-text-glow-a-soft, rgba(110, 231, 255, 0.45)),
+      0 0 12px var(--name-text-glow-a-strong, rgba(110, 231, 255, 0.5)),
+      0 0 26px var(--name-text-glow-b-soft, rgba(168, 85, 247, 0.45)),
+      0 0 48px var(--name-text-glow-b-strong, rgba(168, 85, 247, 0.3));
+    filter: brightness(1);
+  }
+  50% {
+    text-shadow:
+      0 0 6px var(--name-text-glow-a-strong, rgba(110, 231, 255, 0.95)),
+      0 0 18px var(--name-text-glow-a-strong, rgba(110, 231, 255, 0.85)),
+      0 0 38px var(--name-text-glow-b-strong, rgba(168, 85, 247, 0.8)),
+      0 0 72px var(--name-text-glow-b-strong, rgba(168, 85, 247, 0.55));
+    filter: brightness(1.22);
+  }
+}
+
+@keyframes name-effect-comic-jitter {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  20% {
+    transform: translate3d(-1.4px, -1px, 0) rotate(-1deg) scale(1.015);
+  }
+  40% {
+    transform: translate3d(1.8px, -0.4px, 0) rotate(1deg) scale(0.99);
+  }
+  60% {
+    transform: translate3d(-1px, 1.4px, 0) rotate(-0.7deg) scale(1.02);
+  }
+  80% {
+    transform: translate3d(1.4px, 0.6px, 0) rotate(0.7deg) scale(1);
+  }
+}
+
+@keyframes name-effect-pop-scale {
+  0%,
+  100% {
+    transform: scale(1) translateY(0);
+    text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+  42% {
+    transform: scale(1.14) translateY(-1.5px);
+    text-shadow:
+      0 0 10px var(--name-text-glow-a-strong, rgba(255, 255, 255, 0.6)),
+      0 0 26px var(--name-text-glow-b-strong, rgba(99, 102, 241, 0.65)),
+      0 0 44px var(--name-text-glow-a-strong, rgba(168, 85, 247, 0.45));
+  }
+  58% {
+    transform: scale(0.98) translateY(0.5px);
+  }
+  72% {
+    transform: scale(1.04) translateY(-0.5px);
+    text-shadow:
+      0 0 6px var(--name-text-glow-a-soft, rgba(255, 255, 255, 0.3)),
+      0 0 14px var(--name-text-glow-b-soft, rgba(99, 102, 241, 0.3));
+  }
+}
+
+@keyframes name-effect-prism-sweep {
+  0% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg) saturate(1.25) brightness(1.04);
+  }
+  50% {
+    background-position: 120% 50%;
+    filter: hue-rotate(180deg) saturate(1.6) brightness(1.16);
+  }
+  100% {
+    background-position: 240% 50%;
+    filter: hue-rotate(360deg) saturate(1.25) brightness(1.04);
+  }
+}
+
+@keyframes name-effect-glitch-shift {
+  0%,
+  7%,
+  100% {
+    transform: translate(0, 0) skewX(0deg);
+    text-shadow:
+      -2px 0 var(--name-text-glow-a-strong, rgba(34, 211, 238, 0.85)),
+      2px 0 var(--name-text-glow-b-strong, rgba(244, 114, 182, 0.85));
+  }
+  10% {
+    transform: translate(-2.5px, 1px) skewX(-4deg);
+    text-shadow:
+      -4px 0 var(--name-text-glow-a-strong, rgba(34, 211, 238, 1)),
+      4px 0 var(--name-text-glow-b-strong, rgba(244, 114, 182, 0.95));
+  }
+  14% {
+    transform: translate(2.5px, -1.5px) skewX(3deg);
+    text-shadow:
+      -3.5px 0 var(--name-text-glow-a-strong, rgba(59, 130, 246, 1)),
+      3.5px 0 var(--name-text-glow-b-strong, rgba(236, 72, 153, 0.95));
+  }
+  18% {
+    transform: translate(-1.5px, 0.5px) skewX(0deg);
+    text-shadow:
+      -2px 0 var(--name-text-glow-a-strong, rgba(34, 211, 238, 0.85)),
+      2px 0 var(--name-text-glow-b-strong, rgba(244, 114, 182, 0.85));
+  }
+  46% {
+    transform: translate(0, 0) skewX(0deg);
+    text-shadow:
+      -1.5px 0 var(--name-text-glow-a-strong, rgba(34, 211, 238, 0.7)),
+      1.5px 0 var(--name-text-glow-b-strong, rgba(244, 114, 182, 0.7));
+  }
+  52% {
+    transform: translate(3px, 1.5px) skewX(5deg);
+    text-shadow:
+      -4.5px 0 var(--name-text-glow-a-strong, rgba(16, 185, 129, 0.95)),
+      4.5px 0 var(--name-text-glow-b-strong, rgba(244, 63, 94, 0.95));
+  }
+  56% {
+    transform: translate(-3px, -1px) skewX(-5deg);
+    text-shadow:
+      -4px 0 var(--name-text-glow-a-strong, rgba(99, 102, 241, 1)),
+      4px 0 var(--name-text-glow-b-strong, rgba(244, 114, 182, 1));
+  }
+  60% {
+    transform: translate(0, 0) skewX(0deg);
+    text-shadow:
+      -2px 0 var(--name-text-glow-a-strong, rgba(34, 211, 238, 0.85)),
+      2px 0 var(--name-text-glow-b-strong, rgba(244, 114, 182, 0.85));
+  }
+}
+
+@keyframes name-effect-pixel-step {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(1px, 0);
+  }
+  50% {
+    transform: translate(1px, 1px);
+  }
+  75% {
+    transform: translate(0, 1px);
+  }
+}
+
+@keyframes name-effect-arc-flicker {
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow:
+      0 0 6px var(--name-text-glow-a-strong, rgba(34, 211, 238, 0.5)),
+      0 0 18px var(--name-text-glow-b-soft, rgba(59, 130, 246, 0.45)),
+      0 0 34px var(--name-text-glow-a-soft, rgba(168, 85, 247, 0.35));
+  }
+  12% {
+    opacity: 0.86;
+    text-shadow:
+      0 0 4px var(--name-text-glow-a-soft, rgba(34, 211, 238, 0.3)),
+      0 0 10px var(--name-text-glow-b-soft, rgba(59, 130, 246, 0.25)),
+      0 0 16px var(--name-text-glow-a-soft, rgba(168, 85, 247, 0.18));
+  }
+  16% {
+    opacity: 1;
+    text-shadow:
+      0 0 10px var(--name-text-glow-a-strong, rgba(34, 211, 238, 0.85)),
+      0 0 26px var(--name-text-glow-b-strong, rgba(59, 130, 246, 0.75)),
+      0 0 48px var(--name-text-glow-a-strong, rgba(168, 85, 247, 0.55));
+  }
+  38% {
+    opacity: 0.92;
+    text-shadow:
+      0 0 5px var(--name-text-glow-a-soft, rgba(34, 211, 238, 0.3)),
+      0 0 12px var(--name-text-glow-b-soft, rgba(59, 130, 246, 0.28)),
+      0 0 20px var(--name-text-glow-a-soft, rgba(168, 85, 247, 0.2));
+  }
+  60% {
+    opacity: 1;
+    text-shadow:
+      0 0 12px var(--name-text-glow-a-strong, rgba(34, 211, 238, 0.9)),
+      0 0 30px var(--name-text-glow-b-strong, rgba(59, 130, 246, 0.8)),
+      0 0 56px var(--name-text-glow-a-strong, rgba(168, 85, 247, 0.6));
+  }
+  64% {
+    opacity: 0.82;
+    text-shadow:
+      0 0 5px var(--name-text-glow-a-soft, rgba(34, 211, 238, 0.28)),
+      0 0 12px var(--name-text-glow-b-soft, rgba(59, 130, 246, 0.25)),
+      0 0 18px var(--name-text-glow-a-soft, rgba(168, 85, 247, 0.18));
+  }
+  68% {
+    opacity: 1;
+    text-shadow:
+      0 0 9px var(--name-text-glow-a-strong, rgba(34, 211, 238, 0.7)),
+      0 0 22px var(--name-text-glow-b-strong, rgba(59, 130, 246, 0.6)),
+      0 0 40px var(--name-text-glow-a-strong, rgba(168, 85, 247, 0.45));
+  }
+}
+
+.name-text-base {
+  --name-text-color: #e5e7eb;
+  --name-text-gradient: linear-gradient(90deg, #9be8ff, #c084fc, #f472b6);
+  --name-text-glow-a-soft: rgba(110, 231, 255, 0.25);
+  --name-text-glow-a-strong: rgba(110, 231, 255, 0.6);
+  --name-text-glow-b-soft: rgba(168, 85, 247, 0.25);
+  --name-text-glow-b-strong: rgba(168, 85, 247, 0.6);
+  /* Efekt animasyonu degiskende tasinir: hareket (.name-motion-*) onu ezmeden yanina eklenir. */
+  --name-effect-animation: none;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.1;
+  letter-spacing: 0.005em;
+}
+
+/* Animasyonlu isim efekti: ismin arkasina (ya da onune) yerlesen animasyonlu gorsel (WebP / APNG / GIF).
+   Gorsel ismin kutusuna gore esner ve efekt basina ayarlanan paylarla tasar. Gorsel adresi ve paylar
+   nameEffectRegistry'nin urettigi .name-fx-<slug> kuralindan gelir. */
+.name-fx-asset {
+  position: relative;
+  isolation: isolate;
+  /* Ad cogu yerde truncate / line-clamp ile kirpilir (overflow: hidden); efekt gorseli adin
+     kutusunun disina tasar. clip + margin: metin kisaltmasi (ellipsis / clamp) korunur, efekt
+     kutunun etrafinda 3em'e kadar boyanir. */
+  overflow: clip !important;
+  overflow-clip-margin: 3em;
+}
+
+@supports not (overflow-clip-margin: 1px) {
+  .name-fx-asset {
+    overflow: visible !important;
+  }
+}
+
+.name-fx-asset::before {
+  content: '';
+  position: absolute;
+  z-index: var(--name-fx-z, -1);
+  left: calc(var(--name-fx-ox, 18%) * -1);
+  right: calc(var(--name-fx-ox, 18%) * -1);
+  top: calc(var(--name-fx-oy, 60%) * -1 + var(--name-fx-dy, 0%));
+  bottom: calc(var(--name-fx-oy, 60%) * -1 - var(--name-fx-dy, 0%));
+  background: var(--name-fx-image, none) center / 100% 100% no-repeat;
+  mix-blend-mode: var(--name-fx-blend, normal);
+  pointer-events: none;
+}
+
+/* Efekt rengi: gorselin isigi ve dokusu korunur, rengi kullanicinin secimiyle degisir
+   ('color' karisimi: ton + doygunluk ustteki gecisten, parlaklik gorselden). Maske gorselin saydam
+   yerlerini korur. Ic katman efektlerin boyali kurali nameEffectRegistry'den gelir. */
+.name-fx-asset.name-fx-tinted::before {
+  background: var(--name-fx-tint), var(--name-fx-image, none);
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: color, normal;
+  -webkit-mask: var(--name-fx-image, none) center / 100% 100% no-repeat;
+  mask: var(--name-fx-image, none) center / 100% 100% no-repeat;
+  mix-blend-mode: normal;
+}
+
+/* Gecisli dolgu: ana renkten ikinci renge sabit gecis (hareketsiz). */
+.name-fill-gradient {
+  background-image: var(--name-text-gradient);
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Kontrast kalkani: isim zeminle (profil temasi) cok yakinsa zit tonda ince kontur. */
+.name-guard {
+  -webkit-text-stroke: 0.07em var(--name-guard);
+  paint-order: stroke fill;
+}
+
+/* Font variants — her stil gercek bir display fontla ismini tasir */
+.name-font-neo {
+  font-family: "Inter", "Segoe UI", sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.name-font-bold {
+  font-family: "Archivo Black", "Arial Black", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.name-font-round {
+  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.name-font-comic {
+  font-family: "Bangers", "Comic Sans MS", cursive;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+
+.name-font-serif {
+  font-family: "Cinzel", "Georgia", serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.name-font-tech {
+  font-family: "Orbitron", "Impact", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.name-font-mono {
+  font-family: "Press Start 2P", "Consolas", monospace;
+  font-weight: 400;
+  font-size: 0.82em;
+  letter-spacing: 0.02em;
+}
+
+.name-font-display {
+  font-family: "Pirata One", "Georgia", serif;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  letter-spacing: 0.015em;
+}
+
+/* Color variants */
+.name-color-neutral {
+  --name-text-color: #f1f5f9;
+  --name-text-gradient: linear-gradient(90deg, #f8fafc, #cbd5e1);
+}
+
+.name-color-violet {
+  --name-text-color: #c084fc;
+  --name-text-gradient: linear-gradient(90deg, #a855f7, #c084fc, #e879f9);
+}
+
+.name-color-cyan {
+  --name-text-color: #22d3ee;
+  --name-text-gradient: linear-gradient(90deg, #22d3ee, #67e8f9, #0ea5e9);
+}
+
+.name-color-green {
+  --name-text-color: #4ade80;
+  --name-text-gradient: linear-gradient(90deg, #4ade80, #34d399, #10b981);
+}
+
+.name-color-blue {
+  --name-text-color: #38bdf8;
+  --name-text-gradient: linear-gradient(90deg, #38bdf8, #60a5fa, #818cf8);
+}
+
+.name-color-pink {
+  --name-text-color: #f472b6;
+  --name-text-gradient: linear-gradient(90deg, #f472b6, #fb7185, #f43f5e);
+}
+
+.name-color-gold {
+  --name-text-color: #facc15;
+  --name-text-gradient: linear-gradient(90deg, #facc15, #f59e0b, #fb923c);
+}
+
+.name-color-sunset {
+  --name-text-color: #fb7185;
+  --name-text-gradient: linear-gradient(90deg, #fb7185, #f97316, #f59e0b);
+}
+
+.name-color-rainbow {
+  --name-text-color: #c084fc;
+  --name-text-gradient: linear-gradient(90deg, #22d3ee, #3b82f6, #a855f7, #f472b6, #f59e0b);
+}
+
+/* Swatches for editor */
+.name-color-swatch-neutral { background: linear-gradient(135deg, #f8fafc, #cbd5e1); }
+.name-color-swatch-violet { background: linear-gradient(135deg, #a855f7, #e879f9); }
+.name-color-swatch-cyan { background: linear-gradient(135deg, #22d3ee, #0ea5e9); }
+.name-color-swatch-green { background: linear-gradient(135deg, #4ade80, #10b981); }
+.name-color-swatch-blue { background: linear-gradient(135deg, #38bdf8, #6366f1); }
+.name-color-swatch-pink { background: linear-gradient(135deg, #f472b6, #f43f5e); }
+.name-color-swatch-gold { background: linear-gradient(135deg, #facc15, #f97316); }
+.name-color-swatch-sunset { background: linear-gradient(135deg, #fb7185, #f59e0b); }
+.name-color-swatch-rainbow { background: linear-gradient(135deg, #22d3ee, #3b82f6, #a855f7, #f472b6, #f59e0b); }
+
+/* Effect variants */
+.name-effect-solid {
+  color: var(--name-text-color);
+}
+
+.name-effect-gradient {
+  background-image: var(--name-text-gradient);
+  background-size: 260% 100%;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  --name-effect-animation: name-effect-gradient-shift 3.4s linear infinite;
+  animation: var(--name-effect-animation);
+}
+
+.name-effect-neon {
+  color: var(--name-text-color);
+  --name-effect-animation: name-effect-neon-pulse 1.8s ease-in-out infinite;
+  animation: var(--name-effect-animation);
+}
+
+.name-effect-comic {
+  color: var(--name-text-color);
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.85);
+  paint-order: stroke fill;
+  text-shadow:
+    -2px -2px 0 rgba(0, 0, 0, 0.7),
+    2px -2px 0 rgba(0, 0, 0, 0.7),
+    -2px 2px 0 rgba(0, 0, 0, 0.7),
+    2px 2px 0 rgba(0, 0, 0, 0.7),
+    3px 3px 0 rgba(0, 0, 0, 0.9);
+  --name-effect-animation: name-effect-comic-jitter 1.3s ease-in-out infinite;
+  animation: var(--name-effect-animation);
+}
+
+.name-effect-pop {
+  color: var(--name-text-color);
+  --name-effect-animation: name-effect-pop-scale 1.6s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+  animation: var(--name-effect-animation);
+}
+
+.name-effect-prism {
+  background-image: var(--name-text-gradient);
+  background-size: 280% 100%;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  --name-effect-animation: name-effect-prism-sweep 5.6s linear infinite;
+  animation: var(--name-effect-animation);
+}
+
+.name-effect-glitch {
+  color: var(--name-text-color);
+  --name-effect-animation: name-effect-glitch-shift 2.4s steps(1, end) infinite;
+  animation: var(--name-effect-animation);
+}
+
+.name-effect-arc {
+  color: var(--name-text-color);
+  --name-effect-animation: name-effect-arc-flicker 2.1s ease-in-out infinite;
+  animation: var(--name-effect-animation);
+}
+
+.name-effect-pixel {
+  color: var(--name-text-color);
+  font-family: 'Courier New', 'Lucida Console', monospace;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  image-rendering: pixelated;
+  text-shadow:
+    2px 0 0 var(--name-text-glow-a-strong, rgba(110, 231, 255, 0.55)),
+    -2px 0 0 var(--name-text-glow-b-strong, rgba(168, 85, 247, 0.55)),
+    0 2px 0 rgba(0, 0, 0, 0.85);
+  --name-effect-animation: name-effect-pixel-step 0.9s steps(1, end) infinite;
+  animation: var(--name-effect-animation);
+}
+
+/* Hareket: yaziyi yalniz hareket ettirir (renk / isik vermez). Efekt animasyonunun yanina eklenir;
+   transform yerine translate / rotate / scale kullanir, efektlerin transform'uyla birlesir. */
+.name-motion-float { animation: var(--name-effect-animation), name-motion-float 3s ease-in-out infinite; }
+.name-motion-bounce { animation: var(--name-effect-animation), name-motion-bounce 1.6s cubic-bezier(0.3, 0, 0.3, 1) infinite; }
+.name-motion-sway { transform-origin: 50% 100%; animation: var(--name-effect-animation), name-motion-sway 2.6s ease-in-out infinite; }
+.name-motion-breathe { animation: var(--name-effect-animation), name-motion-breathe 2.8s ease-in-out infinite; }
+.name-motion-drift { animation: var(--name-effect-animation), name-motion-drift 3.2s ease-in-out infinite; }
+.name-motion-jelly { animation: var(--name-effect-animation), name-motion-jelly 2.2s ease-in-out infinite; }
+.name-motion-shake { animation: var(--name-effect-animation), name-motion-shake 3.4s linear infinite; }
+
+@keyframes name-motion-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -0.16em; }
+}
+
+@keyframes name-motion-bounce {
+  0%, 55%, 100% { translate: 0 0; scale: 1 1; }
+  20% { translate: 0 -0.28em; scale: 0.98 1.03; }
+  40% { translate: 0 0; scale: 1.04 0.95; }
+  48% { translate: 0 -0.05em; scale: 1 1; }
+}
+
+@keyframes name-motion-sway {
+  0%, 100% { rotate: -3deg; }
+  50% { rotate: 3deg; }
+}
+
+@keyframes name-motion-breathe {
+  0%, 100% { scale: 1; }
+  50% { scale: 1.07; }
+}
+
+@keyframes name-motion-drift {
+  0%, 100% { translate: -0.12em 0; }
+  50% { translate: 0.12em 0; }
+}
+
+@keyframes name-motion-jelly {
+  0%, 60%, 100% { scale: 1 1; }
+  15% { scale: 1.1 0.9; }
+  30% { scale: 0.94 1.06; }
+  45% { scale: 1.03 0.97; }
+}
+
+@keyframes name-motion-shake {
+  0%, 80%, 100% { translate: 0 0; rotate: 0deg; }
+  83% { translate: -0.06em 0; rotate: -1.5deg; }
+  86% { translate: 0.06em 0; rotate: 1.5deg; }
+  89% { translate: -0.04em 0; rotate: -1deg; }
+  92% { translate: 0.04em 0; rotate: 1deg; }
+  95% { translate: 0 0; rotate: 0deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .name-effect-gradient,
+  .name-effect-neon,
+  .name-effect-comic,
+  .name-effect-pop,
+  .name-effect-prism,
+  .name-effect-glitch,
+  .name-effect-arc,
+  .name-effect-pixel,
+  [class*='name-motion-'] {
+    animation: none !important;
+  }
+}
+
+.animate-hero-fade-in {
+  animation: hero-fade-in-kf 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Karsilama ekranindaki kapak duvari — iki yonlu yavas kayma.
+   Yuzde 50: liste iki kat basildigi icin yarida basa donunce sicrama olmaz. */
+@keyframes auth-drift-up {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+@keyframes auth-drift-down {
+  from { transform: translateY(-50%); }
+  to   { transform: translateY(0); }
+}
+.animate-auth-drift-up { animation: auth-drift-up 54s linear infinite; }
+.animate-auth-drift-down { animation: auth-drift-down 46s linear infinite; }
+
+/* Hareket azaltma tercihinde duvar SABIT durur; surekli kayan bir arka plan
+   bu tercihi acan kullanici icin rahatsiz edici. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-auth-drift-up,
+  .animate-auth-drift-down { animation: none; }
+}
+
+/* Yatay kaydırma satırları — native scrollbar gizleme */
+.homepage-scroll-row {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.homepage-scroll-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* Genel scrollbar gizleme utility */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-fade-in {
+    animation: none !important;
+  }
+}
+
+/* ===========================
+   SAYFA ARKA PLAN PATERNLERİ
+   Dot-grid pattern — sayfaların boş hissini azaltır
+   =========================== */
+.page-pattern-dots {
+  background-image: radial-gradient(circle, oklch(0 0 0 / 5%) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.dark .page-pattern-dots {
+  background-image: radial-gradient(circle, oklch(1 0 0 / 3.5%) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Diagonal cross-hatch pattern — alternatif */
+.page-pattern-grid {
+  background-image:
+    linear-gradient(oklch(0 0 0 / 3%) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0 0 0 / 3%) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.dark .page-pattern-grid {
+  background-image:
+    linear-gradient(oklch(1 0 0 / 2.5%) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(1 0 0 / 2.5%) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+@media(min-width:1024px) {html[data-desktop-reduced-motion="true"] *,html[data-desktop-reduced-motion="true"] *::before,html[data-desktop-reduced-motion="true"] *::after {animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}

@@ -1,0 +1,129 @@
+/*
+  Murek'in Oyun Kosesi gorsel dili: piksel cerceve (kosesi kirik dis hat), piksel dugme, izgarali
+  sahne. Kenar cizgileri box-shadow ile cizilir; border-radius kullanilmaz (kirik koseler piksel
+  hissini verir). Renkler tema tokenlarindan; acik ve koyu temada calisir.
+*/
+.arcade {
+  --px: 3px;
+  --arcade-ink: #7c6cff;
+  --arcade-coin: #f5b83d;
+  --arcade-good: #2fbf71;
+  --arcade-bad: #ef5a6f;
+  --arcade-line: color-mix(in srgb, var(--foreground) 16%, transparent);
+  --arcade-grid: color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+
+/* Piksel cerceve: kosesi kirik dis hat. */
+.px-frame {
+  position: relative;
+  background: var(--card);
+  box-shadow:
+    0 calc(-1 * var(--px)) 0 0 var(--arcade-line),
+    0 var(--px) 0 0 var(--arcade-line),
+    calc(-1 * var(--px)) 0 0 0 var(--arcade-line),
+    var(--px) 0 0 0 var(--arcade-line);
+  margin: var(--px);
+}
+.px-frame[data-tone='ink'] { --arcade-line: color-mix(in srgb, var(--arcade-ink) 70%, transparent); }
+.px-frame[data-tone='coin'] { --arcade-line: color-mix(in srgb, var(--arcade-coin) 75%, transparent); }
+.px-frame[data-tone='good'] { --arcade-line: color-mix(in srgb, var(--arcade-good) 70%, transparent); }
+.px-frame[data-tone='bad'] { --arcade-line: color-mix(in srgb, var(--arcade-bad) 60%, transparent); }
+
+a.px-frame, button.px-frame { transition: transform 120ms steps(2, end); }
+a.px-frame:hover, button.px-frame:hover { transform: translate(0, -3px); --arcade-line: color-mix(in srgb, var(--arcade-ink) 80%, transparent); }
+
+/* Izgarali sahne + Murek moru isik. */
+.arcade-stage {
+  background-color: var(--card);
+  background-image:
+    radial-gradient(60% 90% at 18% 70%, color-mix(in srgb, var(--arcade-ink) 22%, transparent), transparent 70%),
+    linear-gradient(to right, var(--arcade-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--arcade-grid) 1px, transparent 1px);
+  background-size: auto, 16px 16px, 16px 16px;
+}
+
+/* Piksel zemin seridi (kosu sahnesi, kahraman alani). */
+.arcade-ground {
+  height: 6px;
+  background-image: linear-gradient(to right, var(--arcade-line) 50%, transparent 50%);
+  background-size: 12px 6px;
+}
+.arcade-ground[data-moving='true'] { animation: arcade-ground 0.5s steps(4, end) infinite; }
+@keyframes arcade-ground { to { background-position: -12px 0; } }
+
+/* Piksel dugme: alttan golgeli, basinca coker. */
+.px-btn {
+  --btn-bg: var(--arcade-ink);
+  --btn-fg: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1.15rem;
+  margin: var(--px);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-weight: 900;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  box-shadow:
+    inset 0 calc(-1 * var(--px)) 0 0 rgb(0 0 0 / 0.28),
+    0 calc(-1 * var(--px)) 0 0 var(--btn-bg),
+    0 var(--px) 0 0 var(--btn-bg),
+    calc(-1 * var(--px)) 0 0 0 var(--btn-bg),
+    var(--px) 0 0 0 var(--btn-bg);
+  transition: transform 80ms steps(1, end);
+  user-select: none;
+}
+.px-btn:hover { filter: brightness(1.08); }
+.px-btn:active { transform: translateY(2px); box-shadow: 0 calc(-1 * var(--px)) 0 0 var(--btn-bg), 0 var(--px) 0 0 var(--btn-bg), calc(-1 * var(--px)) 0 0 0 var(--btn-bg), var(--px) 0 0 0 var(--btn-bg); }
+.px-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+.px-btn[data-variant='ghost'] { --btn-bg: color-mix(in srgb, var(--foreground) 10%, var(--card)); --btn-fg: var(--foreground); }
+.px-btn[data-variant='coin'] { --btn-bg: var(--arcade-coin); --btn-fg: #2b1d00; }
+
+/* Konusma balonu: piksel dis hat + kucuk kuyruk. */
+.px-bubble {
+  position: relative;
+  background: var(--background);
+  color: var(--foreground);
+  padding: 0.6rem 0.85rem;
+  margin: var(--px);
+  box-shadow:
+    0 calc(-1 * var(--px)) 0 0 var(--arcade-line),
+    0 var(--px) 0 0 var(--arcade-line),
+    calc(-1 * var(--px)) 0 0 0 var(--arcade-line),
+    var(--px) 0 0 0 var(--arcade-line);
+}
+.px-bubble::before,
+.px-bubble::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--arcade-line);
+}
+.px-bubble::before { left: -12px; bottom: 6px; }
+.px-bubble::after { left: -18px; bottom: 0; }
+
+/* Coin olcer bloklari. */
+.px-meter { display: flex; gap: 3px; }
+.px-meter > span { width: 10px; height: 12px; background: color-mix(in srgb, var(--foreground) 12%, transparent); }
+.px-meter > span[data-on='true'] { background: var(--arcade-coin); box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.22); }
+
+/* Tahmin kareleri (Wordle hissi). */
+.px-dot { width: 14px; height: 14px; background: color-mix(in srgb, var(--foreground) 12%, transparent); }
+.px-dot[data-state='bad'] { background: var(--arcade-bad); }
+.px-dot[data-state='good'] { background: var(--arcade-good); }
+
+/* Kart cevirme (Kapak Esle). */
+.flip-card { perspective: 800px; }
+.flip-card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 260ms steps(4, end); }
+.flip-card[data-open='true'] .flip-card-inner { transform: rotateY(180deg); }
+.flip-card-face { position: absolute; inset: 0; backface-visibility: hidden; }
+.flip-card-front { transform: rotateY(180deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .arcade-ground[data-moving='true'] { animation: none; }
+  .flip-card-inner { transition: none; }
+}

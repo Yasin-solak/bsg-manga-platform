@@ -1,0 +1,51 @@
+.desktop-settings {display:flex;width:100%;max-width:1640px;min-height:calc(100vh - 1px);font-family:Inter,sans-serif}
+.settings-nav {flex:none;width:293px;padding:24px 16px;border-right:1px solid var(--border)}
+.settings-nav h1 {margin:0 0 16px;padding:0 10px;font-size:24px;line-height:normal;font-weight:900;letter-spacing:-.02em}
+.settings-nav button {display:flex;align-items:center;gap:11px;width:100%;padding:10px 12px;margin-bottom:5px;border:0;border-radius:12px;text-align:left;font-size:14px;line-height:normal;font-weight:600;color:var(--foreground)}
+.settings-nav button[aria-current],.settings-nav button:hover {background:var(--accent);color:var(--primary)}
+.settings-content {min-width:0;flex:1;max-width:944px;padding:24px 32px 56px}
+.settings-content>h2 {margin:0;font-size:22px;line-height:normal;font-weight:800;letter-spacing:-.015em}
+.settings-description {margin:7px 0 0;font-size:14px;line-height:1.55;color:var(--muted-foreground);text-wrap:pretty}
+.settings-rows {display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.settings-row {display:flex;align-items:center;gap:20px;padding:18px;border:1px solid var(--border);border-radius:12px;background:var(--card)}
+.settings-row-copy {min-width:0;flex:1}
+.settings-row h3 {margin:0;font-size:15px;font-weight:700;line-height:1.2}
+.settings-row-description {margin:4px 0 0;font-size:13px;font-weight:500;line-height:1.5;color:var(--muted-foreground);text-wrap:pretty;overflow-wrap:anywhere}
+.settings-row select,.settings-action {flex:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:38px;padding:7px 13px;border:1px solid var(--border);border-radius:10px;background:transparent;font-size:13.5px;font-weight:700;color:var(--foreground)}
+.settings-row select {max-width:210px;background:var(--card)}
+.settings-value {flex:none;font-size:13px;font-weight:600;color:var(--muted-foreground)}
+.settings-switch {flex:none;width:52px;height:30px;position:relative;border:0;border-radius:99px;background:var(--muted-foreground)}
+.settings-switch[aria-checked="true"] {background:var(--primary)}
+.settings-switch>span {position:absolute;top:4px;left:4px;width:22px;height:22px;border-radius:50%;background:var(--background);transition:left .16s ease}
+.settings-switch[aria-checked="true"]>span {left:26px}
+.settings-save {align-self:flex-start;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700;background:var(--primary);color:var(--primary-foreground)}
+.settings-note {font-size:12px;line-height:1.6;color:var(--muted-foreground);margin-top:5px}
+.settings-error {font-size:13px;color:var(--destructive)}
+.desktop-settings :is(button,select,a):focus-visible {outline:2px solid var(--primary);outline-offset:3px}
+.desktop-settings button:disabled {opacity:.5;cursor:wait}
+.desktop-settings [role="switch"]:not(.settings-switch) {border-radius:12px;padding:18px;background:var(--card)}
+.desktop-settings [role="switch"]:not(.settings-switch)>span:last-child {width:52px;height:30px;padding:4px}
+.desktop-settings [role="switch"]:not(.settings-switch)>span:last-child>span {width:22px;height:22px;flex-shrink:0}
+.desktop-settings [role="switch"][aria-checked="true"]:not(.settings-switch)>span:last-child>span {translate:22px 0;transform:none}
+@media(max-width:1023px) {.desktop-settings {flex-direction:column;min-height:70vh}.settings-nav {width:100%;border-right:0;border-bottom:1px solid var(--border);padding:16px;display:flex;overflow-x:auto;gap:4px;align-items:center}.settings-nav h1 {font-size:20px;margin:0 8px 0 0;padding:0}.settings-nav button {width:auto;white-space:nowrap;margin:0;padding:10px}.settings-content {padding:20px 16px 40px;width:100%}.settings-row {padding:14px;gap:12px;flex-wrap:wrap}.settings-row-copy {flex-basis:55%}.settings-row select {max-width:100%;font-size:12px}}
+
+.settings-support-form,.settings-support-ticket {display:flex;flex-direction:column;gap:14px;border:1px solid var(--border);border-radius:12px;background:var(--card);padding:20px}
+.settings-support-form h3 {font-size:16px;font-weight:700}
+.settings-support-form p,.settings-support-form small,.settings-support-ticket small {font-size:12px;line-height:1.6;color:var(--muted-foreground)}
+.settings-support-form label {display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:600}
+.settings-support-form :is(input,textarea,select) {width:100%;border:1px solid var(--border);border-radius:10px;background:var(--background);color:var(--foreground);padding:11px;font:inherit}
+.settings-support-form textarea {resize:vertical;min-height:100px}
+.settings-support-ticket p {white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.6}
+.settings-support-ticket blockquote {border-left:3px solid var(--primary);padding:12px;background:var(--accent);border-radius:8px}
+
+.settings-support-dialog {max-height:85dvh;overflow-y:auto;overscroll-behavior:contain}
+.settings-dialog-stack {display:flex;flex-direction:column;gap:14px;min-width:0}
+.settings-support-dialog>.settings-support-form {margin-top:4px}
+.settings-report-preview {max-height:240px;overflow:auto;border:1px solid var(--border);border-radius:8px;padding:12px;background:var(--accent);font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.settings-support-form .settings-support-checkbox {flex-direction:row;align-items:center;gap:10px}
+.settings-support-form .settings-support-checkbox input {width:18px;height:18px;flex:none;accent-color:var(--primary)}
+.settings-support-dialog :is(button,a,input,textarea,select,summary):focus-visible {outline:2px solid var(--primary);outline-offset:3px}
+.settings-support-dialog button:disabled {opacity:.5;cursor:not-allowed}
+
+.settings-screenshot-preview {display:block;max-width:100%;max-height:340px;object-fit:contain;border:1px solid var(--border);border-radius:10px;background:var(--accent)}
+.settings-metric-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}

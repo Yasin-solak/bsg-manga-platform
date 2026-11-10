@@ -1,0 +1,13 @@
+# Default ownership
+* @Yasin-solak
+
+# Critical platform and automation areas
+/.github/ @Yasin-solak
+/functions/ @Yasin-solak
+/supabase/ @Yasin-solak
+/tests/ @Yasin-solak
+
+# App and product area
+/src/ @Yasin-solak
+/public/ @Yasin-solak
+/docs/ @Yasin-solak

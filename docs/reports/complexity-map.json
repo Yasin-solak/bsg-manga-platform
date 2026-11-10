@@ -1,0 +1,1396 @@
+{
+  "summary": {
+    "appFileCount": 1163,
+    "cycleCount": 3,
+    "averageImportDepth": 4.02,
+    "maxImportDepth": 14,
+    "topRiskModuleCount": 10,
+    "untestedComplexModuleCount": 15
+  },
+  "cycles": [
+    {
+      "signature": "src/components/store/StorePurchaseFlow.tsx -> src/components/store/StorePurchaseTargetSelect.tsx -> src/components/store/StorePurchaseFlow.tsx",
+      "nodes": [
+        "src/components/store/StorePurchaseFlow.tsx",
+        "src/components/store/StorePurchaseTargetSelect.tsx",
+        "src/components/store/StorePurchaseFlow.tsx"
+      ]
+    },
+    {
+      "signature": "src/components/store/StorePurchaseFlow.tsx -> src/components/store/storeFansubPurchase.ts -> src/components/store/StorePurchaseFlow.tsx",
+      "nodes": [
+        "src/components/store/StorePurchaseFlow.tsx",
+        "src/components/store/storeFansubPurchase.ts",
+        "src/components/store/StorePurchaseFlow.tsx"
+      ]
+    },
+    {
+      "signature": "src/pages/profile/profilePageLoader.ts -> src/pages/profile/profileE2eSnapshot.ts -> src/pages/profile/profilePageLoader.ts",
+      "nodes": [
+        "src/pages/profile/profilePageLoader.ts",
+        "src/pages/profile/profileE2eSnapshot.ts",
+        "src/pages/profile/profilePageLoader.ts"
+      ]
+    }
+  ],
+  "topRiskModules": [
+    {
+      "relativePath": "src/lib/utils.ts",
+      "lineCount": 7,
+      "fanIn": 280,
+      "fanOut": 0,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 339,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/components/ui/button.tsx",
+      "lineCount": 74,
+      "fanIn": 262,
+      "fanOut": 1,
+      "matchedTests": [],
+      "commentDensity": 0.014,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 320,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/components/ui/badge.tsx",
+      "lineCount": 49,
+      "fanIn": 194,
+      "fanOut": 1,
+      "matchedTests": [],
+      "commentDensity": 0.02,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 238,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/services/supabase.ts",
+      "lineCount": 224,
+      "fanIn": 169,
+      "fanOut": 0,
+      "matchedTests": [
+        "tests/contracts/supabase-advisor-performance-policy-cleanup-contract.test.mjs",
+        "tests/contracts/supabase-app-private-definer-execute-scope-contract.test.mjs",
+        "tests/contracts/supabase-app-private-helper-public-execute-cleanup-contract.test.mjs",
+        "tests/contracts/supabase-auth-required-rpc-anon-cleanup-contract.test.mjs",
+        "tests/contracts/supabase-authenticated-definer-private-wrappers-contract.test.mjs",
+        "tests/contracts/supabase-authenticated-policy-helper-private-cleanup-contract.test.mjs",
+        "tests/contracts/supabase-avatar-public-user-path-case-fallback-contract.test.mjs",
+        "tests/contracts/supabase-avatar-storage-owner-fallback-contract.test.mjs",
+        "tests/contracts/supabase-avatar-storage-user-path-policy-contract.test.mjs",
+        "tests/contracts/supabase-avatar-upload-policy-case-short-circuit-contract.test.mjs",
+        "tests/contracts/supabase-community-like-state-invoker-contract.test.mjs",
+        "tests/contracts/supabase-community-post-image-storage-private-helper-contract.test.mjs",
+        "tests/contracts/supabase-community-public-read-rpc-invoker-contract.test.mjs",
+        "tests/contracts/supabase-core-rls-helper-private-policy-rewrite-contract.test.mjs",
+        "tests/contracts/supabase-helper-rpc-direct-grant-cleanup-contract.test.mjs",
+        "tests/contracts/supabase-invoker-rpc-private-helper-body-rewrite-contract.test.mjs",
+        "tests/contracts/supabase-live-advisor-hardening-contract.test.mjs",
+        "tests/contracts/supabase-live-public-runtime-alignment-contract.test.mjs",
+        "tests/contracts/supabase-live-release-schedule-and-session-claim-hotfix-contract.test.mjs",
+        "tests/contracts/supabase-live-runtime-storage-schema-repair-bundle-contract.test.mjs",
+        "tests/contracts/supabase-private-feature-flag-trigger-helper-contract.test.mjs",
+        "tests/contracts/supabase-private-rls-helper-migration-small-batch-contract.test.mjs",
+        "tests/contracts/supabase-public-for-all-policy-split-contract.test.mjs",
+        "tests/contracts/supabase-public-invoker-helper-regression-contract.test.mjs",
+        "tests/contracts/supabase-public-read-rpc-security-invoker-contract.test.mjs",
+        "tests/contracts/supabase-remaining-anon-definer-private-wrappers-contract.test.mjs",
+        "tests/contracts/supabase-remaining-multiple-select-policy-split-contract.test.mjs",
+        "tests/contracts/supabase-rls-initplan-policy-optimization-contract.test.mjs",
+        "tests/contracts/supabase-security-advisor-cleanup-contract.test.mjs",
+        "tests/contracts/supabase-storage-acl-and-helper-grants-repair-contract.test.mjs",
+        "tests/contracts/supabase-storage-and-rpc-hardening-contract.test.mjs",
+        "tests/contracts/supabase-storage-helper-owner-repair-contract.test.mjs",
+        "tests/contracts/supabase-storage-jwt-helper-definer-repair-contract.test.mjs",
+        "tests/contracts/supabase-storage-jwt-sub-identity-repair-contract.test.mjs",
+        "tests/contracts/supabase-storage-policy-definer-jwt-repair-contract.test.mjs",
+        "tests/contracts/supabase-storage-policy-inline-jwt-subject-contract.test.mjs",
+        "tests/contracts/supabase-storage-session-helper-execute-grants-contract.test.mjs",
+        "tests/contracts/supabase-store-purchase-sensitive-update-flag-contract.test.mjs",
+        "tests/contracts/supabase-track-manga-read-counter-guard-contract.test.mjs",
+        "tests/contracts/supabase-unindexed-foreign-key-indexes-contract.test.mjs"
+      ],
+      "commentDensity": 0.076,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 205,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/data/storeProducts.ts",
+      "lineCount": 245,
+      "fanIn": 115,
+      "fanOut": 1,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 145,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/services/logger.ts",
+      "lineCount": 125,
+      "fanIn": 105,
+      "fanOut": 0,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 130,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/components/ui/input.tsx",
+      "lineCount": 26,
+      "fanIn": 98,
+      "fanOut": 1,
+      "matchedTests": [],
+      "commentDensity": 0.038,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 122,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/services/toastService.ts",
+      "lineCount": 120,
+      "fanIn": 94,
+      "fanOut": 0,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 117,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/types/index.ts",
+      "lineCount": 403,
+      "fanIn": 85,
+      "fanOut": 2,
+      "matchedTests": [],
+      "commentDensity": 0.201,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 112,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/services/requestContext.ts",
+      "lineCount": 39,
+      "fanIn": 82,
+      "fanOut": 0,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 102,
+      "hasCatch": false
+    }
+  ],
+  "untestedComplexModules": [
+    {
+      "relativePath": "src/pages/StoreComponentsLabPage.tsx",
+      "lineCount": 940,
+      "fanIn": 0,
+      "fanOut": 12,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": true,
+      "riskScore": 29,
+      "hasCatch": true
+    },
+    {
+      "relativePath": "src/services/fansubBoostService.ts",
+      "lineCount": 887,
+      "fanIn": 37,
+      "fanOut": 10,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 70,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/testing/e2eMocks.ts",
+      "lineCount": 851,
+      "fanIn": 28,
+      "fanOut": 6,
+      "matchedTests": [],
+      "commentDensity": 0.007,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 54,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/pages/communityDetail/useCommunityDetailController.ts",
+      "lineCount": 810,
+      "fanIn": 2,
+      "fanOut": 10,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 5,
+      "tutorialStyle": false,
+      "riskScore": 28,
+      "hasCatch": true
+    },
+    {
+      "relativePath": "src/pages/storeStudio/storeStudioPreviewConfig.ts",
+      "lineCount": 794,
+      "fanIn": 7,
+      "fanOut": 5,
+      "matchedTests": [],
+      "commentDensity": 0.011,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 26,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/pages/StorePage.tsx",
+      "lineCount": 779,
+      "fanIn": 0,
+      "fanOut": 22,
+      "matchedTests": [],
+      "commentDensity": 0.01,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 42,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/pages/MangaListsPage.tsx",
+      "lineCount": 777,
+      "fanIn": 0,
+      "fanOut": 16,
+      "matchedTests": [],
+      "commentDensity": 0.009,
+      "asyncAwaitCount": 5,
+      "tutorialStyle": false,
+      "riskScore": 33,
+      "hasCatch": true
+    },
+    {
+      "relativePath": "src/pages/fansubYonet/FansubYonetBoostTab.tsx",
+      "lineCount": 775,
+      "fanIn": 1,
+      "fanOut": 11,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 27,
+      "hasCatch": true
+    },
+    {
+      "relativePath": "src/services/fansubSupporterAssetService.ts",
+      "lineCount": 771,
+      "fanIn": 14,
+      "fanOut": 8,
+      "matchedTests": [],
+      "commentDensity": 0.008,
+      "asyncAwaitCount": 1,
+      "tutorialStyle": false,
+      "riskScore": 39,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/pages/MangaDetailPage.tsx",
+      "lineCount": 765,
+      "fanIn": 0,
+      "fanOut": 21,
+      "matchedTests": [],
+      "commentDensity": 0.026,
+      "asyncAwaitCount": 2,
+      "tutorialStyle": false,
+      "riskScore": 40,
+      "hasCatch": true
+    },
+    {
+      "relativePath": "src/pages/ReleaseSchedulePage.tsx",
+      "lineCount": 738,
+      "fanIn": 0,
+      "fanOut": 14,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 3,
+      "tutorialStyle": false,
+      "riskScore": 30,
+      "hasCatch": true
+    },
+    {
+      "relativePath": "src/data/nameTextEffects.ts",
+      "lineCount": 736,
+      "fanIn": 21,
+      "fanOut": 0,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 36,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/components/common/CommentThread/CommentThread.tsx",
+      "lineCount": 727,
+      "fanIn": 0,
+      "fanOut": 7,
+      "matchedTests": [],
+      "commentDensity": 0.083,
+      "asyncAwaitCount": 1,
+      "tutorialStyle": false,
+      "riskScore": 20,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/pages/MangaReaderPage.tsx",
+      "lineCount": 726,
+      "fanIn": 0,
+      "fanOut": 16,
+      "matchedTests": [],
+      "commentDensity": 0.006,
+      "asyncAwaitCount": 1,
+      "tutorialStyle": false,
+      "riskScore": 33,
+      "hasCatch": true
+    },
+    {
+      "relativePath": "src/services/storageService/uploads.ts",
+      "lineCount": 720,
+      "fanIn": 2,
+      "fanOut": 8,
+      "matchedTests": [],
+      "commentDensity": 0.015,
+      "asyncAwaitCount": 6,
+      "tutorialStyle": false,
+      "riskScore": 24,
+      "hasCatch": true
+    }
+  ],
+  "fanInLeaders": [
+    {
+      "relativePath": "src/lib/utils.ts",
+      "lineCount": 7,
+      "fanIn": 280,
+      "fanOut": 0,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 339,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/components/ui/button.tsx",
+      "lineCount": 74,
+      "fanIn": 262,
+      "fanOut": 1,
+      "matchedTests": [],
+      "commentDensity": 0.014,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 320,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/components/ui/badge.tsx",
+      "lineCount": 49,
+      "fanIn": 194,
+      "fanOut": 1,
+      "matchedTests": [],
+      "commentDensity": 0.02,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 238,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/services/supabase.ts",
+      "lineCount": 224,
+      "fanIn": 169,
+      "fanOut": 0,
+      "matchedTests": [
+        "tests/contracts/supabase-advisor-performance-policy-cleanup-contract.test.mjs",
+        "tests/contracts/supabase-app-private-definer-execute-scope-contract.test.mjs",
+        "tests/contracts/supabase-app-private-helper-public-execute-cleanup-contract.test.mjs",
+        "tests/contracts/supabase-auth-required-rpc-anon-cleanup-contract.test.mjs",
+        "tests/contracts/supabase-authenticated-definer-private-wrappers-contract.test.mjs",
+        "tests/contracts/supabase-authenticated-policy-helper-private-cleanup-contract.test.mjs",
+        "tests/contracts/supabase-avatar-public-user-path-case-fallback-contract.test.mjs",
+        "tests/contracts/supabase-avatar-storage-owner-fallback-contract.test.mjs",
+        "tests/contracts/supabase-avatar-storage-user-path-policy-contract.test.mjs",
+        "tests/contracts/supabase-avatar-upload-policy-case-short-circuit-contract.test.mjs",
+        "tests/contracts/supabase-community-like-state-invoker-contract.test.mjs",
+        "tests/contracts/supabase-community-post-image-storage-private-helper-contract.test.mjs",
+        "tests/contracts/supabase-community-public-read-rpc-invoker-contract.test.mjs",
+        "tests/contracts/supabase-core-rls-helper-private-policy-rewrite-contract.test.mjs",
+        "tests/contracts/supabase-helper-rpc-direct-grant-cleanup-contract.test.mjs",
+        "tests/contracts/supabase-invoker-rpc-private-helper-body-rewrite-contract.test.mjs",
+        "tests/contracts/supabase-live-advisor-hardening-contract.test.mjs",
+        "tests/contracts/supabase-live-public-runtime-alignment-contract.test.mjs",
+        "tests/contracts/supabase-live-release-schedule-and-session-claim-hotfix-contract.test.mjs",
+        "tests/contracts/supabase-live-runtime-storage-schema-repair-bundle-contract.test.mjs",
+        "tests/contracts/supabase-private-feature-flag-trigger-helper-contract.test.mjs",
+        "tests/contracts/supabase-private-rls-helper-migration-small-batch-contract.test.mjs",
+        "tests/contracts/supabase-public-for-all-policy-split-contract.test.mjs",
+        "tests/contracts/supabase-public-invoker-helper-regression-contract.test.mjs",
+        "tests/contracts/supabase-public-read-rpc-security-invoker-contract.test.mjs",
+        "tests/contracts/supabase-remaining-anon-definer-private-wrappers-contract.test.mjs",
+        "tests/contracts/supabase-remaining-multiple-select-policy-split-contract.test.mjs",
+        "tests/contracts/supabase-rls-initplan-policy-optimization-contract.test.mjs",
+        "tests/contracts/supabase-security-advisor-cleanup-contract.test.mjs",
+        "tests/contracts/supabase-storage-acl-and-helper-grants-repair-contract.test.mjs",
+        "tests/contracts/supabase-storage-and-rpc-hardening-contract.test.mjs",
+        "tests/contracts/supabase-storage-helper-owner-repair-contract.test.mjs",
+        "tests/contracts/supabase-storage-jwt-helper-definer-repair-contract.test.mjs",
+        "tests/contracts/supabase-storage-jwt-sub-identity-repair-contract.test.mjs",
+        "tests/contracts/supabase-storage-policy-definer-jwt-repair-contract.test.mjs",
+        "tests/contracts/supabase-storage-policy-inline-jwt-subject-contract.test.mjs",
+        "tests/contracts/supabase-storage-session-helper-execute-grants-contract.test.mjs",
+        "tests/contracts/supabase-store-purchase-sensitive-update-flag-contract.test.mjs",
+        "tests/contracts/supabase-track-manga-read-counter-guard-contract.test.mjs",
+        "tests/contracts/supabase-unindexed-foreign-key-indexes-contract.test.mjs"
+      ],
+      "commentDensity": 0.076,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 205,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/data/storeProducts.ts",
+      "lineCount": 245,
+      "fanIn": 115,
+      "fanOut": 1,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 145,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/services/logger.ts",
+      "lineCount": 125,
+      "fanIn": 105,
+      "fanOut": 0,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 130,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/components/ui/input.tsx",
+      "lineCount": 26,
+      "fanIn": 98,
+      "fanOut": 1,
+      "matchedTests": [],
+      "commentDensity": 0.038,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 122,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/services/toastService.ts",
+      "lineCount": 120,
+      "fanIn": 94,
+      "fanOut": 0,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 117,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/types/index.ts",
+      "lineCount": 403,
+      "fanIn": 85,
+      "fanOut": 2,
+      "matchedTests": [],
+      "commentDensity": 0.201,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 112,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/services/requestContext.ts",
+      "lineCount": 39,
+      "fanIn": 82,
+      "fanOut": 0,
+      "matchedTests": [],
+      "commentDensity": 0,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 102,
+      "hasCatch": false
+    }
+  ],
+  "fanOutLeaders": [
+    {
+      "relativePath": "src/pages/FansubYonetPage.tsx",
+      "lineCount": 500,
+      "fanIn": 0,
+      "fanOut": 27,
+      "matchedTests": [],
+      "commentDensity": 0.048,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 46,
+      "hasCatch": true
+    },
+    {
+      "relativePath": "src/components/fansub/FansubEditModal.tsx",
+      "lineCount": 805,
+      "fanIn": 1,
+      "fanOut": 26,
+      "matchedTests": [
+        "tests/contracts/fansub-audit-trigger-coverage-contract.test.mjs",
+        "tests/contracts/fansub-boost-background-security-contract.test.mjs",
+        "tests/contracts/fansub-boost-capability-governance-matrix-contract.test.mjs",
+        "tests/contracts/fansub-boost-contract.test.mjs",
+        "tests/contracts/fansub-boost-downgrade-governance-contract.test.mjs",
+        "tests/contracts/fansub-boost-preview-hardening-contract.test.mjs",
+        "tests/contracts/fansub-boost-public-bundle-contract.test.mjs",
+        "tests/contracts/fansub-boost-purchase-hardening-contract.test.mjs",
+        "tests/contracts/fansub-economy-rewards-contract.test.mjs",
+        "tests/contracts/fansub-manage-audit-contract.test.mjs",
+        "tests/contracts/fansub-request-flow-v2-contract.test.mjs",
+        "tests/contracts/fansub-requests-contract.test.mjs",
+        "tests/contracts/fansub-schema-compat.test.mjs",
+        "tests/contracts/fansub-showcase-and-supporter-state-contract.test.mjs"
+      ],
+      "commentDensity": 0.012,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 46,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/pages/HomePage.tsx",
+      "lineCount": 692,
+      "fanIn": 0,
+      "fanOut": 26,
+      "matchedTests": [
+        "tests/contracts/homepage-redesign-contract.test.mjs"
+      ],
+      "commentDensity": 0.001,
+      "asyncAwaitCount": 7,
+      "tutorialStyle": true,
+      "riskScore": 43,
+      "hasCatch": true
+    },
+    {
+      "relativePath": "src/pages/profile/ProfileEditDialog.tsx",
+      "lineCount": 772,
+      "fanIn": 1,
+      "fanOut": 25,
+      "matchedTests": [
+        "tests/contracts/follow-profile-contracts.test.mjs",
+        "tests/contracts/profile-background-save-state-contract.test.mjs",
+        "tests/contracts/profile-directory-store-activity-permissions-hotfix-contract.test.mjs",
+        "tests/contracts/profile-edit-modal-preview-contract.test.mjs",
+        "tests/contracts/profile-library-hash-navigation-contract.test.mjs",
+        "tests/contracts/user-reported-profile-community-regressions.test.mjs",
+        "tests/e2e/profile-effect-sequence-lab.spec.ts",
+        "tests/e2e/store-profile-effect-gift.spec.ts"
+      ],
+      "commentDensity": 0.009,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 44,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/pages/MangaListDetailPage.tsx",
+      "lineCount": 547,
+      "fanIn": 0,
+      "fanOut": 23,
+      "matchedTests": [],
+      "commentDensity": 0.075,
+      "asyncAwaitCount": 7,
+      "tutorialStyle": true,
+      "riskScore": 41,
+      "hasCatch": true
+    },
+    {
+      "relativePath": "src/components/admin/StoreManagementSection.tsx",
+      "lineCount": 822,
+      "fanIn": 0,
+      "fanOut": 22,
+      "matchedTests": [
+        "tests/contracts/admin-comment-moderation-contract.test.mjs",
+        "tests/contracts/admin-community-cockpit-contract.test.mjs",
+        "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+        "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+        "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+      ],
+      "commentDensity": 0.026,
+      "asyncAwaitCount": 3,
+      "tutorialStyle": false,
+      "riskScore": 39,
+      "hasCatch": true
+    },
+    {
+      "relativePath": "src/pages/StorePage.tsx",
+      "lineCount": 779,
+      "fanIn": 0,
+      "fanOut": 22,
+      "matchedTests": [],
+      "commentDensity": 0.01,
+      "asyncAwaitCount": 0,
+      "tutorialStyle": false,
+      "riskScore": 42,
+      "hasCatch": false
+    },
+    {
+      "relativePath": "src/pages/admin/useAdminPageState.ts",
+      "lineCount": 371,
+      "fanIn": 1,
+      "fanOut": 22,
+      "matchedTests": [
+        "tests/contracts/admin-comment-moderation-contract.test.mjs",
+        "tests/contracts/admin-community-cockpit-contract.test.mjs",
+        "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+        "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+        "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+      ],
+      "commentDensity": 0,
+      "asyncAwaitCount": 2,
+      "tutorialStyle": true,
+      "riskScore": 36,
+      "hasCatch": true
+    },
+    {
+      "relativePath": "src/pages/MangaDetailPage.tsx",
+      "lineCount": 765,
+      "fanIn": 0,
+      "fanOut": 21,
+      "matchedTests": [],
+      "commentDensity": 0.026,
+      "asyncAwaitCount": 2,
+      "tutorialStyle": false,
+      "riskScore": 40,
+      "hasCatch": true
+    },
+    {
+      "relativePath": "src/pages/fansub/FansubContentTabs.tsx",
+      "lineCount": 871,
+      "fanIn": 1,
+      "fanOut": 21,
+      "matchedTests": [
+        "tests/contracts/fansub-audit-trigger-coverage-contract.test.mjs",
+        "tests/contracts/fansub-boost-background-security-contract.test.mjs",
+        "tests/contracts/fansub-boost-capability-governance-matrix-contract.test.mjs",
+        "tests/contracts/fansub-boost-contract.test.mjs",
+        "tests/contracts/fansub-boost-downgrade-governance-contract.test.mjs",
+        "tests/contracts/fansub-boost-preview-hardening-contract.test.mjs",
+        "tests/contracts/fansub-boost-public-bundle-contract.test.mjs",
+        "tests/contracts/fansub-boost-purchase-hardening-contract.test.mjs",
+        "tests/contracts/fansub-economy-rewards-contract.test.mjs",
+        "tests/contracts/fansub-manage-audit-contract.test.mjs",
+        "tests/contracts/fansub-request-flow-v2-contract.test.mjs",
+        "tests/contracts/fansub-requests-contract.test.mjs",
+        "tests/contracts/fansub-schema-compat.test.mjs",
+        "tests/contracts/fansub-showcase-and-supporter-state-contract.test.mjs"
+      ],
+      "commentDensity": 0.003,
+      "asyncAwaitCount": 1,
+      "tutorialStyle": false,
+      "riskScore": 39,
+      "hasCatch": true
+    }
+  ],
+  "aiCodeAudit": {
+    "highCommentDensityCandidates": [
+      {
+        "relativePath": "src/components/admin/shared/AdminFilterGroup.tsx",
+        "lineCount": 64,
+        "fanIn": 8,
+        "fanOut": 2,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/auth-shared-critical-exports.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0.094,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": false,
+        "riskScore": 13,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/shared/AdminPageShell.tsx",
+        "lineCount": 40,
+        "fanIn": 1,
+        "fanOut": 1,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/auth-shared-critical-exports.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0.2,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": false,
+        "riskScore": 3,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/shared/AdminQueueItemCard.tsx",
+        "lineCount": 120,
+        "fanIn": 2,
+        "fanOut": 1,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/auth-shared-critical-exports.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0.083,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": false,
+        "riskScore": 5,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/shared/AdminSectionHeader.tsx",
+        "lineCount": 50,
+        "fanIn": 10,
+        "fanOut": 1,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/auth-shared-critical-exports.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0.16,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": false,
+        "riskScore": 14,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/shared/AdminStatCard.tsx",
+        "lineCount": 76,
+        "fanIn": 0,
+        "fanOut": 1,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/auth-shared-critical-exports.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0.132,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": false,
+        "riskScore": 2,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/shared/AdminStateView.tsx",
+        "lineCount": 34,
+        "fanIn": 2,
+        "fanOut": 1,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/auth-shared-critical-exports.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0.088,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": false,
+        "riskScore": 4,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/shared/AdminSurface.tsx",
+        "lineCount": 37,
+        "fanIn": 7,
+        "fanOut": 1,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/auth-shared-critical-exports.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0.216,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": false,
+        "riskScore": 10,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/shared/AdminToolbar.tsx",
+        "lineCount": 31,
+        "fanIn": 3,
+        "fanOut": 1,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/auth-shared-critical-exports.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0.194,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": false,
+        "riskScore": 5,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/common/AvatarFrame/avatarFrameScene.ts",
+        "lineCount": 592,
+        "fanIn": 1,
+        "fanOut": 0,
+        "matchedTests": [],
+        "commentDensity": 0.451,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": false,
+        "riskScore": 10,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/common/BadgeDisplay/BadgeDisplay.tsx",
+        "lineCount": 230,
+        "fanIn": 0,
+        "fanOut": 2,
+        "matchedTests": [],
+        "commentDensity": 0.113,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": false,
+        "riskScore": 8,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/common/CommentThread/CommentThread.tsx",
+        "lineCount": 727,
+        "fanIn": 0,
+        "fanOut": 7,
+        "matchedTests": [],
+        "commentDensity": 0.083,
+        "asyncAwaitCount": 1,
+        "tutorialStyle": false,
+        "riskScore": 20,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/common/CommunityCard.tsx",
+        "lineCount": 239,
+        "fanIn": 0,
+        "fanOut": 5,
+        "matchedTests": [],
+        "commentDensity": 0.117,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": false,
+        "riskScore": 12,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/common/FansubCard.tsx",
+        "lineCount": 153,
+        "fanIn": 0,
+        "fanOut": 4,
+        "matchedTests": [],
+        "commentDensity": 0.111,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": false,
+        "riskScore": 10,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/common/FansubListItem.tsx",
+        "lineCount": 110,
+        "fanIn": 0,
+        "fanOut": 3,
+        "matchedTests": [],
+        "commentDensity": 0.118,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": false,
+        "riskScore": 8,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/common/FansubModal/index.ts",
+        "lineCount": 2,
+        "fanIn": 0,
+        "fanOut": 0,
+        "matchedTests": [],
+        "commentDensity": 0.5,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": false,
+        "riskScore": 3,
+        "hasCatch": false
+      }
+    ],
+    "tutorialStyleCandidates": [
+      {
+        "relativePath": "src/components/admin/AdminDashboardSection.tsx",
+        "lineCount": 352,
+        "fanIn": 0,
+        "fanOut": 11,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0.051,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": true,
+        "riskScore": 19,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/dashboard/dashboardTypes.ts",
+        "lineCount": 46,
+        "fanIn": 12,
+        "fanOut": 0,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": true,
+        "riskScore": 15,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/dashboardV2/DashboardCommerceInsightsPanel.tsx",
+        "lineCount": 213,
+        "fanIn": 0,
+        "fanOut": 7,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0.005,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": true,
+        "riskScore": 12,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/dashboardV2/DashboardControlBanner.tsx",
+        "lineCount": 122,
+        "fanIn": 0,
+        "fanOut": 5,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0.025,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": true,
+        "riskScore": 8,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/dashboardV2/DashboardDomainPlaybookPanel.tsx",
+        "lineCount": 164,
+        "fanIn": 0,
+        "fanOut": 6,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": true,
+        "riskScore": 10,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/dashboardV2/DashboardLiveFeed.tsx",
+        "lineCount": 82,
+        "fanIn": 0,
+        "fanOut": 5,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": true,
+        "riskScore": 8,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/dashboardV2/DashboardOperationsBoard.tsx",
+        "lineCount": 161,
+        "fanIn": 0,
+        "fanOut": 8,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0.012,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": true,
+        "riskScore": 13,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/dashboardV2/DashboardQuickNavigator.tsx",
+        "lineCount": 94,
+        "fanIn": 0,
+        "fanOut": 4,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": true,
+        "riskScore": 7,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/dashboardV2/DashboardSideRail.tsx",
+        "lineCount": 172,
+        "fanIn": 0,
+        "fanOut": 8,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": true,
+        "riskScore": 13,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/dashboardV2/DashboardStatStrip.tsx",
+        "lineCount": 61,
+        "fanIn": 0,
+        "fanOut": 4,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": true,
+        "riskScore": 6,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/dashboardV2/DashboardTeamMembersPanel.tsx",
+        "lineCount": 81,
+        "fanIn": 0,
+        "fanOut": 7,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": true,
+        "riskScore": 11,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/dashboardV2/dashboardV2Model.ts",
+        "lineCount": 455,
+        "fanIn": 10,
+        "fanOut": 5,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0.011,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": true,
+        "riskScore": 24,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/dashboardV2/dashboardV2Types.ts",
+        "lineCount": 88,
+        "fanIn": 6,
+        "fanOut": 1,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": true,
+        "riskScore": 9,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/rewards/AdminReadingStreakRewardsCard.tsx",
+        "lineCount": 370,
+        "fanIn": 1,
+        "fanOut": 10,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/fansub-economy-rewards-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 0,
+        "tutorialStyle": true,
+        "riskScore": 19,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/components/admin/rewards/useAdminReadingStreakRewards.ts",
+        "lineCount": 144,
+        "fanIn": 1,
+        "fanOut": 4,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/fansub-economy-rewards-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 2,
+        "tutorialStyle": true,
+        "riskScore": 8,
+        "hasCatch": true
+      }
+    ],
+    "catchlessAsyncCandidates": [
+      {
+        "relativePath": "src/components/admin/sections/AdminCommunitySection.tsx",
+        "lineCount": 514,
+        "fanIn": 1,
+        "fanOut": 9,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/admin-community-cockpit-contract.test.mjs",
+          "tests/contracts/store-admin-mutation-security-contract.test.mjs",
+          "tests/contracts/store-commerce-admin-adjustments-contract.test.mjs",
+          "tests/e2e/admin-boost-downgrade-smoke.spec.ts"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 5,
+        "tutorialStyle": true,
+        "riskScore": 21,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/pages/ExplorePage.tsx",
+        "lineCount": 586,
+        "fanIn": 0,
+        "fanOut": 10,
+        "matchedTests": [],
+        "commentDensity": 0,
+        "asyncAwaitCount": 4,
+        "tutorialStyle": false,
+        "riskScore": 25,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/services/adminService/mangaControl.mutations.feedback.ts",
+        "lineCount": 137,
+        "fanIn": 0,
+        "fanOut": 3,
+        "matchedTests": [],
+        "commentDensity": 0,
+        "asyncAwaitCount": 5,
+        "tutorialStyle": false,
+        "riskScore": 11,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/services/badgeService/fansubBadges.ts",
+        "lineCount": 91,
+        "fanIn": 0,
+        "fanOut": 3,
+        "matchedTests": [],
+        "commentDensity": 0.022,
+        "asyncAwaitCount": 5,
+        "tutorialStyle": false,
+        "riskScore": 10,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/services/badgeService/userBadges.ts",
+        "lineCount": 114,
+        "fanIn": 0,
+        "fanOut": 3,
+        "matchedTests": [],
+        "commentDensity": 0,
+        "asyncAwaitCount": 5,
+        "tutorialStyle": false,
+        "riskScore": 10,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/services/communityService/moderation.ts",
+        "lineCount": 164,
+        "fanIn": 0,
+        "fanOut": 3,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/security-moderation-privacy-hardening-contract.test.mjs"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 6,
+        "tutorialStyle": false,
+        "riskScore": 8,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/services/fansubService/management.ts",
+        "lineCount": 318,
+        "fanIn": 1,
+        "fanOut": 10,
+        "matchedTests": [
+          "tests/e2e/chapter-credit-management.spec.ts"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 5,
+        "tutorialStyle": false,
+        "riskScore": 20,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/services/mangaService/moderation.actions.ts",
+        "lineCount": 45,
+        "fanIn": 0,
+        "fanOut": 2,
+        "matchedTests": [
+          "tests/contracts/admin-comment-moderation-contract.test.mjs",
+          "tests/contracts/security-moderation-privacy-hardening-contract.test.mjs"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 4,
+        "tutorialStyle": false,
+        "riskScore": 5,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/services/rewardService/adminTasks.ts",
+        "lineCount": 204,
+        "fanIn": 0,
+        "fanOut": 3,
+        "matchedTests": [],
+        "commentDensity": 0,
+        "asyncAwaitCount": 5,
+        "tutorialStyle": false,
+        "riskScore": 11,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/services/rewardService/streakRewards.ts",
+        "lineCount": 236,
+        "fanIn": 0,
+        "fanOut": 2,
+        "matchedTests": [],
+        "commentDensity": 0,
+        "asyncAwaitCount": 5,
+        "tutorialStyle": false,
+        "riskScore": 10,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/services/userService/activity.ts",
+        "lineCount": 286,
+        "fanIn": 1,
+        "fanOut": 3,
+        "matchedTests": [
+          "tests/contracts/profile-directory-store-activity-permissions-hotfix-contract.test.mjs",
+          "tests/contracts/store-wishlist-and-user-activity-contract.test.mjs"
+        ],
+        "commentDensity": 0,
+        "asyncAwaitCount": 4,
+        "tutorialStyle": false,
+        "riskScore": 10,
+        "hasCatch": false
+      },
+      {
+        "relativePath": "src/services/userService/follows.ts",
+        "lineCount": 357,
+        "fanIn": 2,
+        "fanOut": 5,
+        "matchedTests": [],
+        "commentDensity": 0.003,
+        "asyncAwaitCount": 10,
+        "tutorialStyle": false,
+        "riskScore": 18,
+        "hasCatch": false
+      }
+    ]
+  }
+}

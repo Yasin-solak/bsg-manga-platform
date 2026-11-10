@@ -1,0 +1,2 @@
+create index diagnostic_access_actor_idx on support_internal.diagnostic_access(actor);
+create index diagnostic_access_created_idx on support_internal.diagnostic_access(created_at);

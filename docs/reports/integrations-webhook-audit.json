@@ -1,0 +1,204 @@
+{
+  "summary": {
+    "webhookSurfaceCount": 0,
+    "oauthSurfaceCount": 3,
+    "externalUrlFileCount": 112,
+    "supabaseIntegrationCount": 496,
+    "cloudflareIntegrationCount": 19
+  },
+  "webhookFiles": [],
+  "oauthFiles": [
+    "src/components/common/CommunityCard.tsx",
+    "src/contexts/AuthContext.tsx",
+    "src/services/storageService/bulkWebpConverter.ts"
+  ],
+  "externalUrlFiles": [
+    {
+      "relativePath": ".github/workflows/ci.yml",
+      "urls": [
+        "https://placeholder.supabase.co"
+      ]
+    },
+    {
+      "relativePath": "scripts/build-boost-tab-art-pack.mjs",
+      "urls": [
+        "http://www.w3.org/2000/svg"
+      ]
+    },
+    {
+      "relativePath": "scripts/dev-user-avatar-upload-proxy.mjs",
+      "urls": [
+        "http://localhost/api/storage/upload"
+      ]
+    },
+    {
+      "relativePath": "scripts/extract-boost-tab-assets-curated.mjs",
+      "urls": [
+        "http://www.w3.org/2000/svg"
+      ]
+    },
+    {
+      "relativePath": "scripts/extract-boost-tab-assets.mjs",
+      "urls": [
+        "http://www.w3.org/2000/svg"
+      ]
+    },
+    {
+      "relativePath": "scripts/generate-catalog-covers.mjs",
+      "urls": [
+        "http://www.w3.org/2000/svg"
+      ]
+    },
+    {
+      "relativePath": "scripts/prerender-routes.mjs",
+      "urls": [
+        "https://bsgmanga.pages.dev"
+      ]
+    },
+    {
+      "relativePath": "scripts/reset-and-seed-manga-showcase.mjs",
+      "urls": [
+        "https://placehold.co/720x1024/101826/F8FAFC?text=${encodeURIComponent(`${seriesIndex",
+        "https://placehold.co/1200x1800/111827/F8FAFC?text=${encodeURIComponent(`M${seriesIndex"
+      ]
+    },
+    {
+      "relativePath": "scripts/seed-karanlik-koridor-showcase.mjs",
+      "urls": [
+        "https://placehold.co/1200x1800/0b1220/e2e8f0?text=KK-B${900"
+      ]
+    },
+    {
+      "relativePath": "scripts/seed-rich-catalog.mjs",
+      "urls": [
+        "https://placehold.co/1200x1800/111827/F8FAFC?text=${encodeURIComponent(`K${seriesIndex"
+      ]
+    },
+    {
+      "relativePath": "src/components/admin/coinCodes/CoinCodeUsageModal.tsx",
+      "urls": [
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(item.username"
+      ]
+    },
+    {
+      "relativePath": "src/components/admin/fansubs/FansubMembersTab.tsx",
+      "urls": [
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=${row.user?.username"
+      ]
+    },
+    {
+      "relativePath": "src/components/admin/ops/AdminOpsAuditTableCard.tsx",
+      "urls": [
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(actorName"
+      ]
+    },
+    {
+      "relativePath": "src/components/admin/pending/AdminPendingPostDetail.tsx",
+      "urls": [
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(authorName"
+      ]
+    },
+    {
+      "relativePath": "src/components/admin/sections/AdminAnnouncementsSection.tsx",
+      "urls": [
+        "https://..."
+      ]
+    },
+    {
+      "relativePath": "src/components/admin/sections/AdminSettingsSection.tsx",
+      "urls": [
+        "https://discord.gg/..."
+      ]
+    },
+    {
+      "relativePath": "src/components/admin/shared/AdminQueueItemCard.tsx",
+      "urls": [
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}`}"
+      ]
+    },
+    {
+      "relativePath": "src/components/common/AvatarFrame/AvatarFrame.tsx",
+      "urls": [
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(alt"
+      ]
+    },
+    {
+      "relativePath": "src/components/common/CommentThread/CommentThread.tsx",
+      "urls": [
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=current",
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(replyTargetUsername"
+      ]
+    },
+    {
+      "relativePath": "src/components/common/CommunityCreateModal/CommunityCreateIdentitySection.tsx",
+      "urls": [
+        "https://api.dicebear.com/7.x/thumbs/svg?seed=${encodeURIComponent(alt"
+      ]
+    }
+  ],
+  "supabaseFiles": [
+    ".github/workflows/ci.yml",
+    "package.json",
+    "scripts/apply-fansub-all-cosmetics-preview.mjs",
+    "scripts/audit-anon-exposure.mjs",
+    "scripts/audit-clean-store-assets.mjs",
+    "scripts/audit-idor-mutations.mjs",
+    "scripts/audit-privilege-escalation.mjs",
+    "scripts/audit-suspicious-content.mjs",
+    "scripts/dev-user-avatar-upload-proxy.mjs",
+    "scripts/inspect-live-admin-role.mjs",
+    "scripts/lib/attacker-session.mjs",
+    "scripts/lib/project-env.mjs",
+    "scripts/live-auth-browser-audit.mjs",
+    "scripts/migrate-legacy-media-to-r2.mjs",
+    "scripts/migrate-store-assets-to-r2.mjs",
+    "scripts/predeploy-cloudflare.mjs",
+    "scripts/purge-junk-content.mjs",
+    "scripts/repo-health-audit.mjs",
+    "scripts/reset-and-seed-manga-showcase.mjs",
+    "scripts/restore-fansub-cosmetics-preview.mjs",
+    "scripts/seed-auth-users.mjs",
+    "scripts/seed-karanlik-koridor-showcase.mjs",
+    "scripts/seed-rich-catalog.mjs",
+    "scripts/seed-store-assets.mjs",
+    "scripts/smoke-core-flows.mjs",
+    "scripts/smoke-follow-rpc.mjs",
+    "scripts/smoke-storage-auth.mjs",
+    "src/components/common/FansubModal/FansubModal.tsx",
+    "src/components/layout/account/AccountSecurityPanelSections.tsx",
+    "src/components/layout/account/useAccountSecurityPanelState.ts"
+  ],
+  "cloudflareFiles": [
+    "package.json",
+    "scripts/migrate-legacy-media-to-r2.mjs",
+    "scripts/migrate-store-assets-to-r2.mjs",
+    "scripts/predeploy-cloudflare.mjs",
+    "scripts/repo-health-audit.mjs",
+    "scripts/sync-cloudflare-pages-secrets.mjs",
+    "src/components/admin/sections/AdminSupporterAssetsSection.tsx",
+    "src/components/common/AvatarFrame/useAvatarFrameIdleAssetPoster.ts",
+    "src/services/adminSupporterAssetControlService.ts",
+    "src/services/storageService/cloudflareUploadClient.ts",
+    "src/services/storageService/uploads.ts",
+    "supabase/migrations/20260411235905_admin_supporter_asset_control_center.sql",
+    "supabase/migrations/20260411235906_admin_supporter_asset_control_center_revision_fix.sql",
+    "supabase/migrations/20260411235907_admin_supporter_asset_audit_and_drilldown.sql",
+    "supabase/migrations/20260412235901_admin_supporter_asset_control_center_top_fansub_fix.sql",
+    "supabase/migrations/20260501235901_community_post_storage_upload_policy.sql",
+    "supabase/migrations/20260519235901_security_privacy_integrity_followup.sql",
+    "supabase/migrations/20260519235905_storage_and_remaining_rpc_hardening.sql",
+    "supabase/migrations/20260615235902_security_report_hardening.sql"
+  ],
+  "findings": [
+    {
+      "key": "webhook",
+      "status": "na",
+      "detail": "Repo icinde belirgin webhook alici veya gonderici yuzeyi bulunmadi."
+    },
+    {
+      "key": "oauth",
+      "status": "review",
+      "detail": "OAuth/callback referanslari bulundu; state ve refresh yarisi denetlenmeli."
+    }
+  ]
+}

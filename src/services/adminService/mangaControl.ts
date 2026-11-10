@@ -1,0 +1,5 @@
+export * from './mangaControl.list'
+export * from './mangaControl.overview'
+export * from './mangaControl.metrics'
+export * from './mangaControl.detail'
+export * from './mangaControl.mutations'

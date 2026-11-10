@@ -1,0 +1,4 @@
+# SPA fallback - tüm yolları index.html'e yönlendir (Cloudflare Pages)
+/en    /    301
+/en/*    /:splat    301
+/*    /index.html   200

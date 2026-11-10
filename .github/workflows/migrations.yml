@@ -1,0 +1,46 @@
+name: migrations
+
+# Applies every migration to an empty local Supabase database, in order.
+# Runs when migrations change and can be started by hand.
+on:
+  push:
+    branches: [main]
+    paths: ['supabase/**']
+  pull_request:
+    paths: ['supabase/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fresh-install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.122.1
+
+      - name: Start Supabase and apply all migrations
+        run: supabase start -x studio,imgproxy,edge-runtime,logflare,vector,supavisor,inbucket,mailpit,realtime
+
+      - name: Check the installed schema
+        run: |
+          psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" -v ON_ERROR_STOP=1 -tA <<'SQL'
+          do $$
+          declare
+            v_tables integer;
+            v_no_rls integer;
+          begin
+            select count(*) into v_tables from information_schema.tables
+              where table_schema = 'public' and table_type = 'BASE TABLE';
+            select count(*) into v_no_rls from pg_tables
+              where schemaname = 'public' and not rowsecurity;
+            if v_tables < 100 then raise exception 'only % public tables', v_tables; end if;
+            if v_no_rls > 0 then raise exception '% public tables without RLS', v_no_rls; end if;
+            raise notice 'public tables: %, all with RLS', v_tables;
+          end $$;
+          SQL

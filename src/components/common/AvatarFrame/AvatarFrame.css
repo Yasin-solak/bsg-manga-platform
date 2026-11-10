@@ -1,0 +1,191 @@
+﻿/* ==========================================
+   🎭 AVATAR FRAME - CANVAS TABANLI
+   Premium Discord-style çerçeveler
+   ========================================== */
+
+.avatar-frame {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* === PARÇACIK CANVAS === */
+.avatar-frame__particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 4;
+}
+
+/* === AVATAR GÖRSELİ === */
+.avatar-frame__image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: 1;
+    /* Border ve glow yok - çerçeve PNG hallediyor */
+}
+
+/* === FRAME GÖRSELİ === */
+.avatar-frame__border {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 130%;
+    height: 130%;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+.avatar-frame--motion-paused .avatar-frame__image,
+.avatar-frame--motion-paused .avatar-frame__border {
+    animation-play-state: paused;
+}
+
+/* === HOVER EFEKTLERİ === */
+/* Hover'da scale yok - sabit boyut */
+
+/* ==========================================
+   🎄 NOEL ÇERÇEVESİ - PNG çerçeve kullanıyor
+   ========================================== */
+/* Box-shadow ve border yok - PNG hallediyor */
+
+/* ==========================================
+   🎃 HALLOWEEN ÇERÇEVESİ - PNG çerçeve kullanıyor
+   ========================================== */
+/* Box-shadow ve border yok - PNG hallediyor */
+
+/* ==========================================
+   DEFAULT FRAME (CSS TABANI)
+   ========================================== */
+.avatar-frame--default .avatar-frame__image {
+    border-color: #ffffff;
+}
+
+/* ==========================================
+   🔥 FIRE FRAME (CSS ANIMASYONU)
+   ========================================== */
+.avatar-frame--fire .avatar-frame__image {
+    border: 4px solid #FFD700;
+    box-shadow:
+        0 0 20px rgba(255, 69, 0, 0.8),
+        0 0 40px rgba(255, 107, 53, 0.6),
+        0 0 60px rgba(255, 215, 0, 0.4);
+    animation: fireGlow 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes fireGlow {
+    0% {
+        box-shadow: 0 0 20px rgba(255, 69, 0, 0.6), 0 0 40px rgba(255, 107, 53, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 30px rgba(255, 69, 0, 0.9), 0 0 60px rgba(255, 215, 0, 0.6);
+    }
+}
+
+/* ==========================================
+   ❄️ ICE FRAME (CSS ANIMASYONU)
+   ========================================== */
+.avatar-frame--ice .avatar-frame__image {
+    border: 4px solid #7FD8FF;
+    box-shadow:
+        0 0 25px rgba(0, 212, 255, 0.8),
+        0 0 50px rgba(127, 216, 255, 0.5),
+        0 0 75px rgba(255, 255, 255, 0.3);
+    animation: iceShimmer 2s ease-in-out infinite;
+}
+
+@keyframes iceShimmer {
+
+    0%,
+    100% {
+        box-shadow: 0 0 25px rgba(0, 212, 255, 0.6), 0 0 50px rgba(127, 216, 255, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 35px rgba(0, 212, 255, 0.9), 0 0 70px rgba(255, 255, 255, 0.6);
+    }
+}
+
+/* ==========================================
+   💜 NEON FRAME (CSS ANIMASYONU)
+   ========================================== */
+.avatar-frame--neon .avatar-frame__image {
+    border: 4px solid #00FFFF;
+    box-shadow:
+        0 0 20px rgba(255, 0, 255, 0.9),
+        0 0 40px rgba(0, 255, 255, 0.7),
+        0 0 60px rgba(255, 255, 0, 0.5);
+    animation: neonPulse 0.15s ease-in-out infinite alternate;
+}
+
+@keyframes neonPulse {
+    0% {
+        filter: brightness(1);
+    }
+
+    100% {
+        filter: brightness(1.15);
+    }
+}
+
+/* ==========================================
+   👑 GOLD FRAME (CSS ANIMASYONU)  
+   ========================================== */
+.avatar-frame--gold .avatar-frame__image {
+    border: 4px solid #FFD700;
+    box-shadow:
+        0 0 30px rgba(255, 215, 0, 0.9),
+        0 0 60px rgba(255, 165, 0, 0.6),
+        0 0 90px rgba(184, 134, 11, 0.4);
+    animation: goldShine 2s ease-in-out infinite;
+}
+
+@keyframes goldShine {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.7), 0 0 40px rgba(255, 165, 0, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 40px rgba(255, 215, 0, 1), 0 0 80px rgba(255, 165, 0, 0.7);
+    }
+}
+
+/* ==========================================
+   🌈 RAINBOW FRAME (CSS ANIMASYONU)
+   ========================================== */
+.avatar-frame--rainbow .avatar-frame__image {
+    border: 4px solid transparent;
+    background:
+        linear-gradient(white, white) padding-box,
+        linear-gradient(90deg, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #9400D3, #FF0000) border-box;
+    background-size: 100% 100%, 400% 100%;
+    animation: rainbowBorder 3s linear infinite;
+    box-shadow:
+        0 0 20px rgba(255, 0, 0, 0.4),
+        0 0 30px rgba(0, 255, 0, 0.3),
+        0 0 40px rgba(0, 0, 255, 0.3);
+}
+
+@keyframes rainbowBorder {
+    0% {
+        background-position: 0% 0%, 0% 50%;
+    }
+
+    100% {
+        background-position: 0% 0%, 400% 50%;
+    }
+}

@@ -1,0 +1,54 @@
+{
+  "summary": {
+    "currentBranch": "",
+    "recentCommitCount": 0,
+    "conventionalCommitRatio": 0,
+    "changelogCount": 0,
+    "ciConfigured": true
+  },
+  "recentCommitSubjects": [],
+  "changelogFiles": [],
+  "releaseDocs": [
+    "docs/admin-navigation-loop-hotfix-2026-02-26.md",
+    "docs/admin-v2-hotfix-sidebar-topbar-2026-02-21.md",
+    "docs/auth-multitab-hotfix-2026-03-10.md",
+    "docs/auth-onauthstatechange-white-screen-hotfix-2026-03-16.md",
+    "docs/comment-hover-mention-hotfix-2026-02-25.md",
+    "docs/fansub-profile-effect-schema-hotfix-2026-03-12.md",
+    "docs/git-pr-ve-release-akisi-2026-04-17.md",
+    "docs/live-release-schedule-session-claim-hotfix-2026-05-20.md",
+    "docs/magaza-islem-gecmisi-rls-hotfix-2026-06-09.md",
+    "docs/profil-directory-ve-magaza-aktivite-izin-hotfix-2026-06-09.md",
+    "docs/profil-select-schema-hotfix-2026-03-06.md",
+    "docs/profile-effect-profile-auth-hotfix-2026-03-10.md",
+    "docs/reports/release-discipline-audit.json",
+    "docs/reports/release-discipline-audit.md",
+    "src/pages/ReleaseSchedulePage.tsx",
+    "src/pages/fansub/FansubReleaseArchivePanel.tsx",
+    "src/pages/fansub/FansubReleaseSchedulePanel.tsx",
+    "src/pages/releaseSchedule/ReleaseScheduleCalendarGrid.tsx",
+    "src/pages/releaseSchedule/ReleaseScheduleDayOverview.tsx",
+    "src/pages/releaseSchedule/ReleaseScheduleDayPanel.tsx"
+  ],
+  "findings": [
+    {
+      "key": "changelog",
+      "status": "missing",
+      "detail": "Yerel repo icinde CHANGELOG bulunmadi."
+    },
+    {
+      "key": "ci",
+      "status": "present",
+      "detail": "CI workflow bulundu."
+    },
+    {
+      "key": "commit-style",
+      "status": "partial",
+      "detail": "Commit mesaj disiplini yerel gecmisten kisitli olarak gozlenebiliyor."
+    }
+  ],
+  "nonDiscoverable": [
+    "Branch protection rule bilgisi yerelden dogrulanamiyor.",
+    "PR inceleme SLA ve release onay zinciri git gecmisinden dogrudan cikartilamiyor."
+  ]
+}

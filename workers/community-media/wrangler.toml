@@ -1,0 +1,11 @@
+name = "bsg-community-media"
+main = "index.js"
+compatibility_date = "2026-09-19"
+
+[[r2_buckets]]
+binding = "COMMUNITY_FILES_BUCKET"
+bucket_name = "bsg-community-private"
+remote = true
+
+[triggers]
+crons = ["*/10 * * * *"]
