@@ -19,6 +19,20 @@ const helperSource = read('src/services/apiResilience.ts')
 assertIncludes(helperSource, 'export async function withServiceTimeout', 'apiResilience helper withServiceTimeout exportunu korumali.')
 assertIncludes(helperSource, 'export async function runWithRetry', 'apiResilience helper runWithRetry exportunu korumali.')
 
+// Retry intent: full-jitter exponential backoff, no 409 retry, same attempt cap, Retry-After honored.
+assertIncludes(helperSource, 'Math.random()', 'runWithRetry must jitter its backoff delay.')
+assertIncludes(helperSource, 'RETRY_BASE_DELAY_MS * 2 **', 'runWithRetry must back off exponentially.')
+assertIncludes(helperSource, 'const DEFAULT_MAX_ATTEMPTS = 3', 'The default attempt cap must stay at 3 (2 retries).')
+assertIncludes(helperSource, 'readRetryAfterMs(error)', 'runWithRetry must honor a Retry-After hint.')
+assertIncludes(helperSource, 'RETRY_AFTER_MAX_MS = 10_000', 'Retry-After waits must be capped at 10 s.')
+const retryableLine = helperSource.split('\n').find(line => line.includes('status === 408'))
+if (!retryableLine || retryableLine.includes('409')) {
+  throw new Error('409 is a PostgREST conflict, not a transient failure; it must not be retried.')
+}
+for (const status of ['408', '425', '429', '>= 500']) {
+  assertIncludes(retryableLine, status, `Transient status ${status} must stay retryable.`)
+}
+
 const accountCenterSource = read('src/services/accountCenterService.ts')
 assertIncludes(accountCenterSource, 'withServiceTimeout', 'accountCenterService timeout korumasi kullanmali.')
 assertIncludes(accountCenterSource, 'withAbortSignal', 'accountCenterService Supabase sorgularinda abort signal baglamali.')

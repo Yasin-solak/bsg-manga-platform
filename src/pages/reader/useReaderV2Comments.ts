@@ -12,6 +12,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { commentService, type CommentSortBy } from '@/services/commentService'
+import { countCommentTree, useCommentPager } from '@/hooks/useCommentPager'
 import { resolveCommentMentionContext } from '@/services/commentMentionService'
 import { createScopedLogger } from '@/services/logger'
 import { toast } from '@/services/toastService'
@@ -63,9 +64,21 @@ export function useReaderV2Comments({
     }
   }, [])
 
+  const pager = useCommentPager({
+    mangaId,
+    setComments,
+    onMerged: (merged) => { void resolveMentions(merged) },
+    onError: (error) => {
+      readerV2CommentsLogger.error({ event: 'comments-load-more-error', error })
+      toast.error(txa('Yorumlar yüklenemedi.'))
+    },
+  })
+  const { reset: resetPager, applyFirstPage: applyFirstCommentPage } = pager
+
   useEffect(() => {
     if (!mangaId || !chapterId || !active) {
       setComments([])
+      resetPager()
       setIsLoading(false)
       return
     }
@@ -76,19 +89,21 @@ export function useReaderV2Comments({
 
     void (async () => {
       try {
-        const rows = await commentService.getComments(mangaId, {
+        const page = await commentService.getCommentsPage(mangaId, {
           chapterId,
           sortBy,
           signal: controller.signal,
         })
         if (!alive) return
-        const list = rows as unknown as Comment[]
+        applyFirstCommentPage(page, { sortBy, chapterId })
+        const list = page.comments as unknown as Comment[]
         setComments(list)
         await resolveMentions(list, controller.signal)
       } catch (error) {
         if (!alive) return
         readerV2CommentsLogger.error({ event: 'comments-load-error', error })
         setComments([])
+        resetPager()
       } finally {
         if (alive) setIsLoading(false)
       }
@@ -98,7 +113,7 @@ export function useReaderV2Comments({
       alive = false
       controller.abort()
     }
-  }, [active, chapterId, mangaId, resolveMentions, sortBy])
+  }, [active, applyFirstCommentPage, chapterId, mangaId, resetPager, resolveMentions, sortBy])
 
   const addComment = useCallback(async (isSpoiler = false) => {
     if (!commentsEnabled) {
@@ -116,13 +131,14 @@ export function useReaderV2Comments({
         void resolveMentions(next)
         return next
       })
+      pager.adjustTotal(1)
       setNewComment('')
       toast.success(txa('Yorum gonderildi.'))
     } catch (error) {
       readerV2CommentsLogger.error({ event: 'add-comment-error', error })
       toast.error(error instanceof Error ? error.message : txa('Yorum gonderilemedi.'))
     }
-  }, [chapterId, commentsEnabled, mangaId, newComment, resolveMentions])
+  }, [chapterId, commentsEnabled, mangaId, newComment, pager, resolveMentions])
 
   const submitReply = useCallback(async (parentId: string, replyToReplyId?: string, isSpoiler = false) => {
     if (!commentsEnabled) {
@@ -141,6 +157,7 @@ export function useReaderV2Comments({
         void resolveMentions(next)
         return next
       })
+      pager.adjustTotal(1)
       setReplyingTo(null)
       setReplyText('')
       toast.success(txa('Yanit gonderildi.'))
@@ -148,7 +165,7 @@ export function useReaderV2Comments({
       readerV2CommentsLogger.error({ event: 'add-reply-error', error })
       toast.error(error instanceof Error ? error.message : txa('Yanit gonderilemedi.'))
     }
-  }, [chapterId, commentsEnabled, mangaId, replyText, resolveMentions])
+  }, [chapterId, commentsEnabled, mangaId, pager, replyText, resolveMentions])
 
   /** Like and dislike use the same path: the opposite of the current state. */
   const applyReaction = useCallback(async (commentId: string, kind: 'like' | 'dislike') => {
@@ -170,18 +187,24 @@ export function useReaderV2Comments({
   }, [comments])
 
   const deleteComment = useCallback(async (commentId: string) => {
+    const removed = findReaderV2Comment(comments, commentId)
     try {
       await commentService.deleteComment(commentId)
       setComments((previous) => removeReaderV2Comment(previous, commentId))
+      if (removed) pager.adjustTotal(-countCommentTree(removed))
       toast.success(txa('Yorum silindi.'))
     } catch (error) {
       readerV2CommentsLogger.error({ event: 'delete-comment-error', error })
       toast.error(error instanceof Error ? error.message : txa('Yorum silinemedi.'))
     }
-  }, [])
+  }, [comments, pager])
 
   return {
     comments,
+    commentsHasMore: pager.hasMore,
+    commentsLoadingMore: pager.loadingMore,
+    commentsTotal: pager.total,
+    loadMoreComments: pager.loadMore,
     isLoading,
     sortBy,
     setSortBy,

@@ -1,4 +1,5 @@
 import { getCurrentAccessToken } from '@/services/authService/shared'
+import { abortSignals } from '@/lib/abortSignals'
 
 export type CloudflareStorageUploadIntent =
   | 'announcement-image'
@@ -129,7 +130,7 @@ export async function uploadFileViaCloudflareStorage({
       Authorization: `Bearer ${accessToken}`,
     },
     body: formData,
-    signal: AbortSignal.timeout(60000),
+    signal: abortSignals.timeout(60000),
   })
 
   let payload: Partial<CloudflareStorageUploadResult> & { error?: string } = {}

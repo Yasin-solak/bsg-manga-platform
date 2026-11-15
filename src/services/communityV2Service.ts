@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { abortSignals } from '@/lib/abortSignals'
 import { createCommunityRefreshScheduler } from '@/lib/communityRefreshScheduler'
 import { supabase } from './supabase'
 import { COMMUNITY_REACTIONS } from '@/lib/communityMentions'
@@ -105,13 +106,13 @@ export function apiError(error: { message: string; code?: string }) {
 }
 async function query<S extends z.ZodTypeAny>(action: string, payload: Record<string, unknown>, schema: S, signal?: AbortSignal): Promise<z.output<S>> {
   const req = supabase.rpc('community_v2_read', { p_action: action, p_payload: payload })
-  const { data, error } = await req.abortSignal(signal || AbortSignal.timeout(15000))
+  const { data, error } = await req.abortSignal(signal || abortSignals.timeout(15000))
   if (error) throw apiError(error)
   return schema.parse(data)
 }
 export const communityV2 = {
   async sync() {
-    const { error } = await supabase.rpc('community_v2_sync').abortSignal(AbortSignal.timeout(15000))
+    const { error } = await supabase.rpc('community_v2_sync').abortSignal(abortSignals.timeout(15000))
     if (error) throw apiError(error)
   },
   home: (signal?: AbortSignal, serverId?: string | null) => query('home', { server_id: uuid.safeParse(serverId).success ? serverId : undefined }, homeSchema, signal),
@@ -130,19 +131,19 @@ export const communityV2 = {
   seriesCandidates: (id: string, search = '', offset = 0, signal?: AbortSignal) => query('series_candidates', { server_id: uuid.parse(id), search, offset }, z.array(seriesCandidateSchema), signal),
   channelEntry: async (id: string, signal?: AbortSignal) => query('channel_entry', { channel_id: uuid.parse(id) }, channelEntrySchema, signal),
   async seriesChannels(id: string, offset = 0, signal?: AbortSignal) {
-    const { data, error } = await supabase.rpc('community_v2_series_channels', { p_manga_id: uuid.parse(id), p_offset: offset }).abortSignal(signal || AbortSignal.timeout(15000))
+    const { data, error } = await supabase.rpc('community_v2_series_channels', { p_manga_id: uuid.parse(id), p_offset: offset }).abortSignal(signal || abortSignals.timeout(15000))
     if (error) throw apiError(error)
     return z.array(channelEntrySchema).parse(data)
   },
   async write(action: CommunityAction, payload: Record<string, unknown>) {
     const valid = mutationSchemas[action].parse(payload)
-    const { data, error } = await supabase.rpc('community_v2_write', { p_action: action, p_payload: valid }).abortSignal(AbortSignal.timeout(15000))
+    const { data, error } = await supabase.rpc('community_v2_write', { p_action: action, p_payload: valid }).abortSignal(abortSignals.timeout(15000))
     if (error) throw apiError(error)
     return data as { pending?: boolean; ok?: boolean; id?: string; seq?: string; version?: number }
   },
   async send(payload: Record<string, unknown>) {
     const valid = mutationSchemas.send.parse(payload)
-    const { data, error } = await supabase.rpc('community_v2_write', { p_action: 'send', p_payload: valid }).abortSignal(AbortSignal.timeout(15000))
+    const { data, error } = await supabase.rpc('community_v2_write', { p_action: 'send', p_payload: valid }).abortSignal(abortSignals.timeout(15000))
     if (error) throw apiError(error)
     return z.object({ id: uuid, seq: z.string(), message: messageSchema, server_now: z.string(), next_send_at: z.string().nullable() }).parse(data)
   },

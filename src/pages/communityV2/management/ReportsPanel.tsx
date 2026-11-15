@@ -1,3 +1,4 @@
+import { startVisiblePolling } from '@/lib/polling'
 import { useEffect, useRef, useState } from 'react'
 import { communityV2 } from '@/services/communityV2Service'
 import { communityModeration, REPORT_REASONS, REPORT_STATES, type CommunityReport, type ReportState } from '@/services/communityModerationService'
@@ -27,8 +28,8 @@ export function ReportsPanel({serverId,server}:ManagerProps) {
       finally{pending=false;if(alive)setLoading(false)}
     }
     void load()
-    const timer=setInterval(()=>{if(document.visibilityState==='visible')void load()},30000)
-    return()=>{alive=false;controller.abort();clearInterval(timer)}
+    const stopPolling=startVisiblePolling(load,30000)
+    return()=>{alive=false;controller.abort();stopPolling()}
   },[serverId,status,before,revision,access])
   const report=rows.slice(0,25).find(r=>r.id===selected&&server.channels.some(ch=>ch.id===r.channel_id&&ch.can_read))
   return <div className="cv2-reports">

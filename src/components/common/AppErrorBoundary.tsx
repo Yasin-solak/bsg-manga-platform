@@ -2,11 +2,9 @@ import { Component, type ErrorInfo, type ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import { AlertTriangle, Home, RotateCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { createScopedLogger } from '@/services/logger'
+import { reportRenderCrash } from '@/components/common/reportRenderCrash'
 import { isStaleChunkError } from '@/lib/staleChunkReload'
 import { txa } from '@/i18n/activeLocale'
-
-const logger = createScopedLogger('AppErrorBoundary')
 
 type AppErrorBoundaryProps = {
   children: ReactNode
@@ -44,15 +42,7 @@ class AppErrorBoundaryRoot extends Component<AppErrorBoundaryProps, AppErrorBoun
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    logger.error({
-      event: 'render-crash',
-      message: 'Uygulama agaci render sirasinda yakalandi',
-      context: {
-        resetKey: this.props.resetKey,
-        componentStack: errorInfo.componentStack,
-      },
-      error,
-    })
+    reportRenderCrash(error, errorInfo, { resetKey: this.props.resetKey, boundary: 'app' })
   }
 
   private handleRetry = () => {

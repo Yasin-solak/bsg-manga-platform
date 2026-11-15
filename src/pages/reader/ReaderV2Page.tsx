@@ -394,6 +394,10 @@ function ReaderV2Page() {
           chapterNumber={chapter?.chapterNumber}
           fansubId={chapter?.fansub?.id}
           comments={commentsState.comments}
+          commentsHasMore={commentsState.commentsHasMore}
+          commentsLoadingMore={commentsState.commentsLoadingMore}
+          commentsTotal={commentsState.commentsTotal}
+          onLoadMoreComments={() => { void commentsState.loadMoreComments() }}
           isLoading={commentsState.isLoading}
           sortBy={commentsState.sortBy}
           onSortChange={commentsState.setSortBy}

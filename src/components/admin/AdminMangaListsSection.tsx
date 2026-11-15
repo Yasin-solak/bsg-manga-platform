@@ -1,3 +1,4 @@
+import { startVisiblePolling } from '@/lib/polling'
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
 import {
   AlertTriangle, ChevronDown, ChevronLeft, ChevronRight, Globe, ImageOff, Inbox, Library, ListX, Loader2, Lock,
@@ -170,11 +171,7 @@ function AdminMangaListsSection() {
 
   // Same rhythm as user and manga management: silent refresh while the tab is visible.
   useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      if (document.visibilityState !== 'visible') return
-      void Promise.all([loadLists(true), loadOverview(true)])
-    }, 60_000)
-    return () => window.clearInterval(intervalId)
+    return startVisiblePolling(() => Promise.all([loadLists(true), loadOverview(true)]), 60_000)
   }, [loadLists, loadOverview])
 
   const selected = lists.find((list) => list.id === selectedId) ?? null

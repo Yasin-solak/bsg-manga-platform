@@ -1,3 +1,4 @@
+import { startVisiblePolling } from '@/lib/polling'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { AlertTriangle, CheckCircle2, Loader2, PauseCircle, RefreshCw, XCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -57,10 +58,8 @@ export function CommunityOperationsPanel() {
       }
     }
     void refresh()
-    const timer = setInterval(() => void refresh(), 30000)
-    const visible = () => void refresh()
-    document.addEventListener('visibilitychange', visible)
-    return () => { live = false; clearInterval(timer); document.removeEventListener('visibilitychange', visible) }
+    const stopPolling = startVisiblePolling(refresh, 30000)
+    return () => { live = false; stopPolling() }
   }, [revision])
 
   const update = (patch: Partial<CommunityOperations['config']>) => {

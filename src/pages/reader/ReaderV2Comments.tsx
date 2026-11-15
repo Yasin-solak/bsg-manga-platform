@@ -24,6 +24,10 @@ interface ReaderV2CommentsProps {
   chapterNumber: number | undefined
   fansubId: string | undefined
   comments: Comment[]
+  commentsHasMore: boolean
+  commentsLoadingMore: boolean
+  commentsTotal: number | null
+  onLoadMoreComments: () => void
   isLoading: boolean
   sortBy: CommentSortBy
   onSortChange: (sort: CommentSortBy) => void
@@ -50,6 +54,10 @@ export function ReaderV2Comments({
   chapterNumber,
   fansubId,
   comments,
+  commentsHasMore,
+  commentsLoadingMore,
+  commentsTotal,
+  onLoadMoreComments,
   isLoading,
   sortBy,
   onSortChange,
@@ -150,6 +158,10 @@ export function ReaderV2Comments({
             hoverSideOffset={34}
             supporterAssetFansubId={fansubId}
             composerMaxLength={MANGA_COMMENT_MAX_LENGTH}
+            hasMoreOnServer={commentsHasMore}
+            onLoadMore={onLoadMoreComments}
+            isLoadingMore={commentsLoadingMore}
+            totalCount={commentsTotal}
           />
         </div>
       )}

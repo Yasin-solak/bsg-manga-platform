@@ -15,6 +15,7 @@ import { getE2EMockAuthUser, setE2ERuntimeCurrentUser } from '@/testing/e2eMocks
 import { toast } from '@/services/toastService'
 import {
     clearCurrentAuthSessionSnapshotCache,
+    clearCurrentUserLoadShare,
     clearMfaStateSummaryCache,
 } from '@/services/authService/shared'
 import {
@@ -26,9 +27,10 @@ import { clearCurrentUserIdentityCache } from '@/services/userService/selfIdenti
 import { createScopedLogger } from '@/services/logger'
 import { createRequestContext, toRequestContextLogContext } from '@/services/requestContext'
 import { toUserFacingErrorMessage } from '@/services/userFacingError'
-import { touchMyPresence } from '@/services/userPresenceService'
+import { resetPresenceTouchThrottle, touchMyPresence } from '@/services/userPresenceService'
+import { startVisiblePolling } from '@/lib/polling'
+import { clearAllShortLivedCaches } from '@/lib/shortLivedCache'
 import { shouldSuppressAuthFocusSync } from '@/lib/nativeFileDialogFocus'
-import type { RealtimeChannel } from '@supabase/supabase-js'
 import { settleAuthBootstrap } from './settleAuthBootstrap'
 
 export interface CurrentUser {
@@ -123,8 +125,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const syncCurrentUserRef = useRef<(options?: SyncCurrentUserOptions) => Promise<void>>(async () => { })
     const currentUserRef = useRef<CurrentUser | null>(null)
     const pendingMfaRef = useRef<PendingMfaChallenge | null>(null)
-    const sessionGuardChannelRef = useRef<RealtimeChannel | null>(null)
-    const sessionGuardRealtimeFallbackLoggedForRef = useRef<string | null>(null)
     const syncRequestIdRef = useRef(0)
     const syncCurrentUserInFlightRef = useRef<Promise<void> | null>(null)
     const lastSyncCurrentUserSettledAtRef = useRef(0)
@@ -151,23 +151,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const sendHeartbeat = () => {
             if (document.visibilityState === 'visible') void touchMyPresence()
         }
-        const handleVisibilityChange = () => {
-            if (document.visibilityState === 'visible') sendHeartbeat()
-        }
 
+        resetPresenceTouchThrottle()
         sendHeartbeat()
-        const intervalId = window.setInterval(sendHeartbeat, PRESENCE_HEARTBEAT_INTERVAL_MS)
-        document.addEventListener('visibilitychange', handleVisibilityChange)
+        // Jittered, pauses while hidden and sends one heartbeat when the tab becomes visible again.
+        const stopHeartbeat = startVisiblePolling(sendHeartbeat, PRESENCE_HEARTBEAT_INTERVAL_MS)
         window.addEventListener('focus', sendHeartbeat)
 
         return () => {
-            window.clearInterval(intervalId)
-            document.removeEventListener('visibilitychange', handleVisibilityChange)
+            stopHeartbeat()
             window.removeEventListener('focus', sendHeartbeat)
         }
     }, [currentUser?.id])
 
     const clearAuthRuntimeCaches = useCallback((options: ClearAuthRuntimeCachesOptions = {}) => {
+        clearAllShortLivedCaches()
         clearAdminUserOverviewSnapshotCache()
         clearCurrentUserIdentityCache()
         clearCurrentAuthSessionSnapshotCache()
@@ -192,74 +190,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             : null)
     }, [currentUser])
 
-    useEffect(() => {
-        const e2eMockUser = getE2EMockAuthUser()
-        if (e2eMockUser || !currentUser?.authUserId) {
-            const existingChannel = sessionGuardChannelRef.current
-            if (existingChannel) {
-                sessionGuardChannelRef.current = null
-                void supabase.removeChannel(existingChannel)
-            }
-            sessionGuardRealtimeFallbackLoggedForRef.current = null
-            return
-        }
-
-        const existingChannel = sessionGuardChannelRef.current
-        if (existingChannel) {
-            sessionGuardChannelRef.current = null
-            void supabase.removeChannel(existingChannel)
-        }
-
-        const channel = supabase
-            .channel(`session-guard:${currentUser.authUserId}`)
-            .on(
-                'postgres_changes',
-                {
-                    event: 'INSERT',
-                    schema: 'public',
-                    table: 'auth_session_events',
-                    filter: `auth_user_id=eq.${currentUser.authUserId}`,
-                },
-                () => {
-                    void syncCurrentUserRef.current({ force: true })
-                },
-            )
-            .subscribe((status) => {
-                if (status === 'SUBSCRIBED') {
-                    sessionGuardRealtimeFallbackLoggedForRef.current = null
-                    return
-                }
-
-                if (status === 'CHANNEL_ERROR') {
-                    const fallbackKey = currentUser.authUserId
-                    if (sessionGuardRealtimeFallbackLoggedForRef.current === fallbackKey) return
-
-                    sessionGuardRealtimeFallbackLoggedForRef.current = fallbackKey
-                    authContextLogger.debug({
-                        event: 'session-guard-channel-fallback',
-                        message: 'session guard realtime kanali baglanamadi; periyodik oturum senkronu devrede.',
-                        context: {
-                            authUserId: currentUser.authUserId,
-                            fallbackIntervalMs: ACTIVE_SESSION_GUARD_INTERVAL_MS,
-                        },
-                    })
-                }
-            })
-
-        sessionGuardChannelRef.current = channel
-
-        return () => {
-            if (sessionGuardChannelRef.current === channel) {
-                sessionGuardChannelRef.current = null
-            }
-            void supabase.removeChannel(channel)
-        }
-    }, [currentUser?.authUserId])
-
+    // Session revocation is detected by the periodic sync (ACTIVE_SESSION_GUARD_INTERVAL_MS) and by the
+    // focus/visibility sync below. A Realtime postgres_changes subscription on auth_session_events used to
+    // shave a few seconds off that, but it kept Realtime polling the WAL (most of the database's busy time)
+    // and held a Realtime connection per signed-in tab, so it was removed.
     useEffect(() => {
         let isMounted = true
         let authSignedOut = false
-        let syncInterval: number | null = null
+        let stopSyncPolling: (() => void) | null = null
         const e2eMockUser = getE2EMockAuthUser()
 
         if (e2eMockUser) {
@@ -394,6 +332,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 || event === 'SIGNED_IN'
                 || event === 'USER_UPDATED'
             clearAuthRuntimeCaches({ clearEconomy: shouldClearEconomyCache })
+            // A load started before sign-out or a user update must not answer the next sync.
+            if (event === 'SIGNED_OUT' || event === 'USER_UPDATED') clearCurrentUserLoadShare()
             if ((authSignInFlowRef.current || authMfaVerifyFlowRef.current)
                 && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'MFA_CHALLENGE_VERIFIED')) {
                 deferredPostSignInSyncRef.current = true
@@ -430,20 +370,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         document.addEventListener('visibilitychange', handleVisibilitySync)
         window.addEventListener('focus', handleWindowFocus)
-        syncInterval = window.setInterval(() => {
-            if (document.visibilityState !== 'visible') {
-                return
-            }
-            if (currentUserRef.current) {
-                void syncCurrentUser()
-            }
-        }, ACTIVE_SESSION_GUARD_INTERVAL_MS)
+        // handleVisibilitySync above already forces a sync on return, so no polling catch-up.
+        stopSyncPolling = startVisiblePolling(() => {
+            if (currentUserRef.current) return syncCurrentUser()
+        }, ACTIVE_SESSION_GUARD_INTERVAL_MS, { catchUp: false })
 
         return () => {
             isMounted = false
-            if (syncInterval != null) {
-                window.clearInterval(syncInterval)
-            }
+            stopSyncPolling?.()
             document.removeEventListener('visibilitychange', handleVisibilitySync)
             window.removeEventListener('focus', handleWindowFocus)
             authListener.subscription.unsubscribe()

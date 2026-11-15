@@ -1,4 +1,4 @@
-import { getComments } from './queries'
+import { COMMENT_PAGE_SIZE, getCommentsPage } from './queries'
 import {
     deleteComment,
     dislikeComment,
@@ -10,10 +10,12 @@ import {
 import { MANGA_COMMENT_MAX_LENGTH } from './constants'
 
 export type { Comment, CommentSortBy } from './types'
+export type { CommentPage } from './queries'
 export {
     deleteComment,
     dislikeComment,
-    getComments,
+    getCommentsPage,
+    COMMENT_PAGE_SIZE,
     MANGA_COMMENT_MAX_LENGTH,
     likeComment,
     postComment,
@@ -22,7 +24,7 @@ export {
 }
 
 export const commentService = {
-    getComments,
+    getCommentsPage,
     postComment,
     setCommentReaction,
     likeComment,

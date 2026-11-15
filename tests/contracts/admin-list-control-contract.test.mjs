@@ -117,8 +117,8 @@ assert.match(section, /min-h-0 divide-y divide-border\/50 overflow-y-auto/, 'lis
 assert.match(section, /data-testid="admin-lists-list"/, 'liste yuzeyi pinlenmeli')
 assert.ok(section.includes('aria-label="Bu sayfadaki listelerin t\u00fcm\u00fcn\u00fc se\u00e7"'), 'there must be a select-all box')
 assert.match(section, /onOpenAutoFocus=\{focusSheetContainer\}/, 'a drawer on narrow screens; the info card does not open by itself')
-assert.match(section, /window\.setInterval/, 'there must be a silent auto refresh')
-assert.match(section, /document\.visibilityState !== 'visible'/, 'must not refresh while hidden')
+assert.match(section, /startVisiblePolling\(/, 'there must be a silent auto refresh that pauses while the tab is hidden (shared jittered helper)')
+assert.doesNotMatch(section, /window\.setInterval/, 'the refresh must not bypass the visibility-aware polling helper')
 assert.match(section, /selectedIdRef\.current !== listId/, 'a late old detail must not overwrite the new selection')
 
 // ---------- G) Details: persistent context + tabs by job ----------

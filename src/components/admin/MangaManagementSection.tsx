@@ -1,3 +1,4 @@
+import { startVisiblePolling } from '@/lib/polling'
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import {
   AlertTriangle, Check, ChevronLeft, ChevronRight, CircleSlash, ClipboardCheck, EyeOff, Inbox, Library, RefreshCw, Search,
@@ -134,11 +135,7 @@ function MangaManagementSection() {
 
   // Sekme gorunurken sessiz tazeleme.
   useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      if (document.visibilityState !== 'visible') return
-      void Promise.all([loadMangas(true), loadOverview(true)])
-    }, 60_000)
-    return () => window.clearInterval(intervalId)
+    return startVisiblePolling(() => Promise.all([loadMangas(true), loadOverview(true)]), 60_000)
   }, [loadMangas, loadOverview])
 
   const focused = mangas.find((item) => item.id === focusedId) ?? null

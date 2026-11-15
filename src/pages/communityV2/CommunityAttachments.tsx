@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { abortSignals } from '@/lib/abortSignals'
 import { Download, FileText } from 'lucide-react'
 import { readCommunityFile, type CommunityAttachment } from '@/services/communityFilesService'
 import { txa } from '@/i18n/activeLocale'
@@ -12,13 +13,13 @@ function Attachment({file}:{file:CommunityAttachment}) {
   useEffect(()=>{
     if(!visible||!image)return
     const controller=new AbortController();let blobUrl='';setBusy(true);setError('')
-    void readCommunityFile({id,name,content_type,byte_size},AbortSignal.any([controller.signal,AbortSignal.timeout(60000)])).then(blob=>{if(controller.signal.aborted)return;blobUrl=URL.createObjectURL(blob);setUrl(blobUrl)}).catch(e=>{if(!controller.signal.aborted)setError(e.message)}).finally(()=>{if(!controller.signal.aborted)setBusy(false)})
+    void readCommunityFile({id,name,content_type,byte_size},abortSignals.any([controller.signal,abortSignals.timeout(60000)])).then(blob=>{if(controller.signal.aborted)return;blobUrl=URL.createObjectURL(blob);setUrl(blobUrl)}).catch(e=>{if(!controller.signal.aborted)setError(e.message)}).finally(()=>{if(!controller.signal.aborted)setBusy(false)})
     return()=>{controller.abort();if(blobUrl)URL.revokeObjectURL(blobUrl)}
   },[id,name,content_type,byte_size,visible,image,attempt]) // The file id does not change; the polling object does not repeat requests.
   async function download() {
     const controller=new AbortController();downloadRequest.current=controller
     setBusy(true);setError('')
-    try {const blob=await readCommunityFile(file,AbortSignal.any([controller.signal,AbortSignal.timeout(60000)]));if(controller.signal.aborted)return;const value=URL.createObjectURL(blob), a=document.createElement('a');a.href=value;a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(value),1000)}
+    try {const blob=await readCommunityFile(file,abortSignals.any([controller.signal,abortSignals.timeout(60000)]));if(controller.signal.aborted)return;const value=URL.createObjectURL(blob), a=document.createElement('a');a.href=value;a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(value),1000)}
     catch(e){if(!controller.signal.aborted)setError(e instanceof Error?e.message:txa('Dosya indirilemedi.'))}
     finally{if(!controller.signal.aborted)setBusy(false)}
   }

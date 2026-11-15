@@ -1,3 +1,4 @@
+import { startVisiblePolling } from '@/lib/polling'
 import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { useSearchParams } from '@/i18n/router'
 import {
@@ -214,11 +215,7 @@ function AdminUsersSection({ currentUserId }: AdminUsersSectionProps) {
   }, [refreshOverview])
 
   useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      if (document.visibilityState !== 'visible') return
-      void Promise.all([loadUsers(true), refreshOverview(true)])
-    }, 60_000)
-    return () => window.clearInterval(intervalId)
+    return startVisiblePolling(() => Promise.all([loadUsers(true), refreshOverview(true)]), 60_000)
   }, [loadUsers, refreshOverview])
 
   // On desktop a selection always exists: when the selected account leaves the view, the same position opens.

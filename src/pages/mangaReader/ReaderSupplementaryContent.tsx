@@ -15,6 +15,10 @@ interface ReaderSupplementaryContentProps {
   chapterCreditLoading: boolean
   chapterCreditPresentation: ChapterCreditPresentation | null
   comments: Comment[]
+  commentsHasMore: boolean
+  commentsLoadingMore: boolean
+  commentsTotal: number | null
+  onLoadMoreComments: () => void
   commentsLoading: boolean
   commentSortBy: CommentSortBy
   currentUserAvatar?: string
@@ -45,6 +49,10 @@ export function ReaderSupplementaryContent({
   chapterCreditLoading,
   chapterCreditPresentation,
   comments,
+  commentsHasMore,
+  commentsLoadingMore,
+  commentsTotal,
+  onLoadMoreComments,
   commentsLoading,
   commentSortBy,
   currentUserAvatar,
@@ -155,6 +163,10 @@ export function ReaderSupplementaryContent({
                 hoverSideOffset={34}
                 supporterAssetFansubId={chapter.fansub?.id}
                 composerMaxLength={MANGA_COMMENT_MAX_LENGTH}
+                hasMoreOnServer={commentsHasMore}
+                onLoadMore={onLoadMoreComments}
+                isLoadingMore={commentsLoadingMore}
+                totalCount={commentsTotal}
               />
             </div>
           )}

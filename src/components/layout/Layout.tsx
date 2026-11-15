@@ -2,6 +2,7 @@ import { useIsMobileViewport } from '@/hooks/useIsMobileViewport'
 import { Outlet, useLocation } from 'react-router-dom'
 import { Navigate } from '@/i18n/router'
 import { PageTransition } from '@/components/layout/PageTransition'
+import { RouteErrorBoundary } from '@/components/common/RouteErrorBoundary'
 import { useAuth } from '@/contexts/AuthContext'
 import {
     EXPLORE_PATH,
@@ -164,7 +165,9 @@ function Layout() {
     if (!shouldUseChrome) {
         return (
             <MaintenanceGate>
-                <Outlet />
+                <RouteErrorBoundary>
+                    <Outlet />
+                </RouteErrorBoundary>
             </MaintenanceGate>
         )
     }
@@ -194,7 +197,9 @@ function Layout() {
                     <TopSearchBar />
                     <main className="min-h-0 flex-1">
                         <PageTransition>
-                            <Outlet />
+                            <RouteErrorBoundary>
+                                <Outlet />
+                            </RouteErrorBoundary>
                         </PageTransition>
                     </main>
                     {/* Profil vitrini (prototip v3) tam ekran sahne + yapiskan sekmelerle biter: footer yok. */}

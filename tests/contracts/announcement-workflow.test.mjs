@@ -31,7 +31,7 @@ assert.equal(mentionAtCursor('mail@example.com', 16), null)
 assert.equal(mentionAtCursor('@okur bitti', 11), null)
 const { AnnouncementSummary } = load('src/components/announcements/AnnouncementsPanel.tsx', {
   '@/components/ui/dialog': {}, '@/components/ui/button': {}, '@/contexts/AuthContext': { useAuth: () => ({ currentUser: null }) },
-  '@/services/announcementV2': model, './AnnouncementContent': { AnnouncementInlineText: ({ text }) => text }, './AnnouncementActions': {}, './useAnnouncements': {},
+  '@/components/common/RouteErrorBoundary': {}, '@/services/announcementV2': model, './AnnouncementContent': { AnnouncementInlineText: ({ text }) => text }, './AnnouncementActions': {}, './useAnnouncements': {},
 })
 const a = { id, title: 'Yeni seri', startsAt: '2026-09-17T00:00:00Z', kind: 'news', priority: 0, document: [{ type: 'text', text: 'Hemen incele' }], references: {}, action: { type: 'link', label: 'İncele', url: '/kesfet', direct: true } }
 const html = item => renderToStaticMarkup(React.createElement(StaticRouter, { location: '/' }, React.createElement(AnnouncementSummary, { item, onOpen: () => {} })))

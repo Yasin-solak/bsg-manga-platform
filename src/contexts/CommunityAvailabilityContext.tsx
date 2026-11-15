@@ -1,3 +1,4 @@
+import { startVisiblePolling } from '@/lib/polling'
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Link } from '@/i18n/router'
@@ -46,8 +47,8 @@ export function CommunityAvailabilityProvider({ children }: { children: ReactNod
   // In closed mode no periodic query or Realtime connection is created.
   useEffect(() => {
     if (!state.enabled || !pathname.startsWith('/topluluk')) return
-    const timer = setInterval(() => { if (document.visibilityState === 'visible') refreshRef.current() }, 60_000)
-    return () => clearInterval(timer)
+    // The visibilitychange listener above already refreshes on return; no second catch-up.
+    return startVisiblePolling(() => refreshRef.current(), 60_000, { catchUp: false })
   }, [state.enabled, pathname])
   return <CommunityAvailabilityContext.Provider value={state}>{children}</CommunityAvailabilityContext.Provider>
 }

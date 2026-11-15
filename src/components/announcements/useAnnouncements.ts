@@ -1,3 +1,4 @@
+import { startVisiblePolling } from '@/lib/polling'
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { listAnnouncements, type Announcement } from '@/services/announcementV2'
@@ -20,10 +21,10 @@ export function useAnnouncements({ home = false, id, kind, offset = 0, limit = 2
   }, [key, home, id, kind, offset, limit, version, authLoading])
   useEffect(() => {
     const onVisible = () => { if (document.visibilityState === 'visible') refresh() }
-    const timer = window.setInterval(onVisible, 60000)
+    const stopPolling = startVisiblePolling(refresh, 60000, { catchUp: false })
     window.addEventListener('mz:announcements-changed', refresh)
     document.addEventListener('visibilitychange', onVisible)
-    return () => { clearInterval(timer); window.removeEventListener('mz:announcements-changed', refresh); document.removeEventListener('visibilitychange', onVisible) }
+    return () => { stopPolling(); window.removeEventListener('mz:announcements-changed', refresh); document.removeEventListener('visibilitychange', onVisible) }
   }, [refresh])
   // Even for one frame during an account change, the previous person's private announcement is not shown.
   return { items: !authLoading && state.key === key ? state.items : [], loading: authLoading || state.key !== key || state.loading, error: state.key === key ? state.error : '', refresh }

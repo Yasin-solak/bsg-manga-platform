@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils'
 import {
     Heart, ThumbsDown, Reply, Flag, Pin, Trash2,
     CornerDownRight, ChevronDown, ChevronUp,
-    ArrowUpDown, Clock, Flame, ArrowDownAZ, MessageCircle, EyeOff,
+    ArrowUpDown, Clock, Flame, ArrowDownAZ, MessageCircle, EyeOff, Loader2,
 } from 'lucide-react'
 import { CommentThreadAutocompleteTextarea as AutocompleteTextarea } from './CommentThreadAutocompleteTextarea'
 import { CommentThreadSpoilerBlock as CommentSpoilerBlock } from './CommentThreadSpoilerBlock'
@@ -95,6 +95,12 @@ export interface CommentThreadProps {
     hoverSideOffset?: number
     supporterAssetFansubId?: string
     composerMaxLength?: number
+    /** Server-side pagination: when onLoadMore is set, every loaded root is shown and the button fetches the next page. */
+    hasMoreOnServer?: boolean
+    onLoadMore?: () => void
+    isLoadingMore?: boolean
+    /** Exact total from the server; falls back to counting the loaded tree. */
+    totalCount?: number | null
 }
 
 function CommentThread({
@@ -130,6 +136,10 @@ function CommentThread({
     hoverSideOffset = 12,
     supporterAssetFansubId,
     composerMaxLength,
+    hasMoreOnServer = false,
+    onLoadMore,
+    isLoadingMore = false,
+    totalCount,
 }: CommentThreadProps) {
     const isCommunity = variant === 'community'
     const [supporterAssets, setSupporterAssets] = useState<FansubSupporterAssetCatalogItem[]>([])
@@ -559,7 +569,7 @@ function CommentThread({
     }
 
     // Toplam yorum sayisi (root + yanitlar, ozyinelemeli).
-    const totalCommentCount = useMemo(() => {
+    const loadedCommentCount = useMemo(() => {
         function countAll(list: Comment[]): number {
             let count = 0
             for (const c of list) {
@@ -570,13 +580,14 @@ function CommentThread({
         }
         return countAll(comments)
     }, [comments])
+    const totalCommentCount = typeof totalCount === 'number' ? Math.max(totalCount, loadedCommentCount) : loadedCommentCount
 
     // Limit visible root comments by pagination.
     const visibleComments = useMemo(
-        () => comments.slice(0, visibleRootCount),
-        [comments, visibleRootCount],
+        () => (onLoadMore ? comments : comments.slice(0, visibleRootCount)),
+        [comments, onLoadMore, visibleRootCount],
     )
-    const hasMoreComments = comments.length > visibleRootCount
+    const hasMoreComments = !onLoadMore && comments.length > visibleRootCount
     const remainingCount = comments.length - visibleRootCount
     const isNewCommentTooLong = typeof composerMaxLength === 'number' && newComment.length > composerMaxLength
 
@@ -715,6 +726,23 @@ function CommentThread({
             <div className="space-y-4 lg:pl-6 xl:pl-8">
                 {visibleComments.map((c) => renderComment(c, 0, c.id))}
             </div>
+
+            {/* Server-side "load more": the next page of top-level comments. */}
+            {onLoadMore && hasMoreOnServer && (
+                <div className="flex justify-center pt-1">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 gap-1.5 text-xs"
+                        data-testid="comment-thread-load-more"
+                        disabled={isLoadingMore}
+                        onClick={onLoadMore}
+                    >
+                        {isLoadingMore ? <Loader2 className="size-3.5 animate-spin" /> : <ChevronDown className="size-3.5" />}
+                        {isLoadingMore ? txa('Yorumlar yükleniyor...') : txa('Daha fazla yorum yükle')}
+                    </Button>
+                </div>
+            )}
 
             {/* "Daha fazla goster" butonu */}
             {hasMoreComments && (

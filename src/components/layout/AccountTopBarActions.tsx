@@ -1,4 +1,5 @@
 import { NotificationTrigger } from '@/components/notifications/NotificationTrigger'
+import { SilentErrorBoundary } from '@/components/common/RouteErrorBoundary'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Link, LocaleSwitchLink, useNavigate } from '@/i18n/router'
@@ -203,11 +204,13 @@ export function AccountTopBarActions({ variant = 'inline', showCoinShortcut = fa
                 <span className="text-xs font-bold text-amber-600 dark:text-amber-400">{txa('Coin yükle')}</span>
               </button>
             ) : null}
-            <NotificationTrigger
-              sidebar={isSidebar && !showCoinShortcut}
-              open={accountData.isNotificationOpen}
-              onOpenChange={accountData.setIsNotificationOpen}
-            />
+            <SilentErrorBoundary name='notifications'>
+              <NotificationTrigger
+                sidebar={isSidebar && !showCoinShortcut}
+                open={accountData.isNotificationOpen}
+                onOpenChange={accountData.setIsNotificationOpen}
+              />
+            </SilentErrorBoundary>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

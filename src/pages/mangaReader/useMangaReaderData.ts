@@ -23,12 +23,14 @@ import { getReaderClientKey } from '@/services/readTrackingService'
 import { addReadingHistory } from '@/services/userService'
 import { createScopedLogger } from '@/services/logger'
 import { commentService, type CommentSortBy } from '@/services/commentService'
+import { useCommentPager } from '@/hooks/useCommentPager'
 import { resolveCommentMentionContext } from '@/services/commentMentionService'
 import {
   isChapterNotFoundError,
   shouldTrackRead,
 } from '@/pages/mangaReader/readerChapterRouting'
 import { txa } from '@/i18n/activeLocale'
+import { toast } from '@/services/toastService'
 
 const READ_TRACK_MIN_VISIBLE_MS = 8_000
 const READ_TRACK_RETRY_MS = 1_500
@@ -90,6 +92,17 @@ export function useMangaReaderData({
       setResolvedMentionedMangas([])
     }
   }, [])
+
+  const commentPager = useCommentPager({
+    mangaId: mangaRouteState?.id || null,
+    setComments,
+    onMerged: (merged) => { void resolveCommentMentions(merged) },
+    onError: (error) => {
+      mangaReaderDataLogger.error({ event: 'chapter-comments-load-more-error', error })
+      toast.error(txa('Yorumlar yüklenemedi.'))
+    },
+  })
+  const { reset: resetCommentPager, applyFirstPage: applyFirstCommentPage } = commentPager
 
   useEffect(() => {
     if (!id || !chapterNumber) return
@@ -225,6 +238,7 @@ export function useMangaReaderData({
   useEffect(() => {
     if (!mangaId || !chapter?.id) {
       setComments([])
+      resetCommentPager()
       setCommentsLoading(false)
       setResolvedMentionedUsers([])
       setResolvedRelatedFansubs([])
@@ -238,18 +252,21 @@ export function useMangaReaderData({
 
     void (async () => {
       try {
-        const rows = await commentService.getComments(mangaId, {
+        const page = await commentService.getCommentsPage(mangaId, {
           chapterId: chapter.id,
           sortBy: commentSortBy,
           signal: controller.signal,
         })
         if (!alive) return
+        const rows = page.comments
+        applyFirstCommentPage(page, { sortBy: commentSortBy, chapterId: chapter.id })
         setComments(rows as unknown as Comment[])
         await resolveCommentMentions(rows as unknown as Comment[], controller.signal)
       } catch (error) {
         if (!alive) return
         mangaReaderDataLogger.error({ event: 'chapter-comments-load-error', error })
         setComments([])
+        resetCommentPager()
         setResolvedMentionedUsers([])
         setResolvedRelatedFansubs([])
         setResolvedMentionedMangas([])
@@ -262,7 +279,7 @@ export function useMangaReaderData({
       alive = false
       controller.abort()
     }
-  }, [chapter?.id, commentSortBy, mangaId, resolveCommentMentions])
+  }, [applyFirstCommentPage, chapter?.id, commentSortBy, mangaId, resetCommentPager, resolveCommentMentions])
 
   useEffect(() => {
     const fansubId = chapter?.fansub?.id
@@ -356,6 +373,7 @@ export function useMangaReaderData({
     chapter,
     chapterCreditLoading,
     chapterCreditPresentation,
+    commentPager,
     comments,
     commentsLoading,
     loading,

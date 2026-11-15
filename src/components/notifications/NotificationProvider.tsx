@@ -1,3 +1,4 @@
+import { startVisiblePolling } from '@/lib/polling'
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { getRuntimeFeatureFlags, listenFeatureFlagUpdates } from '@/services/featureFlagService'
@@ -53,9 +54,9 @@ function AccountNotifications({ userId, children }: { userId: string | null; chi
     void refreshCounts()
     // Mobile/desktop bells share the same counter; no background queries.
     const visibleRefresh = () => { if (document.visibilityState === 'visible') void refreshCounts() }
-    const timer = window.setInterval(visibleRefresh, 60000)
+    const stopPolling = startVisiblePolling(refreshCounts, 60000, { catchUp: false })
     document.addEventListener('visibilitychange', visibleRefresh)
-    return () => { window.clearInterval(timer); document.removeEventListener('visibilitychange', visibleRefresh); countRequest.current?.abort() }
+    return () => { stopPolling(); document.removeEventListener('visibilitychange', visibleRefresh); countRequest.current?.abort() }
   }, [enabled, userId, refreshCounts])
   const markRead = useCallback(async (item: Notification) => {
     if (!userId || !enabled || locks.current.has(item.id) || locks.current.has('all')) return false

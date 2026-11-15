@@ -1,3 +1,4 @@
+import { invalidateFansubMembershipCaches } from '@/services/fansubMembershipCache'
 import { withAbortSignal, withServiceTimeout } from '../apiResilience'
 import { createScopedLogger } from '../logger'
 import { createRequestContext, toRequestContextLogContext } from '../requestContext'
@@ -144,6 +145,9 @@ export async function reviewFansubJoinRequest(
     ),
     { label: 'fansubMembershipService.reviewFansubJoinRequest' },
   )
+
+  // The membership may have changed; drop short-lived membership reads.
+  invalidateFansubMembershipCaches()
 
   if (error) {
     fansubJoinRequestsLogger.error({

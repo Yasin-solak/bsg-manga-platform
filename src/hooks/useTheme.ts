@@ -38,7 +38,9 @@ export function useTheme() {
     useEffect(() => {
         const root = document.documentElement
         root.classList.toggle('dark', resolvedTheme === 'dark')
-        localStorage.setItem('bsgmanga-theme', theme)
+        try {
+            localStorage.setItem('bsgmanga-theme', theme)
+        } catch { /* Private mode or blocked site data: the theme still applies for this session. */ }
     }, [theme, resolvedTheme])
 
     /* Update when the system preference changes */

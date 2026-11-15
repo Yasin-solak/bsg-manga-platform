@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { abortSignals } from '@/lib/abortSignals'
 import { supabase } from './supabase'
 import { apiError, messageSchema } from './communityV2Service'
 import { txa } from '@/i18n/activeLocale'
@@ -19,7 +20,7 @@ const schemas = {
   decide: z.object({ server_id: uuid, report_id: uuid, version: z.number().int().positive(), status: z.enum(['resolved','dismissed']), note: z.string().trim().max(1000) }),
 }
 async function call(action: keyof typeof schemas, payload: Record<string, unknown>, signal?: AbortSignal) {
-  const {data,error} = await supabase.rpc('community_v2_moderation', { p_action: action, p_payload: schemas[action].parse(payload) }).abortSignal(signal || AbortSignal.timeout(15000))
+  const {data,error} = await supabase.rpc('community_v2_moderation', { p_action: action, p_payload: schemas[action].parse(payload) }).abortSignal(signal || abortSignals.timeout(15000))
   if(error) throw apiError(error)
   return data
 }

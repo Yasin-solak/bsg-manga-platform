@@ -37,6 +37,7 @@ const runtime=compile('src/components/common/DiagnosticsRuntime.tsx',{
   '@/services/diagnosticPerformance':{startPerformanceMeasurements:()=>()=>{}},
   '@/services/diagnosticsService':{diagnosticCollectionEnabled:async()=>true,readDiagnosticConsent:()=>pendingConsent??Promise.resolve(consent),sendDiagnosticEvent:async event=>{sent.push(event)}},
   '@/services/diagnosticSignal':{setDiagnosticListener:fn=>{listener=fn}},
+  '@/lib/polling':{startVisiblePolling:()=>()=>{}},
 })
 runtime.DiagnosticsRuntime();cleanup=effect();await new Promise(resolve=>setImmediate(resolve))
 assert.equal(listener,undefined,'the error listener must not attach with consent off')

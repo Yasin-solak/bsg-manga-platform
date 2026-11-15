@@ -15,7 +15,8 @@ import {
   getPendingMfaChallenge,
   isAuthSessionMissingError,
   isSessionReplacedError,
-  releaseExpiredOwnBanIfNeeded,
+  shareCurrentUserLoad,
+  clearCurrentUserLoadShare,
 } from './shared'
 import { hydrateAppUserAccountEconomy } from './economy'
 import { hydrateAppUserAccountRuntime } from './runtime'
@@ -44,6 +45,7 @@ async function clearLocalSessionIfStillMissing() {
 }
 
 export async function signOut(): Promise<void> {
+  clearCurrentUserLoadShare()
   const requestContext = createRequestContext('authSession', 'sign-out')
   const { error } = await withServiceTimeout(
     () => supabase.auth.signOut(),
@@ -90,13 +92,17 @@ export async function fetchCurrentUser(): Promise<AppUser | null> {
   if (!authSnapshot?.authUserId) return null
 
   try {
-    await releaseExpiredOwnBanIfNeeded()
-    const user = await hydrateAppUserAccountEconomy(
-      await hydrateAppUserAccountRuntime(
-        await ensureUserProfile({
-          id: authSnapshot.authUserId,
-          email: authSnapshot.email || undefined,
-        }),
+    const snapshotForLoad = authSnapshot
+    const user = await shareCurrentUserLoad(
+      snapshotForLoad.authUserId,
+      snapshotForLoad.accessToken || null,
+      async () => hydrateAppUserAccountEconomy(
+        await hydrateAppUserAccountRuntime(
+          await ensureUserProfile({
+            id: snapshotForLoad.authUserId,
+            email: snapshotForLoad.email || undefined,
+          }),
+        ),
       ),
     )
     const pendingMfaChallenge = getPendingMfaChallenge(await getMfaStateSummary(), authSnapshot.email || null)

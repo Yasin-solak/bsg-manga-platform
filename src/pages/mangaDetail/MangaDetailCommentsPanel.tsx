@@ -7,6 +7,10 @@ import { txa } from '@/i18n/activeLocale'
 
 interface MangaDetailCommentsPanelProps {
   comments: Comment[]
+  commentsHasMore: boolean
+  commentsLoadingMore: boolean
+  commentsTotal: number | null
+  onLoadMoreComments: () => void
   loadingComments: boolean
   loadedCommentSortBy: CommentSortBy | null
   newComment: string
@@ -36,6 +40,10 @@ interface MangaDetailCommentsPanelProps {
 
 export default function MangaDetailCommentsPanel({
   comments,
+  commentsHasMore,
+  commentsLoadingMore,
+  commentsTotal,
+  onLoadMoreComments,
   loadingComments,
   loadedCommentSortBy,
   newComment,
@@ -109,6 +117,10 @@ export default function MangaDetailCommentsPanel({
           onSortChange={onCommentSortChange}
           hoverSideOffset={34}
           composerMaxLength={composerMaxLength}
+          hasMoreOnServer={commentsHasMore}
+          onLoadMore={onLoadMoreComments}
+          isLoadingMore={commentsLoadingMore}
+          totalCount={commentsTotal}
         />
       ) : null}
     </div>

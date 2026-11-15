@@ -9,6 +9,7 @@ import { AnnouncementContent, AnnouncementInlineText } from './AnnouncementConte
 import { AnnouncementActions } from './AnnouncementActions'
 import { useAnnouncements } from './useAnnouncements'
 import { intlLocale, txa } from '@/i18n/activeLocale'
+import { SilentErrorBoundary } from '@/components/common/RouteErrorBoundary'
 
 export function AnnouncementSkeleton() {
   return <div role="status" aria-label={txa('Duyurular yükleniyor')} className="space-y-3 py-3"><div className="h-3 w-20 rounded bg-muted motion-safe:animate-pulse" /><div className="h-4 w-4/5 rounded bg-muted motion-safe:animate-pulse" /><div className="h-3 w-full rounded bg-muted motion-safe:animate-pulse" /></div>
@@ -58,7 +59,12 @@ export function AnnouncementDialog({ id, onClose }: { id: string | null; onClose
     <DialogTitle className="sr-only">{txa('Duyuru ayrıntıları')}</DialogTitle>{id && <AnnouncementDetail id={id} />}
   </DialogContent></Dialog>
 }
-export function AnnouncementsPanel({ mobile = false }: { mobile?: boolean }) {
+/** A bad announcement record must not break the page around the panel: render nothing instead. */
+export function AnnouncementsPanel(props: { mobile?: boolean }) {
+  return <SilentErrorBoundary name="announcements"><AnnouncementsPanelContent {...props} /></SilentErrorBoundary>
+}
+
+function AnnouncementsPanelContent({ mobile = false }: { mobile?: boolean }) {
   const { items, loading, error, refresh } = useAnnouncements({ home: true, limit: 3 })
   const [selected, setSelected] = useState<string | null>(null)
   if (!loading && !error && !items.length) return null

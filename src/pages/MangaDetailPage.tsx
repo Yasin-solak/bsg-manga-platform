@@ -32,6 +32,7 @@ import { AlertTriangle, Loader2 } from 'lucide-react'
 import type { Manga, Comment, Chapter, RelatedFansub, RelatedManga, RelatedUser } from '@/types'
 import { getMangaByIdentifier, listRelatedMangasForDetail, getChaptersByMangaId, getMyMangaRating, submitMangaRating, type RelatedMangaSuggestion } from '@/services/mangaService'
 import { commentService, MANGA_COMMENT_MAX_LENGTH, type CommentSortBy } from '@/services/commentService'
+import { useCommentPager } from '@/hooks/useCommentPager'
 import { userService } from '@/services/userService'
 import type { ReportTargetType } from '@/services/reportService'
 import { getRuntimeFeatureFlags, listenFeatureFlagUpdates } from '@/services/featureFlagService'
@@ -93,6 +94,18 @@ function MangaDetailPage() {
     const inactiveReplyMessage = buildInactiveFeatureMessage(txa('Manga yorum yanıtı'))
     const { currentUser } = useAuth()
     const mangaId = manga?.id || null
+
+    const commentPager = useCommentPager({
+        mangaId,
+        setComments,
+        onMerged: (merged) => { void resolveCommentMentions(merged) },
+        onError: (error) => {
+            mangaDetailLogger.warn({ event: 'load-more-manga-comments-failed', message: 'more manga comments could not be loaded.', error })
+            toast.error(txa('Yorumlar yüklenemedi.'))
+        },
+    })
+
+    const { reset: resetCommentPager, applyFirstPage: applyFirstCommentPage } = commentPager
 
     const resolveCommentMentions = async (rows: Comment[], signal?: AbortSignal) => {
         const requestContext = createRequestContext('MangaDetailPage', 'resolve-comment-mentions', {
@@ -295,12 +308,13 @@ function MangaDetailPage() {
 
     useEffect(() => {
         setComments([])
+        resetCommentPager()
         setLoadedCommentSortBy(null)
         setResolvedMentionedUsers([])
         setResolvedRelatedFansubs([])
         setResolvedMentionedMangas([])
         setLoadingComments(false)
-    }, [id])
+    }, [id, resetCommentPager])
 
     useEffect(() => {
         if (!mangaId) return
@@ -316,11 +330,13 @@ function MangaDetailPage() {
                 sortBy: commentSortBy,
             })
             try {
-                const rows = await commentService.getComments(mangaId, {
+                const page = await commentService.getCommentsPage(mangaId, {
                     sortBy: commentSortBy,
                     signal: controller.signal,
                 })
                 if (!alive) return
+                const rows = page.comments
+                applyFirstCommentPage(page, { sortBy: commentSortBy })
                 setComments(rows as unknown as Comment[])
                 setLoadedCommentSortBy(commentSortBy)
                 if (controller.signal.aborted) return
@@ -334,6 +350,7 @@ function MangaDetailPage() {
                     error,
                 })
                 setComments([])
+                resetCommentPager()
                 setResolvedMentionedUsers([])
                 setResolvedRelatedFansubs([])
                 setResolvedMentionedMangas([])
@@ -343,7 +360,7 @@ function MangaDetailPage() {
         })
 
         return () => { alive = false; controller.abort() }
-    }, [commentSortBy, loadedCommentSortBy, mangaId, selectedTab])
+    }, [applyFirstCommentPage, commentSortBy, loadedCommentSortBy, mangaId, resetCommentPager, selectedTab])
 
     useEffect(() => {
         if (!publicProfileId || !mangaId) {
@@ -482,6 +499,7 @@ function MangaDetailPage() {
             const createdComment = created as unknown as Comment
             const nextComments = [createdComment, ...comments]
             setComments(nextComments)
+            commentPager.adjustTotal(1)
             void resolveCommentMentions(nextComments)
             setNewComment('')
         } catch (error) {
@@ -516,6 +534,7 @@ function MangaDetailPage() {
             )
             const nextComments = addRecursive(comments)
             setComments(nextComments)
+            commentPager.adjustTotal(1)
             void resolveCommentMentions(nextComments)
             setReplyText('')
             setReplyingTo(null)
@@ -576,7 +595,7 @@ function MangaDetailPage() {
         try { const res = await submitMangaRating(manga.id, r); setUserRating(res.userRating); setManga((p) => p ? { ...p, rating: res.averageRating ?? p.rating } : p); setShowRatingModal(false); toast.success(txa('Puaniniz kaydedildi.')) } catch (error) { const requestContext = createRequestContext('MangaDetailPage', 'submit-manga-rating', { mangaId: manga.id, rating: r, currentUserId: currentUser?.id || null }); const reportedError = reportUserFacingError(mangaDetailLogger, { event: requestContext.event, error, fallback: txa('Puan kaydedilemedi.'), requestContext }); toast.error(reportedError.userMessage) }
     }
     const { totalCommentCount, continueReadingChapter, continueReadingUrl, startReadingUrl } = useMangaDetailDerived(manga, chapters, comments, continueReadingEntry)
-    const visibleCommentCount = loadedCommentSortBy ? totalCommentCount : undefined
+    const visibleCommentCount = loadedCommentSortBy ? Math.max(commentPager.total ?? 0, totalCommentCount) : undefined
 
     /*
      * Take over the mobile top bar (prototype: back | title | share | ⋯).
@@ -681,6 +700,10 @@ function MangaDetailPage() {
                         {selectedTab === 'comments' && (
                             <MangaDetailCommentsPanel
                                 comments={comments}
+                                commentsHasMore={commentPager.hasMore}
+                                commentsLoadingMore={commentPager.loadingMore}
+                                commentsTotal={commentPager.total}
+                                onLoadMoreComments={() => { void commentPager.loadMore() }}
                                 loadingComments={loadingComments}
                                 loadedCommentSortBy={loadedCommentSortBy}
                                 newComment={newComment}

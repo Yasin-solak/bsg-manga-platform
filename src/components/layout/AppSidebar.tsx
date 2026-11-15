@@ -43,6 +43,7 @@ import { getEventTheme } from '@/lib/eventThemes'
 import { groupActiveEvents } from '@/services/rewardService'
 import AccountTopBarActions from './AccountTopBarActions'
 import GlobalSearchCommand from './GlobalSearchCommand'
+import { SilentErrorBoundary } from '@/components/common/RouteErrorBoundary'
 import { DesktopEventCard } from '@/components/home/desktop/DesktopEventCard'
 import { DesktopHomeNav } from '@/components/home/desktop/DesktopHomeNav'
 import { HomePremiumCard } from '@/components/home/HomePremiumCard'
@@ -334,7 +335,7 @@ function AppSidebar({ hideMobileTopBar = false }: { hideMobileTopBar?: boolean }
 
       {/* Eski ust bardan tasinan blok: arama + kullanici cipi (bildirim/mesaj sagda) */}
       <div className={cn('shrink-0 space-y-1.5 border-t border-sidebar-border', mini ? 'p-2' : 'p-3')}>
-        <GlobalSearchCommand variant="sidebar" enableHotkey={enableSearchHotkey} />
+        <SilentErrorBoundary name="global-search"><GlobalSearchCommand variant="sidebar" enableHotkey={enableSearchHotkey} /></SilentErrorBoundary>
         <AccountTopBarActions variant="sidebar" showCoinShortcut={enableSearchHotkey} />
       </div>
     </div>
@@ -406,7 +407,7 @@ function AppSidebar({ hideMobileTopBar = false }: { hideMobileTopBar?: boolean }
           />
         </Link>
         <div className="ml-auto flex items-center gap-2">
-          <GlobalSearchCommand variant="icon" />
+          <SilentErrorBoundary name="global-search"><GlobalSearchCommand variant="icon" /></SilentErrorBoundary>
           <AccountTopBarActions />
         </div>
         </>

@@ -21,6 +21,7 @@ function harness() {
     if (name === 'react') return react
     if (name === 'react/jsx-runtime') return { jsx: noop }
     if (name === './settleAuthBootstrap') return helper.exports
+    if (name === '@/lib/polling') return { startVisiblePolling: () => noop }
     if (name === '@/services/authService') return { ...mocks, fetchCurrentUser: () => new Promise(resolve => requests.push(resolve)), isMfaRequiredError: () => false, isSessionReplacedError: () => false }
     if (name === '@/services/logger') return { createScopedLogger: () => mocks }
     if (name === '@/services/requestContext') return { createRequestContext: () => ({}), toRequestContextLogContext: () => ({}) }
