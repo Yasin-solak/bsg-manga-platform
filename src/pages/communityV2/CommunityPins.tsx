@@ -1,3 +1,4 @@
+import { startVisiblePolling } from '@/lib/polling'
 import { useCallback, useEffect, useState } from 'react'
 import { communityV2, type CommunityMessage } from '@/services/communityV2Service'
 import { CommunityIdentity, CommunityLoading, CommunityModal } from './CommunityShared'
@@ -15,8 +16,8 @@ export function CommunityPins({ channelId, onClose, onJump }: { channelId: strin
   }, [channelId, revision])
   useEffect(() => {
     const unsub = communityV2.subscribe('channel', channelId, refresh)
-    const timer = setInterval(refresh, 30000)
-    return () => { unsub(); clearInterval(timer) }
+    const stopPolling = startVisiblePolling(refresh, 30000)
+    return () => { unsub(); stopPolling() }
   }, [channelId, refresh])
   return <CommunityModal title={txa('Sabitlenen mesajlar')} description={txa('Bu kanalın önemli mesajları. Bir kanalda en fazla 50 mesaj sabitlenebilir.')} onClose={onClose}>
     {error && <p className="cv2-error" role="alert">{error} <button onClick={refresh}>{txa('Yenile')}</button></p>}

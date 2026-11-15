@@ -149,7 +149,8 @@ jobs:
         run: npm run smoke:core-flows
 
   e2e_browser_smoke:
-    runs-on: ubuntu-latest
+    # Pinned: Playwright 1.55 cannot install Chromium on the ubuntu-latest (26.04) image.
+    runs-on: ubuntu-24.04
     # Go RED at 20 minutes rather than hanging for 6 hours; the longest
     # job normally takes 2.5 minutes, so this limit does not cut a real run.
     timeout-minutes: 20
@@ -206,7 +207,8 @@ jobs:
         run: npm run e2e:browser-smoke
 
   chapter_credit_regression:
-    runs-on: ubuntu-latest
+    # Pinned: Playwright 1.55 cannot install Chromium on the ubuntu-latest (26.04) image.
+    runs-on: ubuntu-24.04
     # Go RED at 20 minutes rather than hanging for 6 hours; the longest
     # job normally takes 2.5 minutes, so this limit does not cut a real run.
     timeout-minutes: 20
@@ -275,7 +277,8 @@ jobs:
             docs/reports/chapter-credit-smoke
 
   boost_policy_regression:
-    runs-on: ubuntu-latest
+    # Pinned: Playwright 1.55 cannot install Chromium on the ubuntu-latest (26.04) image.
+    runs-on: ubuntu-24.04
     # Go RED at 20 minutes rather than hanging for 6 hours; the longest
     # job normally takes 2.5 minutes, so this limit does not cut a real run.
     timeout-minutes: 20

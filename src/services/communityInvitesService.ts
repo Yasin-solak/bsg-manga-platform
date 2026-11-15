@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { abortSignals } from '@/lib/abortSignals'
 import { supabase } from './supabase'
 import { apiError } from './communityV2Service'
 
@@ -11,7 +12,7 @@ export type CommunityInvite = z.infer<typeof inviteSchema>
 export type CommunityInviteEntry = z.infer<typeof entrySchema>
 const schemas = { create: createSchema, list: z.object({ server_id: uuid, before: z.string().regex(/^\d+$/).optional() }), revoke: z.object({ server_id: uuid, invite_id: uuid }), preview: z.object({ token }), redeem: z.object({ token }) }
 async function call(action: keyof typeof schemas, payload: Record<string, unknown>, signal?: AbortSignal) {
-  const { data, error } = await supabase.rpc('community_v2_invites', { p_action: action, p_payload: schemas[action].parse(payload) }).abortSignal(signal || AbortSignal.timeout(15000))
+  const { data, error } = await supabase.rpc('community_v2_invites', { p_action: action, p_payload: schemas[action].parse(payload) }).abortSignal(signal || abortSignals.timeout(15000))
   if (error) throw apiError(error)
   return data
 }

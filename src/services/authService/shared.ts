@@ -170,6 +170,35 @@ function normalizeRpcRow<T>(data: unknown): T | null {
   return data as T
 }
 
+const currentUserLoadInFlight = new Map<string, Promise<AppUser>>()
+
+/**
+ * Concurrent loads for the same auth user and the same access token share one profile + runtime +
+ * economy round trip. Focus/visibility syncs and the auth SIGNED_IN event that fires on tab return
+ * otherwise each issue the full set. There is deliberately no settled-result cache: a refresh that
+ * starts after the previous one finished always reads fresh data (balance, profile edits).
+ */
+export function shareCurrentUserLoad(
+  authUserId: string,
+  accessToken: string | null,
+  load: () => Promise<AppUser>,
+): Promise<AppUser> {
+  const key = `${authUserId}:${accessToken ?? ''}`
+  const existing = currentUserLoadInFlight.get(key)
+  if (existing) return existing
+
+  const request = load().finally(() => {
+    if (currentUserLoadInFlight.get(key) === request) currentUserLoadInFlight.delete(key)
+  })
+  currentUserLoadInFlight.set(key, request)
+  return request
+}
+
+/** Sign-out, user switch and USER_UPDATED must never reuse a load that started before them. */
+export function clearCurrentUserLoadShare() {
+  currentUserLoadInFlight.clear()
+}
+
 export function clearCurrentAuthSessionSnapshotCache() {
   currentAuthSessionSnapshotCache = null
   currentAuthSessionSnapshotInFlight = null
@@ -713,8 +742,22 @@ async function createUserProfile(authUser: MinimalAuthUser, preferredUsername?: 
   throw new Error('Kullanici adi olusturulamadi. Lutfen farkli bir kullanici adi deneyin.')
 }
 
+/**
+ * The release RPC is only needed when the profile row we already loaded still says banned
+ * but its ban_until has passed. Permanent bans (no ban_until) and live bans never trigger it.
+ */
+function hasExpiredBanRecord(row: DbUser) {
+  if (row.is_banned !== true || !row.ban_until) return false
+  const until = new Date(row.ban_until).getTime()
+  return Number.isFinite(until) && until <= Date.now()
+}
+
 export async function ensureUserProfile(authUser: MinimalAuthUser, preferredUsername?: string): Promise<AppUser> {
-  const existing = await findUserByAuthId(authUser.id)
+  let existing = await findUserByAuthId(authUser.id)
+  if (existing && hasExpiredBanRecord(existing)) {
+    await releaseExpiredOwnBanIfNeeded()
+    existing = (await findUserByAuthId(authUser.id)) ?? existing
+  }
   if (existing) {
     const mapped = mapDbUserToAppUser(existing, authUser.id)
     ensureUserCanUseApp(mapped)

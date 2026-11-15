@@ -1,4 +1,5 @@
-﻿import { withAbortSignal, withServiceTimeout } from '../apiResilience'
+﻿import { invalidateFansubMembershipCaches } from '@/services/fansubMembershipCache'
+import { withAbortSignal, withServiceTimeout } from '../apiResilience'
 import { createScopedLogger } from '../logger'
 import { createRequestContext, toRequestContextLogContext } from '../requestContext'
 import { supabase } from '../supabase'
@@ -114,6 +115,9 @@ export async function adminExitFansub(
     ),
     { label: 'fansubMembershipService.adminExitFansub' },
   )
+
+  // The membership may have changed; drop short-lived membership reads.
+  invalidateFansubMembershipCaches()
 
   if (error) {
     fansubMembershipManagementLogger.error({

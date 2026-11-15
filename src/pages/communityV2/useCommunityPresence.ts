@@ -1,3 +1,4 @@
+import { startVisiblePolling } from '@/lib/polling'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { communityPersonal, type CommunityPresence } from '@/services/communityPersonalService'
 
@@ -30,7 +31,8 @@ export function useCommunityPresence(channelId: string, visible: boolean) {
     // The chat's existing socket only signals refresh; no second subscription opens.
     window.addEventListener(`community-presence:${channelId}`, changed)
     void read(true)
-    const interval = setInterval(() => { void read(true) }, 30000)
+    // The visibility handler below already reads on return, so no polling catch-up.
+    const stopPolling = startVisiblePolling(() => read(true), 30000, { catchUp: false })
     const expire = setInterval(() => {
       const stamp = performance.now()
       setRows(previous => previous.filter(r => r.presenceDeadline > stamp).map(r => r.typing && r.typingDeadline <= stamp ? { ...r, typing: false } : r))
@@ -42,7 +44,7 @@ export function useCommunityPresence(channelId: string, visible: boolean) {
     document.addEventListener('visibilitychange', visibility)
     return () => {
       active = false; requestTyping.current = null
-      clearTimeout(timer); clearInterval(interval); clearInterval(expire)
+      clearTimeout(timer); stopPolling(); clearInterval(expire)
       document.removeEventListener('visibilitychange', visibility)
       window.removeEventListener(`community-presence:${channelId}`, changed)
       void communityPersonal.presence(channelId, 'offline').catch(() => {})

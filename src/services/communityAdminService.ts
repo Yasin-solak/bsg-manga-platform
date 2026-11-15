@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { abortSignals } from '@/lib/abortSignals'
 import { supabase } from './supabase'
 
 /*
@@ -173,7 +174,7 @@ export type CommunityMemberOperation = 'timeout' | 'kick' | 'ban' | 'unban'
 
 async function call(action: string, payload: Record<string, unknown> = {}, signal?: AbortSignal): Promise<unknown> {
   const { data, error } = await supabase.rpc('community_v2_admin', { p_action: action, p_payload: payload })
-    .abortSignal(signal || AbortSignal.timeout(15_000))
+    .abortSignal(signal || abortSignals.timeout(15_000))
   if (error) {
     // Server messages are Turkish and user-appropriate (P0001 / 42501 / 22023); the rest are generic.
     throw new Error(['P0001', '42501', '22023'].includes(error.code || '') ? error.message : 'Topluluk verisi alınamadı. Bağlantını kontrol edip tekrar dene.')

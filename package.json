@@ -24,7 +24,7 @@
     "test:contracts": "node tests/contracts/run-all-contracts.mjs",
     "lint:text": "node scripts/check-mojibake.mjs",
     "preview": "vite preview",
-    "deploy:cf": "npm run build && npm run cf:precheck && npx wrangler pages deploy dist --project-name=bsgmanga --commit-dirty=true",
+    "deploy:cf": "node scripts/predeploy-git-guard.mjs && npm run build && npm run cf:precheck && npx wrangler pages deploy dist --project-name=bsgmanga --commit-dirty=true",
     "e2e:manga-comment-report": "playwright test --config playwright.config.ts tests/e2e/manga-comment-report.spec.ts",
     "smoke:chapter-credit": "playwright test --config playwright.config.ts tests/e2e/chapter-credit-management.spec.ts tests/e2e/chapter-credit-visual-smoke.spec.ts",
     "smoke:boost-policy": "node tests/contracts/run-boost-policy-contracts.mjs && playwright test --config playwright.config.ts tests/e2e/admin-boost-downgrade-smoke.spec.ts",

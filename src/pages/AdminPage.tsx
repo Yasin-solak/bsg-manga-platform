@@ -1,4 +1,4 @@
-﻿import { Suspense, lazy, useEffect, useMemo } from 'react'
+﻿import { Suspense, useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useNavigate } from '@/i18n/router'
 import { AdminPageShell } from '@/components/admin/shared/AdminPageShell'
@@ -21,25 +21,26 @@ import { useOpenSupportRequestCount } from '@/hooks/useOpenSupportRequestCount'
 import { useOpenCommunityReportCount } from '@/hooks/useOpenCommunityReportCount'
 import { SHOP_DESK_TABS, type ShopAdminTab } from '@components/admin/shop/shopAdminFormat'
 import { txa } from '@/i18n/activeLocale'
+import { lazyRoute } from '@/lib/lazyRoute'
 
-const AdminSupportSection = lazy(() => import('@/components/admin/sections/AdminSupportSection'))
-const AdminDiagnosticsSection = lazy(() => import('@/components/admin/sections/AdminDiagnosticsSection'))
-const AdminDashboardSection = lazy(() => import('@components/admin/AdminDashboardSection'))
-const AdminPendingSection = lazy(() => import('@components/admin/AdminPendingSection'))
-const AdminUsersSection = lazy(() => import('@components/admin/AdminUsersSection'))
-const MangaManagementSection = lazy(() => import('@components/admin/MangaManagementSection'))
-const AdminMangaListsSection = lazy(() => import('@components/admin/AdminMangaListsSection'))
-const AdminSeriesRequestsSection = lazy(() => import('@components/admin/AdminSeriesRequestsSection'))
-const AdminTranslationStudioSection = lazy(() => import('@components/admin/AdminTranslationStudioSection'))
-const AdminShopSection = lazy(() => import('@components/admin/shop/AdminShopSection'))
-const CoinCodeManagementSection = lazy(() => import('@components/admin/CoinCodeManagementSection'))
-const AdminRewardsSection = lazy(() => import('@components/admin/AdminRewardsSection'))
-const AdminGamesSection = lazy(() => import('@components/admin/games/AdminGamesSection'))
-const AdminTextTranslationsSection = lazy(() => import('@components/admin/sections/AdminTextTranslationsSection'))
-const FansubManagementSection = lazy(() => import('@components/admin/FansubManagementSection'))
-const AdminOpsSection = lazy(() => import('@components/admin/AdminOpsSection'))
-const AdminBoostSection = lazy(() => import('@/components/admin/sections/AdminBoostSection'))
-const AdminSupporterAssetsSection = lazy(() => import('@/components/admin/sections/AdminSupporterAssetsSection'))
+const AdminSupportSection = lazyRoute(() => import('@/components/admin/sections/AdminSupportSection'))
+const AdminDiagnosticsSection = lazyRoute(() => import('@/components/admin/sections/AdminDiagnosticsSection'))
+const AdminDashboardSection = lazyRoute(() => import('@components/admin/AdminDashboardSection'))
+const AdminPendingSection = lazyRoute(() => import('@components/admin/AdminPendingSection'))
+const AdminUsersSection = lazyRoute(() => import('@components/admin/AdminUsersSection'))
+const MangaManagementSection = lazyRoute(() => import('@components/admin/MangaManagementSection'))
+const AdminMangaListsSection = lazyRoute(() => import('@components/admin/AdminMangaListsSection'))
+const AdminSeriesRequestsSection = lazyRoute(() => import('@components/admin/AdminSeriesRequestsSection'))
+const AdminTranslationStudioSection = lazyRoute(() => import('@components/admin/AdminTranslationStudioSection'))
+const AdminShopSection = lazyRoute(() => import('@components/admin/shop/AdminShopSection'))
+const CoinCodeManagementSection = lazyRoute(() => import('@components/admin/CoinCodeManagementSection'))
+const AdminRewardsSection = lazyRoute(() => import('@components/admin/AdminRewardsSection'))
+const AdminGamesSection = lazyRoute(() => import('@components/admin/games/AdminGamesSection'))
+const AdminTextTranslationsSection = lazyRoute(() => import('@components/admin/sections/AdminTextTranslationsSection'))
+const FansubManagementSection = lazyRoute(() => import('@components/admin/FansubManagementSection'))
+const AdminOpsSection = lazyRoute(() => import('@components/admin/AdminOpsSection'))
+const AdminBoostSection = lazyRoute(() => import('@/components/admin/sections/AdminBoostSection'))
+const AdminSupporterAssetsSection = lazyRoute(() => import('@/components/admin/sections/AdminSupporterAssetsSection'))
 
 /** Sections with a list + detail desk: fixed to screen height at xl and up. */
 const DESK_SECTIONS: ReadonlySet<AdminSection> = new Set<AdminSection>(['pending', 'community', 'comments', 'lists', 'announcements', 'mangas', 'fansubs', 'users', 'coin_codes', 'support', 'legal_requests', 'diagnostics'])

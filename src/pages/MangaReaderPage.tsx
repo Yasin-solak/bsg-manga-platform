@@ -130,6 +130,7 @@ function MangaReaderPage() {
     chapter,
     chapterCreditLoading,
     chapterCreditPresentation,
+    commentPager,
     comments,
     commentsLoading,
     loading,
@@ -231,6 +232,7 @@ function MangaReaderPage() {
       const createdComment = row as unknown as Comment
       const nextComments = [createdComment, ...comments]
       setComments(nextComments)
+      commentPager.adjustTotal(1)
       void resolveCommentMentions(nextComments)
       setNewComment('')
       toast.success(txa('Yorum gönderildi.'))
@@ -265,6 +267,7 @@ function MangaReaderPage() {
       )
       const nextComments = addRecursive(comments)
       setComments(nextComments)
+      commentPager.adjustTotal(1)
       void resolveCommentMentions(nextComments)
       setReplyingTo(null)
       setReplyText('')
@@ -357,6 +360,10 @@ function MangaReaderPage() {
       chapterCreditLoading={chapterCreditLoading}
       chapterCreditPresentation={chapterCreditPresentation}
       comments={comments}
+      commentsHasMore={commentPager.hasMore}
+      commentsLoadingMore={commentPager.loadingMore}
+      commentsTotal={commentPager.total}
+      onLoadMoreComments={() => { void commentPager.loadMore() }}
       commentsLoading={commentsLoading}
       commentSortBy={commentSortBy}
       currentUserAvatar={currentUser?.avatar}

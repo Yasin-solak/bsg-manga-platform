@@ -1,3 +1,4 @@
+import { startVisiblePolling } from '@/lib/polling'
 import { useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { collectTechnicalReport, routeCategory, type DiagnosticCode } from '@/services/diagnosticsTypes'
@@ -50,17 +51,18 @@ export function DiagnosticsRuntime() {
         if (!existing && metrics.size >= 15) return
         metrics.set(key, { id: existing?.id || crypto.randomUUID(), sample, dirty: true })
       }) : undefined
-      const metricTimer = window.setInterval(flushMetrics, 30000)
+      const stopMetricTimer = startVisiblePolling(flushMetrics, 30000, { catchUp: false })
       const onHidden = () => { if (document.visibilityState === 'hidden') flushMetrics() }
       document.addEventListener('visibilitychange', onHidden)
-      stop = () => { stopped = true; stopPerformance?.(); metrics.clear(); window.clearInterval(metricTimer); document.removeEventListener('visibilitychange', onHidden); window.removeEventListener('error', onError, true); window.removeEventListener('unhandledrejection', onPromise); setDiagnosticListener(null) }
+      stop = () => { stopped = true; stopPerformance?.(); metrics.clear(); stopMetricTimer(); document.removeEventListener('visibilitychange', onHidden); window.removeEventListener('error', onError, true); window.removeEventListener('unhandledrejection', onPromise); setDiagnosticListener(null) }
     }
     void refresh()
-    const timer = window.setInterval(() => void refresh(), 60000)
+    // The focus listener below is the catch-up for returning to the tab.
+    const stopRefreshTimer = startVisiblePolling(refresh, 60000, { catchUp: false })
     const channel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('bsg-diagnostics-preference') : null
     if (channel) channel.onmessage = () => { halt(); void refresh() }
     window.addEventListener('diagnostics-stop', halt); window.addEventListener('diagnostics-preference', refresh); window.addEventListener('focus', refresh)
-    return () => { disposed = true; halt(); window.clearInterval(timer); channel?.close(); window.removeEventListener('diagnostics-stop', halt); window.removeEventListener('diagnostics-preference', refresh); window.removeEventListener('focus', refresh) }
+    return () => { disposed = true; halt(); stopRefreshTimer(); channel?.close(); window.removeEventListener('diagnostics-stop', halt); window.removeEventListener('diagnostics-preference', refresh); window.removeEventListener('focus', refresh) }
   }, [userId])
   return null
 }

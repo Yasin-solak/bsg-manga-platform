@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { abortSignals } from '@/lib/abortSignals'
 import { supabase } from './supabase'
 import { apiError, messageSchema } from './communityV2Service'
 
@@ -18,7 +19,7 @@ export type CommunityJoinRequest = z.infer<typeof requestSchema>
 const resultSchema = z.object({ ok: z.boolean().optional(), id: uuid.optional(), pending: z.boolean().optional() })
 
 async function rpc<S extends z.ZodTypeAny>(endpoint: string, action: string, payload: object, schema: S, signal?: AbortSignal): Promise<z.output<S>> {
-  const { data, error } = await supabase.rpc(endpoint, { p_action: action, p_payload: payload }).abortSignal(signal || AbortSignal.timeout(15000))
+  const { data, error } = await supabase.rpc(endpoint, { p_action: action, p_payload: payload }).abortSignal(signal || abortSignals.timeout(15000))
   if (error) throw apiError(error)
   return schema.parse(data)
 }

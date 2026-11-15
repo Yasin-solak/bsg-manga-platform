@@ -9,6 +9,7 @@ const TRANSFORM_RATE_LIMIT_WINDOW_SECONDS = 60
 const TRANSFORM_RATE_LIMIT_LONG_WINDOW_SECONDS = 10 * 60
 const TRANSFORM_RATE_LIMIT_MAX_PER_IP = 240
 const TRANSFORM_RATE_LIMIT_LONG_MAX_PER_IP = 1600
+const UPSTREAM_FETCH_TIMEOUT_MS = 8000
 const MISSING_IMAGE_PLACEHOLDER_SVG = [
   '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1" viewBox="0 0 1 1">',
   '<rect width="1" height="1" fill="transparent"/>',
@@ -101,6 +102,20 @@ async function writeCounter(namespace, key, count, windowSeconds) {
   )
 }
 
+// Why: the limiter is best effort. On the Workers Free plan KV allows 1,000 writes a day; once the
+// quota is gone put() throws, and failing closed would break every image for the rest of the day.
+function logRateLimitSkip(error) {
+  console.warn(`[public-image] rate limiter skipped: ${String(error?.message ?? error).slice(0, 160)}`)
+}
+
+function getDefaultCache() {
+  try {
+    return globalThis.caches?.default ?? null
+  } catch {
+    return null
+  }
+}
+
 function buildCounterKey(scope, target, windowStart, windowSeconds) {
   return [
     'public-image-rate-limit',
@@ -132,6 +147,16 @@ function isCanonicalRequestUrl(requestUrl, canonicalUrl) {
 }
 
 async function assertTransformRateLimit(context) {
+  try {
+    return await runTransformRateLimit(context)
+  } catch (error) {
+    // Fail open: a KV outage or exhausted daily quota must not turn into a 500 for image requests.
+    logRateLimitSkip(error)
+    return null
+  }
+}
+
+async function runTransformRateLimit(context) {
   const namespace = getRateLimitNamespace(context.env)
   if (!namespace) return null
 
@@ -259,23 +284,52 @@ async function handleRequest(context) {
     })
   }
 
+  // Cache first: a cache hit costs no KV operation, so the limiter below only runs on misses.
+  const isHead = context.request.method === 'HEAD'
+  const cache = getDefaultCache()
+  const cacheKey = new Request(canonicalUrl.toString(), { method: 'GET' })
+  if (cache) {
+    try {
+      const cached = await cache.match(cacheKey)
+      if (cached) {
+        return new Response(isHead ? null : cached.body, {
+          status: cached.status,
+          headers: cached.headers,
+        })
+      }
+    } catch (error) {
+      console.warn(`[public-image] cache lookup skipped: ${String(error?.message ?? error).slice(0, 160)}`)
+    }
+  }
+
   const rateLimitResponse = await assertTransformRateLimit(context)
   if (rateLimitResponse) return rateLimitResponse
 
-  const upstream = await fetch(sourceUrl.toString(), {
-    headers: {
-      accept: 'image/avif,image/webp,image/*,*/*;q=0.8',
-    },
-    cf: {
-      image: {
-        width,
-        quality,
-        fit: 'scale-down',
-        format: 'webp',
-        metadata: 'none',
+  let upstream
+  try {
+    upstream = await fetch(sourceUrl.toString(), {
+      headers: {
+        accept: 'image/avif,image/webp,image/*,*/*;q=0.8',
       },
-    },
-  })
+      cf: {
+        image: {
+          width,
+          quality,
+          fit: 'scale-down',
+          format: 'webp',
+          metadata: 'none',
+        },
+      },
+      signal: AbortSignal.timeout(UPSTREAM_FETCH_TIMEOUT_MS),
+    })
+  } catch (error) {
+    // A timeout or network error is treated like any other upstream failure.
+    console.warn(`[public-image] upstream fetch failed: ${String(error?.message ?? error).slice(0, 160)}`)
+    return new Response('Image unavailable', {
+      status: 502,
+      headers: applySecurityHeaders(new Headers()),
+    })
+  }
 
   if (upstream.status === 404) {
     return buildMissingImageFallbackResponse(context.request, upstream.status)
@@ -301,13 +355,23 @@ async function handleRequest(context) {
   headers.delete('set-cookie')
   applySecurityHeaders(headers)
 
-  return new Response(
-    context.request.method === 'HEAD' ? null : upstream.body,
+  const response = new Response(
+    isHead ? null : upstream.body,
     {
       status: upstream.status,
       headers,
     },
   )
+
+  // Store successful GET transforms so repeat requests skip both the limiter and the transform.
+  if (cache && !isHead && upstream.status === 200) {
+    const store = cache.put(cacheKey, response.clone()).catch((error) => {
+      console.warn(`[public-image] cache store skipped: ${String(error?.message ?? error).slice(0, 160)}`)
+    })
+    if (typeof context.waitUntil === 'function') context.waitUntil(store)
+  }
+
+  return response
 }
 
 export const onRequestGet = handleRequest

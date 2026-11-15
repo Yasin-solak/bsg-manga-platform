@@ -10,7 +10,6 @@ import {
   getPendingMfaChallenge,
   normalizeUsernameInput,
   readSessionIdFromAccessToken,
-  releaseExpiredOwnBanIfNeeded,
   settleAuthenticatedSession,
   toFriendlyAuthError,
   validateUsernameInput,
@@ -122,7 +121,6 @@ export async function signInWithEmail(
   }
 
   await settleAuthenticatedSession(data.session, authUser.id)
-  await releaseExpiredOwnBanIfNeeded()
   const appUser = await hydrateAppUserAccountEconomy(
     await hydrateAppUserAccountRuntime(
       await ensureUserProfile(authUser),
@@ -188,7 +186,6 @@ export async function verifyPendingMfaChallenge(
   }
 
   await settleAuthenticatedSession(data, data.user.id)
-  await releaseExpiredOwnBanIfNeeded()
   const appUser = await hydrateAppUserAccountEconomy(
     await hydrateAppUserAccountRuntime(
       await ensureUserProfile(data.user),

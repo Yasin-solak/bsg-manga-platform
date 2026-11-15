@@ -4,7 +4,10 @@ type AbortableQuery<T> = T & {
 }
 
 export const DEFAULT_API_TIMEOUT_MS = 10_000
-const DEFAULT_RETRY_DELAYS_MS = [250, 750]
+const DEFAULT_MAX_ATTEMPTS = 3
+const RETRY_BASE_DELAY_MS = 300
+const RETRY_MAX_DELAY_MS = 4_000
+const RETRY_AFTER_MAX_MS = 10_000
 
 type ApiTimeoutError = Error & {
   code: 'REQUEST_TIMEOUT'
@@ -20,6 +23,7 @@ interface ServiceTimeoutOptions {
 interface RetryOptions {
   label: string
   maxAttempts?: number
+  /** Optional per-attempt delay ceilings; the actual wait is still jittered inside [0, ceiling]. */
   delaysMs?: number[]
   shouldRetry?: (error: unknown, attempt: number) => boolean
 }
@@ -59,6 +63,44 @@ export function isAbortLikeError(error: unknown) {
     || message.includes('aborted')
 }
 
+/**
+ * Full-jitter exponential backoff: a random wait in [0, min(cap, base * 2^(attempt-1))].
+ * Randomising the whole window keeps clients from retrying in lockstep during an incident.
+ */
+export function computeBackoffDelayMs(attempt: number, random: () => number = Math.random) {
+  const ceiling = Math.min(RETRY_MAX_DELAY_MS, RETRY_BASE_DELAY_MS * 2 ** Math.max(0, attempt - 1))
+  return Math.floor(random() * (ceiling + 1))
+}
+
+/** Reads a server supplied Retry-After hint (429/503) from the error, capped at 10 s. */
+export function readRetryAfterMs(error: unknown): number | null {
+  if (!error || typeof error !== 'object') return null
+  const typed = error as {
+    status?: number
+    retryAfterMs?: unknown
+    retryAfter?: unknown
+    headers?: { get?: (name: string) => string | null } | Record<string, unknown>
+  }
+  if (typed.status !== undefined && typed.status !== 429 && typed.status !== 503) return null
+
+  let ms: number | null = null
+  if (typeof typed.retryAfterMs === 'number') {
+    ms = typed.retryAfterMs
+  } else {
+    let raw: unknown = typed.retryAfter
+    const headers = typed.headers
+    if (raw === undefined && headers) {
+      raw = typeof (headers as { get?: unknown }).get === 'function'
+        ? (headers as { get: (name: string) => string | null }).get('retry-after')
+        : (headers as Record<string, unknown>)['retry-after'] ?? (headers as Record<string, unknown>)['Retry-After']
+    }
+    const seconds = typeof raw === 'number' ? raw : typeof raw === 'string' ? Number(raw) : Number.NaN
+    if (Number.isFinite(seconds)) ms = seconds * 1000
+  }
+  if (ms === null || !Number.isFinite(ms) || ms < 0) return null
+  return Math.min(RETRY_AFTER_MAX_MS, ms)
+}
+
 export function isRetryableApiError(error: unknown) {
   if (!error || typeof error !== 'object') return false
 
@@ -76,7 +118,7 @@ export function isRetryableApiError(error: unknown) {
   const details = (typed.details || '').toLowerCase()
 
   if (code === 'REQUEST_TIMEOUT' || isAbortLikeError(error)) return true
-  if (status !== null && (status === 408 || status === 409 || status === 425 || status === 429 || status >= 500)) return true
+  if (status !== null && (status === 408 || status === 425 || status === 429 || status >= 500)) return true
 
   return message.includes('timeout')
     || message.includes('temporarily unavailable')
@@ -158,8 +200,8 @@ export async function runWithRetry<T>(
   operation: (attempt: number) => Promise<T>,
   options: RetryOptions,
 ): Promise<T> {
-  const maxAttempts = options.maxAttempts ?? (options.delaysMs?.length || DEFAULT_RETRY_DELAYS_MS.length) + 1
-  const delaysMs = options.delaysMs ?? DEFAULT_RETRY_DELAYS_MS
+  const maxAttempts = options.maxAttempts ?? (options.delaysMs?.length ? options.delaysMs.length + 1 : DEFAULT_MAX_ATTEMPTS)
+  const delayCeilingsMs = options.delaysMs
   const shouldRetry = options.shouldRetry ?? ((error: unknown) => isRetryableApiError(error))
 
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
@@ -171,10 +213,17 @@ export async function runWithRetry<T>(
         throw error
       }
 
-      const nextDelay = delaysMs[Math.min(attempt - 1, delaysMs.length - 1)] ?? delaysMs[delaysMs.length - 1] ?? 0
-      await sleep(nextDelay)
+      const retryAfterMs = readRetryAfterMs(error)
+      if (retryAfterMs !== null) {
+        await sleep(retryAfterMs)
+      } else if (delayCeilingsMs?.length) {
+        const ceiling = delayCeilingsMs[Math.min(attempt - 1, delayCeilingsMs.length - 1)] ?? 0
+        await sleep(Math.floor(Math.random() * (ceiling + 1)))
+      } else {
+        await sleep(computeBackoffDelayMs(attempt))
+      }
     }
   }
 
-  throw createTimeoutError(options.label, options.delaysMs?.[options.delaysMs.length - 1] ?? DEFAULT_API_TIMEOUT_MS)
+  throw createTimeoutError(options.label, DEFAULT_API_TIMEOUT_MS)
 }

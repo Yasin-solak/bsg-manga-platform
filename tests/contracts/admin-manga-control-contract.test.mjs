@@ -160,8 +160,8 @@ assert.match(section, /min-h-0 divide-y divide-border\/50 overflow-y-auto/, 'lis
 assert.match(section, /onOpenAutoFocus=\{focusSheetContainer\}/, 'drawer focus on narrow screens')
 assert.match(section, /const MANGAS_PER_PAGE|MANGAS_PER_PAGE/, 'the list is paged')
 
-assert.match(section, /window\.setInterval/, 'there must be a silent auto refresh')
-assert.match(section, /document\.visibilityState !== 'visible'/, 'must not refresh while hidden')
+assert.match(section, /startVisiblePolling\(/, 'there must be a silent auto refresh that pauses while the tab is hidden (shared jittered helper)')
+assert.doesNotMatch(section, /window\.setInterval/, 'the refresh must not bypass the visibility-aware polling helper')
 
 // Bulk action: the bar should not render at all with no selection; partial success is reported.
 assert.match(section, /\{selected\.length > 0 \? \(/, 'bos toplu islem cubugu yer kaplamamali')

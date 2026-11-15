@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { abortSignals } from '@/lib/abortSignals'
 import { getCurrentAccessToken } from '@/services/authService/shared'
 import { txa } from '@/i18n/activeLocale'
 
@@ -49,7 +50,7 @@ export async function uploadCommunityFile(channelId:string,id:string,file:File,s
   })
 }
 export async function discardCommunityFile(id:string) {
-  const response=await fetch(`${endpoint}?id=${encodeURIComponent(id)}`,{method:'DELETE',headers:{Authorization:await authorization()},signal:AbortSignal.timeout(15000)})
+  const response=await fetch(`${endpoint}?id=${encodeURIComponent(id)}`,{method:'DELETE',headers:{Authorization:await authorization()},signal:abortSignals.timeout(15000)})
   if(!response.ok) throw await failed(response)
 }
 export async function readCommunityFile(file:CommunityAttachment,signal:AbortSignal) {

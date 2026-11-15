@@ -84,7 +84,7 @@ assert.match(read('src/pages/admin/adminRoutes.ts'), /games: 'oyunlar',/)
 assert.match(read('src/pages/admin/adminPageUtils.ts'), /\| 'games'/)
 assert.match(read('src/pages/admin/adminNavigation.ts'), /id: 'games',\s*label: 'Oyunlar',/)
 const adminPage = read('src/pages/AdminPage.tsx')
-assert.match(adminPage, /lazy\(\(\) => import\('@components\/admin\/games\/AdminGamesSection'\)\)/)
+assert.match(adminPage, /lazyRoute\(\(\) => import\('@components\/admin\/games\/AdminGamesSection'\)\)/)
 assert.match(adminPage, /activeSection === 'games' && \(/)
 
 console.log('PASS Games Corner admin: settings row, admin permission, disabled game and client wiring')

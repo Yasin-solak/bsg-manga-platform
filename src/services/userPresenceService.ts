@@ -9,6 +9,9 @@ const PRESENCE_ERROR_LOG_THROTTLE_MS = 5 * 60 * 1000
 let missingRpcWasLogged = false
 let lastPresenceErrorLoggedAt = 0
 let presenceRequestInFlight: Promise<boolean> | null = null
+let lastPresenceTouchAt = 0
+// Focus, visibility and the interval can all fire within seconds of each other.
+const PRESENCE_MIN_GAP_MS = 20_000
 
 function isMissingRpcError(error: { code?: string; message?: string } | null | undefined) {
     return error?.code === '42883'
@@ -53,12 +56,20 @@ async function performPresenceTouch(): Promise<boolean> {
     }
 }
 
+/** A different account must never inherit the previous account's throttle window. */
+export function resetPresenceTouchThrottle() {
+    lastPresenceTouchAt = 0
+}
+
 export async function touchMyPresence(): Promise<boolean> {
     if (presenceRequestInFlight) return presenceRequestInFlight
+    if (Date.now() - lastPresenceTouchAt < PRESENCE_MIN_GAP_MS) return true
 
     presenceRequestInFlight = performPresenceTouch()
     try {
-        return await presenceRequestInFlight
+        const touched = await presenceRequestInFlight
+        if (touched) lastPresenceTouchAt = Date.now()
+        return touched
     } finally {
         presenceRequestInFlight = null
     }

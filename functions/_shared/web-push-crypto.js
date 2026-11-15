@@ -141,6 +141,8 @@ export async function buildVapidAuthHeader({ endpoint, publicKey, privateKey, su
  * Sends a push to one subscription. Failures do not become exceptions; a status is
  * returned so the caller can clean up subscriptions marked `gone`.
  */
+const PUSH_FETCH_TIMEOUT_MS = 10000
+
 export async function sendWebPush({ subscription, payload, vapid, ttlSeconds = 86400 }) {
   const body = await encryptWebPushPayload(
     encoder.encode(payload),
@@ -153,17 +155,24 @@ export async function sendWebPush({ subscription, payload, vapid, ttlSeconds = 8
     privateKey: vapid.privateKey,
     subject: vapid.subject,
   })
-  const response = await fetch(subscription.endpoint, {
-    method: 'POST',
-    headers: {
-      authorization,
-      'content-encoding': 'aes128gcm',
-      'content-type': 'application/octet-stream',
-      ttl: String(ttlSeconds),
-      urgency: 'normal',
-    },
-    body,
-  })
+  let response
+  try {
+    response = await fetch(subscription.endpoint, {
+      method: 'POST',
+      headers: {
+        authorization,
+        'content-encoding': 'aes128gcm',
+        'content-type': 'application/octet-stream',
+        ttl: String(ttlSeconds),
+        urgency: 'normal',
+      },
+      body,
+      signal: AbortSignal.timeout(PUSH_FETCH_TIMEOUT_MS),
+    })
+  } catch (error) {
+    // A timeout or network error counts as a failed send for this subscription only.
+    return { ok: false, status: 0, gone: false, error: String(error?.name ?? 'fetch_failed') }
+  }
   // 404/410: the subscription is dead (the user revoked permission or the browser deleted it)
   return { ok: response.ok, status: response.status, gone: response.status === 404 || response.status === 410 }
 }

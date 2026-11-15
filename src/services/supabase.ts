@@ -90,7 +90,12 @@ function resolveBrowserStorage(mode: AuthPersistenceMode) {
     return null
   }
 
-  return probeBrowserStorage(mode === 'local' ? window.localStorage : window.sessionStorage)
+  // Merely reading window.localStorage throws a SecurityError when site data is blocked.
+  try {
+    return probeBrowserStorage(mode === 'local' ? window.localStorage : window.sessionStorage)
+  } catch {
+    return null
+  }
 }
 
 function readPreferredAuthPersistenceMode(): AuthPersistenceMode {

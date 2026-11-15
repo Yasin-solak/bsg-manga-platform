@@ -1,4 +1,6 @@
 export const kabuk: Record<string, string> = {
+  'Bu sayfa şu anda açılamadı.': 'This page could not be opened right now.',
+  'Sayfanın bu bölümünde bir sorun oluştu. Menü çalışmaya devam ediyor; yeniden deneyebilir veya başka bir sayfaya geçebilirsin.': 'Something went wrong in this part of the page. The menu still works; you can try again or move to another page.',
   '{label} Bulunamadı': '{label} not found',
   'Hedef:': 'Target:',
   'BSG Manga | Manga ve Webtoon Platformu': 'BSG Manga | Manga and Webtoon Platform',
@@ -273,5 +275,6 @@ export const kabuk: Record<string, string> = {
   '@{username} kullanıcısına yanıt': 'Reply to @{username}',
   '@{username} kullanıcısına yanıt yaz...': 'Write a reply to @{username}...',
   '{count} yorum daha göster': 'Show {count} more comments',
+  'Daha fazla yorum yükle': 'Load more comments',
   'Kalan {count} yorumu göster': 'Show the remaining {count} comments',
 }

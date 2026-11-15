@@ -1,3 +1,4 @@
+import { fansubAdminCheckCache, invalidateFansubMembershipCaches, myAdminFansubsCache } from '@/services/fansubMembershipCache'
 import type { FrameType } from '@/components/common/AvatarFrame'
 import type { Fansub } from '@/types'
 import { loadPublicUserDirectoryLiteByIds } from '../publicUserDirectoryLite'
@@ -107,6 +108,9 @@ export async function upsertFansub(fansub: Partial<Fansub> & { name: string }) {
     p_hover_theme: fansub.hoverTheme ?? null,
   })
 
+  // The membership may have changed; drop short-lived membership reads.
+  invalidateFansubMembershipCaches()
+
   if (error) {
     if (error.code === '42883') {
       throw createMissingFansubManagementRpcError('upsert_fansub_profile')
@@ -124,6 +128,9 @@ export async function deleteFansub(id: string) {
     p_is_active: false,
   })
 
+  // The membership may have changed; drop short-lived membership reads.
+  invalidateFansubMembershipCaches()
+
   if (error) {
     if (error.code === '42883') {
       throw createMissingFansubManagementRpcError('admin_set_fansub_active')
@@ -136,22 +143,32 @@ export async function deleteFansub(id: string) {
 }
 
 export async function checkFansubAdmin(fansubId: string, userId: string) {
-  const { count, error } = await supabase
-    .from('fansub_members')
-    .select('user_id', { count: 'exact', head: true })
-    .eq('fansub_id', fansubId)
-    .eq('user_id', userId)
-    .eq('role', 'admin')
+  // Detail pages and interaction state ask this together; share one query (errors are not cached).
+  return await fansubAdminCheckCache.get(`${userId}:${fansubId}`, async () => {
+    const { count, error } = await supabase
+      .from('fansub_members')
+      .select('user_id', { count: 'exact', head: true })
+      .eq('fansub_id', fansubId)
+      .eq('user_id', userId)
+      .eq('role', 'admin')
 
-  if (error) {
-    logFansubManagementError('check-fansub-admin', error, { fansubId, userId })
-    return false
-  }
+    if (error) {
+      logFansubManagementError('check-fansub-admin', error, { fansubId, userId })
+      throw error
+    }
 
-  return (count || 0) > 0
+    return (count || 0) > 0
+  }).catch(() => false)
 }
 
-export async function getMyAdminFansubs(userId: string) {
+type MyAdminFansub = {
+  id: string
+  name: string
+  coin_balance: number
+  inventory: string[]
+}
+
+export async function getMyAdminFansubs(userId: string): Promise<MyAdminFansub[]> {
   const e2eMockStoreData = getE2EMockStoreData()
   if (e2eMockStoreData) {
     return e2eMockStoreData.adminFansubs.map((fansub) => ({
@@ -162,6 +179,11 @@ export async function getMyAdminFansubs(userId: string) {
     }))
   }
 
+  // The wallet holds the coin balance, so concurrent callers share one request but nothing is kept afterwards.
+  return await myAdminFansubsCache.get(userId, () => loadMyAdminFansubs(userId)) as MyAdminFansub[]
+}
+
+async function loadMyAdminFansubs(userId: string): Promise<MyAdminFansub[]> {
   const { data, error } = await supabase
     .from('fansub_members')
     .select(`
@@ -190,12 +212,7 @@ export async function getMyAdminFansubs(userId: string) {
       coin_balance: entry.fansubs?.coin_balance,
       inventory: entry.fansubs?.fansub_inventory?.map((item: any) => item.store_item_id) || [],
     }))
-    .filter((fansub: any) => !!fansub.id) as {
-      id: string
-      name: string
-      coin_balance: number
-      inventory: string[]
-    }[]
+    .filter((fansub: any) => !!fansub.id) as MyAdminFansub[]
 }
 
 export async function updateMemberRole(
@@ -212,6 +229,9 @@ export async function updateMemberRole(
     p_member_user_id: userId,
     p_role: newRole,
   })
+
+  // The membership may have changed; drop short-lived membership reads.
+  invalidateFansubMembershipCaches()
 
   if (error) {
     if (error.code === '42883') {
@@ -306,6 +326,9 @@ export async function removeFansubMember(fansubId: string, userId: string) {
     p_fansub_id: fansubId,
     p_member_user_id: userId,
   })
+
+  // The membership may have changed; drop short-lived membership reads.
+  invalidateFansubMembershipCaches()
 
   if (error) {
     if (error.code === '42883') {

@@ -113,6 +113,8 @@ export async function onRequest({ request, env }) {
             ...(blur > 0 ? { blur } : {}),
           },
         },
+        // A hung upstream falls into the outer catch (503) instead of stalling the request.
+        signal: AbortSignal.timeout(8000),
       })
       if (!fetched.ok || !fetched.body || !/^image\//i.test(fetched.headers.get('content-type') || '')) {
         return errorResponse(502, 'Görsel alınamadı.')
