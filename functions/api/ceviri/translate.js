@@ -1,7 +1,7 @@
 import { assertUploadRateLimit } from '../../_shared/upload-rate-limit.js'
 import {
   ALT_SCHEMA, altInstructions, batchEntries, DRAFT_SCHEMA, draftInstructions, normalizeAlternatives,
-  normalizeDraft, runRoutes,
+  matchSourceCase, normalizeDraft, runRoutes,
 } from '../../_shared/translation-ai.js'
 import {
   assertBudget, authenticate, claimJob, errorResponse, finishJob, HttpError, json, loadPageForUser, requireAiAllowed, requireAiPageQuota, requireStudioPermission,
@@ -15,7 +15,8 @@ const DEFAULT_FONT_SIZE = { balon: 15, anlatim: 15, sfx: 56, tabela: 14 }
  * sagdan sola, Korece webtoonda soldan saga okunur.
  */
 export function orderItems(items, sourceLanguage) {
-  const rtl = sourceLanguage !== 'ko'
+  // Korean webtoons and English releases read left to right; Japanese manga right to left.
+  const rtl = sourceLanguage !== 'ko' && sourceLanguage !== 'en'
   const sorted = [...items].sort((a, b) => a.bbox_y - b.bbox_y)
   const bands = []
   for (const item of sorted) {
@@ -91,6 +92,8 @@ async function post(request, env, deps) {
     const runs = []
     const drafts = new Map()
     const entries = pending.map((item) => ({ id: item.id, type: item.type, text: item.source_text }))
+    const sourceOf = new Map(pending.map((item) => [item.id, item.source_text]))
+    const cased = (id, text) => matchSourceCase(sourceOf.get(id), text, language)
     for (const batch of batchEntries(entries)) {
       const run = await runRoutes(draftRoutes, env, {
         name: 'manga_translation_draft',
@@ -100,7 +103,7 @@ async function post(request, env, deps) {
         maxTokens: 8000,
       }, { fetchImpl: deps.fetch, validate: (data) => normalizeDraft(data, batch.map((entry) => entry.id)) })
       runs.push(run)
-      for (const [id, value] of run.value) drafts.set(id, { ...value, route: run.route })
+      for (const [id, value] of run.value) drafts.set(id, { ...value, text: cased(id, value.text), route: run.route })
     }
 
     const alternatives = new Map()
@@ -117,7 +120,7 @@ async function post(request, env, deps) {
             maxTokens: 8000,
           }, { fetchImpl: deps.fetch, validate: (data) => normalizeAlternatives(data, drafts) })
           runs.push(run)
-          for (const [id, alts] of run.value) alternatives.set(id, { alts, route: run.route })
+          for (const [id, alts] of run.value) alternatives.set(id, { alts: alts.map((alt) => cased(id, alt)), route: run.route })
         } catch {
           // Alternatif ek bilgidir; taslak kaydini dusurmez.
         }

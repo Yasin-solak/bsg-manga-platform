@@ -23,7 +23,7 @@ const STAGE_LABEL: Record<TlProjectStage, string> = {
   get archived() { return txa('Arşivde') },
 }
 
-export function StepStart({ fansubName, drafts, draftsLoading, onStart, onOpenDraft, canStart = true, myTasks = [], onOpenTask, seriesSlot }: {
+export function StepStart({ fansubName, drafts, draftsLoading, onStart, onOpenDraft, canStart = true, myTasks = [], onOpenTask, seriesSlot, notice }: {
   fansubName: string
   drafts: TlProject[]
   draftsLoading: boolean
@@ -36,6 +36,8 @@ export function StepStart({ fansubName, drafts, draftsLoading, onStart, onOpenDr
   onOpenTask?: (task: TlMyTask) => void
   /** "My series" section (the team's series on the site and in the studio). */
   seriesSlot?: ReactNode
+  /** Shown above the start button (e.g. the boost lock card). */
+  notice?: ReactNode
 }) {
   return (
     <div className='tl-screen flex min-h-0 flex-1 justify-center overflow-y-auto p-6 sm:p-10'>
@@ -67,6 +69,7 @@ export function StepStart({ fansubName, drafts, draftsLoading, onStart, onOpenDr
           ))}
         </div>
 
+        {notice}
         <div className='flex items-center gap-3'>
           <PrimaryButton size='lg' onClick={onStart} disabled={!canStart} title={canStart ? undefined : txa('Yeni bölüm açmak için proje yönetimi izni gerekir')} data-testid='tl-start'>
             {txa('Başla')}

@@ -118,6 +118,13 @@ function AppSidebar({ hideMobileTopBar = false }: { hideMobileTopBar?: boolean }
     ) : <>{children}</>
   )
 
+  // The desktop nav shows management as its own compact group (it used to be a separate block of
+  // tall rows under the Premium card, which pushed the sidebar into scrolling).
+  const manageLinks = currentUser ? [
+    ...((isAdminResolved || isAdmin) ? [{ to: '/admin', label: t('nav.adminPanel') }] : []),
+    ...sidebarData.adminFansubs.map((fansub) => ({ to: `/fansub/${fansub.id}/yonet`, label: fansub.name })),
+  ] : []
+
   const renderSidebar = (mini: boolean, enableSearchHotkey = false) => (
     <div className={cn("flex h-full flex-col bg-sidebar", enableSearchHotkey && "desktop-home-sidebar")}>
       <div className={cn('flex h-[74px] shrink-0 items-center border-b border-sidebar-border', mini ? 'justify-center px-2' : 'gap-2.5 px-4')}>
@@ -137,7 +144,7 @@ function AppSidebar({ hideMobileTopBar = false }: { hideMobileTopBar?: boolean }
       </div>
 
       <ScrollArea className={cn('min-h-0 flex-1 py-5', mini ? 'px-1' : 'px-4')}>
-        {enableSearchHotkey ? <DesktopHomeNav username={currentUser?.username} todayCount={todayChapterCount} /> : <nav className={cn('space-y-1.5', mini && 'flex flex-col items-center')}>
+        {enableSearchHotkey ? <DesktopHomeNav username={currentUser?.username} todayCount={todayChapterCount} manage={manageLinks} /> : <nav className={cn('space-y-1.5', mini && 'flex flex-col items-center')}>
           <TipWrap show={mini} label={t('nav.home')}>
             <NavLink to="/" end className={navCls(mini)} onClick={() => setIsMobileMenuOpen(false)}>
               <Home className="h-5 w-5 shrink-0" />{!mini && ` ${t('nav.home')}`}
@@ -300,7 +307,7 @@ function AppSidebar({ hideMobileTopBar = false }: { hideMobileTopBar?: boolean }
 
         {enableSearchHotkey && !mini ? <HomePremiumCard /> : null}
 
-        {currentUser && ((isAdminResolved || isAdmin) || sidebarData.adminFansubs.length > 0) ? (
+        {!enableSearchHotkey && currentUser && ((isAdminResolved || isAdmin) || sidebarData.adminFansubs.length > 0) ? (
           <>
             <Separator className="my-5" />
             {!mini ? (

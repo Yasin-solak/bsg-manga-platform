@@ -172,8 +172,8 @@ const limitResponse = await handleTranslationReread(new Request('https://x/api/c
 })
 assert.equal(limitResponse.status, 429)
 const limitBody = await limitResponse.json()
-assert.equal(limitBody.code, 'daily_limit')
-assert.match(limitBody.error, /60\/60 sayfa/, 'kullanim mesajda')
+assert.equal(limitBody.code, 'credit_limit')
+assert.match(limitBody.error, /60\/60 kredi/, 'usage is in the message')
 assert.equal(writes.length, limitWrites, 'hak dolunca hicbir sey yazilmaz')
 assert.ok(rpcCalls.some((call) => call.role === 'user' && call.name === 'tl_claim_ai_page' && call.args.p_page_id === PAGE), 'the credit is requested with the user JWT')
 dailyLimitReached = false

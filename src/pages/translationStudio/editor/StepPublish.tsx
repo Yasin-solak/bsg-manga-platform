@@ -7,7 +7,7 @@ import { studioAccessToken } from '@/services/studioAuth'
 import { createChapter } from '@/services/mangaService/creation'
 import { uploadChapterPages } from '@/services/storageService'
 import { mergeChapterPageDimensionMap, toStorableChapterPageDimensions } from '@/lib/chapterPageDimensions'
-import { submitChapterRevision } from '@/services/translationSeriesService'
+import { submitChapterRevision, updatePendingChapter } from '@/services/translationSeriesService'
 import { loadCleanup, loadPageItems, loadPageStatuses, type TlPageStatus } from '@/services/translationEditorService'
 import { isChapterApproved, linkPublishedChapter, rawPageUrl, reorderPages, uploadCleanPage, type TlPage, type TlProject } from '@/services/translationStudioService'
 import { toUserFacingErrorMessage } from '@/services/userFacingError'
@@ -118,7 +118,11 @@ export function StepPublish({ project, pages, canPublish, onEditPage, onPublishe
     if (!canPublish) { onToast(txa('Bölümü yayınlamak için yayınlama izni gerekir (Roller ve İzinler).')); return }
     if (!allRendered || publishing) return
     const isRevision = Boolean(project.revisionOf)
-    const iso = when === 'zamanla' && !isRevision ? new Date(publishAt).toISOString() : null
+    // A project linked to its chapter edits that chapter in place while it awaits moderation; the
+    // server refuses an approved chapter (PT409). Members without fansub admin cannot read
+    // unapproved chapters, so there is no client-side pre-check.
+    const pendingChapterId = !isRevision ? project.chapterId : null
+    const iso = when === 'zamanla' && !isRevision && !pendingChapterId ? new Date(publishAt).toISOString() : null
     if (iso && new Date(iso).getTime() < Date.now() + 60_000) { onToast(txa('Yayın zamanı ileri bir tarih olmalı.')); return }
     setPublishing(true)
     try {
@@ -130,6 +134,18 @@ export function StepPublish({ project, pages, canPublish, onEditPage, onPublishe
       // Clean bases first: so reader languages are ready at publish; if one cannot upload the chapter does not open.
       for (const page of orderedPages) await uploadCleanPage(page.id, rendered[page.id].clean)
       const files = orderedPages.map((page, index) => new File([rendered[page.id].file], `sayfa-${String(index + 1).padStart(3, '0')}.webp`, { type: 'image/webp' }))
+      if (pendingChapterId) {
+        const uploaded = await uploadChapterPages(files, project.mangaId, project.chapterNumber, project.fansubId)
+        if (uploaded.length !== files.length) throw new Error(txa('Bazı sayfalar yüklenemedi.'))
+        await updatePendingChapter(
+          project.id,
+          uploaded.map((page) => page.ref),
+          toStorableChapterPageDimensions(mergeChapterPageDimensionMap({}, uploaded)) ?? null,
+        )
+        onToast(txa('Bölüm güncellendi; moderasyon onayından sonra okuyucuda görünür.'))
+        onPublished()
+        return
+      }
       if (isRevision) {
         const uploaded = await uploadChapterPages(files, project.mangaId, project.chapterNumber, project.fansubId)
         if (uploaded.length !== files.length) throw new Error(txa('Bazı sayfalar yüklenemedi.'))
@@ -172,7 +188,7 @@ export function StepPublish({ project, pages, canPublish, onEditPage, onPublishe
   ]
 
   const currentPage = orderedPages[Math.min(current, orderedPages.length - 1)]
-  const cta = !project.mangaId ? txa('Seri onayı bekleniyor') : !canPublish ? txa('Yayınlama izni gerekir') : publishing ? txa('Yayınlanıyor…') : !allRendered ? txa('Hazırlanıyor {v1} / {v2}', { v1: renderedCount, v2: orderedPages.length }) : project.revisionOf ? txa('Revizyonu onaya gönder') : when === 'zamanla' ? txa('Yayını zamanla') : txa('Bölümü yayınla')
+  const cta = !project.mangaId ? txa('Seri onayı bekleniyor') : !canPublish ? txa('Yayınlama izni gerekir') : publishing ? txa('Yayınlanıyor…') : !allRendered ? txa('Hazırlanıyor {v1} / {v2}', { v1: renderedCount, v2: orderedPages.length }) : project.revisionOf ? txa('Revizyonu onaya gönder') : project.chapterId ? txa('Değişiklikleri gönder') : when === 'zamanla' ? txa('Yayını zamanla') : txa('Bölümü yayınla')
 
   return (
     <div className='tl-screen grid min-h-0 flex-1 grid-cols-1 gap-6 overflow-y-auto p-6 xl:grid-cols-[380px_minmax(0,1fr)_420px] xl:overflow-hidden'>
@@ -201,7 +217,12 @@ export function StepPublish({ project, pages, canPublish, onEditPage, onPublishe
             {txa('Bu bir revizyon: yayındaki bölüm onaylanana kadar okuyucuda aynen kalır. Onaydan sonra yeni sürüm yayına geçer, eski sürüm arşivlenir.')}
           </span>
         )}
-        <div className={cn('flex flex-col gap-2', project.revisionOf && 'hidden')}>
+        {!project.revisionOf && project.chapterId && (
+          <span className='rounded-xl border border-[var(--tl-p35)] bg-[var(--tl-p15)] p-3 text-[12.5px] font-semibold leading-relaxed text-[var(--tl-fg2)]' data-testid='tl-publish-pending-note'>
+            {txa('Bu bölüm moderasyon onayı bekliyor: gönderdiğinde onaya giden sayfalar bu sürümle değişir. Onaylandıktan sonraki düzeltmeler revizyonla yapılır.')}
+          </span>
+        )}
+        <div className={cn('flex flex-col gap-2', (project.revisionOf || project.chapterId) && 'hidden')}>
           <span className='text-xs font-bold text-[var(--tl-mut)]'>{txa('Yayın zamanı')}</span>
           <div className='flex gap-1.5'>
             {([['hemen', txa('Hemen')], ['zamanla', txa('Zamanla')]] as const).map(([key, label]) => (

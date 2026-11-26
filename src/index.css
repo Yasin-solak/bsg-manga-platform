@@ -224,6 +224,11 @@
 
   html {
     @apply scroll-smooth antialiased;
+    /* Phones: no double-tap zoom on quick taps (pinch zoom stays) and no text
+       inflation when the device rotates. */
+    touch-action: manipulation;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body {

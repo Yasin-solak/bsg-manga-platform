@@ -50,6 +50,7 @@ export const yonetim2: Record<string, string> = {
   'Kontrol': 'Proofreading',
   'Koordinatör': 'Coordinator',
   'Korece': 'Korean',
+  'İngilizce': 'English',
   'Kullanıcı ya da etiket ara': 'Search user or tag',
   'Kullanımda': 'In use',
   'Kur': 'Set up',

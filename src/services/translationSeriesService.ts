@@ -185,6 +185,33 @@ export async function openChapterRevision(chapterId: string): Promise<string> {
   return uuid.parse(data)
 }
 
+/**
+ * A studio chapter still waiting for moderation reopens its own project for editing (no
+ * revision); republishing replaces the pending chapter's pages.
+ */
+export async function reopenPendingChapter(chapterId: string): Promise<string> {
+  uuid.parse(chapterId)
+  const { data, error } = await supabase.rpc('tl_reopen_pending_chapter', { p_chapter_id: chapterId })
+  if (error?.code === '42501') throw new Error(txa('Bölümü düzenlemek için proje yönetimi izni gerekir.'))
+  if (error?.code === 'PT409') throw new Error(txa('Bölüm onaylanmış; stüdyoda revizyon aç.'))
+  if (error?.code === 'P0002') throw new Error(txa('Bu bölüm stüdyoda hazırlanmadı.'))
+  if (error) throw new Error(txa('Bölüm düzenlemeye açılamadı.'))
+  return uuid.parse(data)
+}
+
+/** Replaces the pages of the project's pending chapter (still unapproved; checked on the server). */
+export async function updatePendingChapter(projectId: string, pages: string[], pageDimensions: Record<string, unknown> | null): Promise<string> {
+  uuid.parse(projectId)
+  if (!pages.length) throw new Error(txa('Bölüm en az bir sayfa içermeli.'))
+  const { data, error } = await supabase.rpc('tl_update_pending_chapter', {
+    p_project_id: projectId, p_pages: pages, p_page_dimensions: pageDimensions,
+  })
+  if (error?.code === '42501') throw new Error(txa('Bölümü güncellemek için yayınlama izni gerekir.'))
+  if (error?.code === 'PT409') throw new Error(txa('Bölüm bu arada onaylandı; değişikliği revizyon olarak gönder.'))
+  if (error) throw new Error(txa('Bölüm güncellenemedi.'))
+  return uuid.parse(data)
+}
+
 /** Takes a classic chapter's page into the revision project as raw (copied on the server). */
 export async function importRevisionPage(pageId: string, signal?: AbortSignal): Promise<{ width: number, height: number }> {
   uuid.parse(pageId)

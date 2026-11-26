@@ -2,11 +2,11 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { BoundingBox, CheckCircle, Info, Scan, TextAa, Translate, Warning, WarningCircle } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import {
-  getAiUsageToday, getScanSummary, planTiles, scanTile, setPageScanStage, translatePage, withBusyRetry,
-  type TlAiUsage, type TlPage, type TlScanSummary,
+  getAiUsageToday, getScanSummary, planTiles, scanTile, setPageScanStage, TL_SOURCE_LANGUAGES, translatePage, withBusyRetry,
+  type TlAiUsage, type TlPage, type TlScanSummary, type TlSourceLanguage,
 } from '@/services/translationStudioService'
 import { snapPageItemsToBalloons } from './balloonSnap'
-import { PrimaryButton, ProgressBar, StepHeading, Toggle } from './studioUi'
+import { PrimaryButton, ProgressBar, StepHeading, StudioBetaBadge, Toggle } from './studioUi'
 import { useRawThumbnail } from './useRawThumbnail'
 import { createScopedLogger } from '@/services/logger'
 import { describeStudioError, type StudioErrorInfo } from './studioErrors'
@@ -40,6 +40,8 @@ const TYPE_TOTALS = [
 ] as const
 
 const PAGE_CONCURRENCY = 2
+/** Measured: a long webtoon page costs about 1.2 credits (scan + translation) with Haiku 5.5. */
+const CREDITS_PER_PAGE = 1.5
 
 function initialPhase(page: TlPage): Phase {
   if (page.scanStage === 'suggested' || page.scanStage === 'cleaned') return 4
@@ -68,6 +70,9 @@ export function StepScan({ fansubId, pages, onDoneChange, aiDisabled = false, on
   const abortRef = useRef<AbortController | null>(null)
   // Pilot: the team's AI page allowance today (refreshed before and after scanning).
   const [usage, setUsage] = useState<TlAiUsage | null>(null)
+  // The dialogue is in a different script than the chapter's source language (e.g. English pages
+  // opened as Japanese): reading order and SFX reading depend on it, so the user is told.
+  const [languageHint, setLanguageHint] = useState<TlSourceLanguage | 'unknown' | null>(null)
 
   const target: Phase = suggest ? 4 : 2
   const allDone = readyPages.length > 0 && readyPages.every((page) => (phases[page.id] ?? 0) >= target)
@@ -117,7 +122,8 @@ export function StepScan({ fansubId, pages, onDoneChange, aiDisabled = false, on
           setPhase(page.id, 1)
           for (const tile of planTiles(page.width as number, page.height as number)) {
             if (controller.signal.aborted) return
-            await withBusyRetry(() => scanTile(page.id, tile, controller.signal), controller.signal)
+            const result = await withBusyRetry(() => scanTile(page.id, tile, controller.signal), controller.signal)
+            if (result.languageHint) setLanguageHint(result.languageHint)
           }
           // Fit boxes to balloons: translation goes in the balloon, not a narrow vertical column.
           // Failure does not fail the page; the box stays as detected.
@@ -135,7 +141,7 @@ export function StepScan({ fansubId, pages, onDoneChange, aiDisabled = false, on
         const info = describeStudioError(error, txa('Tarama başarısız.'))
         // The reason code goes to the diagnostic record (which error how often, for production diagnosis).
         scanLogger.warn(txa('sayfa taranamadi'), { pageId: page.id, code: info.code, retryable: info.retryable })
-        if (['quota_exhausted', 'provider_auth', 'not_configured', 'ai_disabled_mature', 'daily_limit'].includes(info.code)) haltRef.current = info
+        if (['quota_exhausted', 'provider_auth', 'not_configured', 'ai_disabled_mature', 'credit_limit'].includes(info.code)) haltRef.current = info
         setErrors((current) => ({ ...current, [page.id]: info }))
         setPhase(page.id, -1)
         await setPageScanStage(page.id, 'failed', `${info.title}: ${info.hint}`).catch(() => {})
@@ -157,9 +163,11 @@ export function StepScan({ fansubId, pages, onDoneChange, aiDisabled = false, on
   ]
   const overall = total ? phaseRows.reduce((sum, row) => sum + row.count, 0) / (phaseRows.length * total) : 0
   const failedCount = Object.values(phases).filter((phase) => phase === -1).length
-  // Pages to scan (not yet sent to AI), compared with the remaining allowance.
+  // Pages to scan (not yet sent to AI); a long page costs about 1-2 credits, so the estimate
+  // warns when the month's remaining credits are clearly short.
   const needed = readyPages.filter((page) => (phases[page.id] ?? 0) < target).length
   const remaining = usage && !usage.unlimited ? Math.max(0, usage.limit - usage.used) : null
+  const neededCredits = Math.ceil(needed * CREDITS_PER_PAGE)
   // Sekme kapanip yarida kalan tarama: bitmis sayilmaz, kaldigi yerden devam ettirilir.
   const pendingCount = readyPages.filter((page) => {
     const phase = phases[page.id] ?? 0
@@ -168,7 +176,12 @@ export function StepScan({ fansubId, pages, onDoneChange, aiDisabled = false, on
 
   return (
     <div className='tl-screen flex min-h-0 flex-1 flex-col gap-[22px] overflow-y-auto px-6 pb-5 pt-7 sm:px-10'>
-      <StepHeading step={4} title={txa('Otomatik tarama')} subtitle={txa('Sistem her sayfada çevrilecek alanları bulur, metni okur ve öneri hazırlar.')} />
+      <StepHeading
+        step={4}
+        title={txa('Otomatik tarama')}
+        subtitle={txa('Sistem her sayfada çevrilecek alanları bulur, metni okur ve öneri hazırlar. Stüdyo beta sürümünde: yayınlamadan önce sonuçları kontrol et.')}
+        aside={<StudioBetaBadge />}
+      />
 
       {aiDisabled ? (
         <div className='flex max-w-[760px] flex-col gap-4 rounded-2xl border border-[var(--tl-red)]/40 bg-[var(--tl-card)] p-6' data-testid='tl-scan-mature'>
@@ -232,14 +245,14 @@ export function StepScan({ fansubId, pages, onDoneChange, aiDisabled = false, on
           </div>
           {usage && (
             <span
-              className={cn('flex items-center gap-2 text-[12.5px] font-semibold', remaining !== null && remaining < needed ? 'text-[var(--tl-amber)]' : 'text-[var(--tl-mut)]')}
+              className={cn('flex items-center gap-2 text-[12.5px] font-semibold', remaining !== null && remaining < neededCredits ? 'text-[var(--tl-amber)]' : 'text-[var(--tl-mut)]')}
               data-testid='tl-scan-quota'
             >
               <Info weight='bold' size={14} />
               {usage.unlimited
-                ? txa('Bugün {v1} sayfa yapay zekâya gönderildi · site yöneticisi, sınır yok', { v1: usage.used })
-                : txa('Ekibin bugünkü yapay zekâ hakkı: {v1} / {v2} sayfa kaldı', { v1: remaining ?? 0, v2: usage.limit })}
-              {remaining !== null && remaining < needed && txa(' · {v1} sayfa bugün taranamaz, yarın devam edebilir ya da elle girebilirsin', { v1: needed - remaining })}
+                ? txa('Bu ay {v1} kredi kullanıldı · site yöneticisi, sınır yok', { v1: usage.used })
+                : txa('Ekibin bu ayki yapay zekâ kredisi: {v1} / {v2} kaldı · bu tarama yaklaşık {v3} kredi', { v1: remaining ?? 0, v2: usage.limit, v3: neededCredits })}
+              {remaining !== null && remaining < neededCredits && txa(' · kredi yetmeyebilir; kalan sayfaları elle girebilirsin')}
             </span>
           )}
         </div>
@@ -290,6 +303,15 @@ export function StepScan({ fansubId, pages, onDoneChange, aiDisabled = false, on
                 ))}
                 {haltRef.current && <span className='text-[12px] font-semibold text-[var(--tl-amber)]'>{txa('Kalan sayfalar bu nedenle taranmadı.')}</span>}
               </div>
+            )}
+
+            {languageHint && (
+              <span data-testid='tl-scan-language-hint' className='flex items-start gap-2 rounded-[12px] border border-[var(--tl-amber)] p-3 text-[12.5px] font-semibold leading-normal text-[var(--tl-fg2)]'>
+                <Warning weight='bold' size={14} className='mt-0.5 shrink-0 text-[var(--tl-amber)]' />
+                {languageHint === 'unknown'
+                  ? txa('Sayfadaki konuşmalar seçtiğin kaynak dilde görünmüyor. Yanlışsa bölümü doğru kaynak dille yeniden aç; okuma sırası ve SFX okuması buna göre değişir.')
+                  : txa('Sayfadaki konuşmalar {v1} görünüyor. Yanlışsa bölümü doğru kaynak dille yeniden aç; okuma sırası ve SFX okuması buna göre değişir.', { v1: TL_SOURCE_LANGUAGES[languageHint].label })}
+              </span>
             )}
 
             {!running && summary && (
@@ -355,16 +377,16 @@ function ScanTile({ page, position, phase, segments, count, error }: {
   return (
     <div className='flex flex-col gap-[7px]' title={error}>
       <div className={cn(
-        'tl-hatch relative box-border flex aspect-[2/3] items-end overflow-hidden rounded-lg border p-2',
+        'tl-hatch relative box-border aspect-[2/3] overflow-hidden rounded-lg border',
         active ? 'border-[var(--tl-p35)]' : phase === -1 ? 'border-[var(--tl-red)]' : 'border-[var(--tl-line)]',
       )}
       >
         {thumb && <img src={thumb} alt='' className='absolute inset-0 h-full w-full object-cover opacity-80' />}
-        <span className='relative truncate font-mono text-[11px] text-[var(--tl-dim)] [text-shadow:0_1px_2px_#000]'>
-          {page.fileName ?? `sayfa_${String(position + 1).padStart(2, '0')}`}
-        </span>
         {done && <CheckCircle weight='fill' size={17} className='absolute right-2 top-2 text-[var(--tl-green)]' />}
       </div>
+      <span className='truncate font-mono text-[11px] text-[var(--tl-mut)]' title={page.fileName ?? undefined} data-testid='tl-scan-file-name'>
+        {page.fileName ?? `sayfa_${String(position + 1).padStart(2, '0')}`}
+      </span>
       <div className='flex gap-[3px]'>
         {Array.from({ length: segments }, (_, index) => (
           <span key={index} className={cn('h-[3px] flex-1 rounded-full', index < Math.min(filled, segments) ? 'bg-[var(--tl-p)]' : 'bg-[var(--tl-acc2)]')} />

@@ -9,9 +9,11 @@ import { installLegacyAlertToToastBridge } from '@/services/toastService'
 import { installStaleChunkReloadHandler, isStaleChunkError, reloadForStaleChunk } from '@/lib/staleChunkReload'
 import { loadEnDictionary } from '@/i18n/activeLocale'
 import { localeFromPathname } from '@/i18n/localizedRoutes'
+import { installMobileViewportFix } from '@/lib/mobileViewport'
 
 installLegacyAlertToToastBridge()
 installStaleChunkReloadHandler()
+installMobileViewportFix()
 
 const EN_DICTIONARY_TIMEOUT_MS = 10_000
 

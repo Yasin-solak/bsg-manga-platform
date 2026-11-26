@@ -65,13 +65,15 @@ export function AnnouncementsPanel(props: { mobile?: boolean }) {
 }
 
 function AnnouncementsPanelContent({ mobile = false }: { mobile?: boolean }) {
-  const { items, loading, error, refresh } = useAnnouncements({ home: true, limit: 3 })
+  const { items, error, refresh } = useAnnouncements({ home: true, limit: 3 })
   const [selected, setSelected] = useState<string | null>(null)
-  if (!loading && !error && !items.length) return null
+  // No skeleton while there is nothing to show yet: most of the time there is no announcement, and a
+  // placeholder that appears and then vanishes reads as a glitch. The panel appears with content only.
+  if (!error && !items.length) return null
   return <section className={mobile ? 'mx-4 mt-4 rounded-xl border border-border/60 bg-card px-4 py-3' : 'rounded-xl border border-border/60 bg-card p-4 shadow-sm'} aria-label={txa('Duyurular')}>
     <header className="flex items-center justify-between gap-2"><h2 className="flex items-center gap-2 text-sm font-bold"><Megaphone className="size-4 text-primary" />{txa('DUYURULAR')}</h2>
       <Link to="/duyurular" className="inline-flex items-center gap-1 py-1 text-xs text-muted-foreground hover:text-primary">{txa('Tümünü gör')}<ArrowRight className="size-3" /></Link></header>
-    {loading && !items.length ? <AnnouncementSkeleton /> : error ? <div className="py-3 text-xs" role="alert">{error}<Button variant="ghost" size="sm" onClick={refresh}>{txa('Tekrar dene')}</Button></div> : <div className={mobile ? 'flex snap-x snap-mandatory gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden' : 'divide-y divide-border/60'}>
+    {error ? <div className="py-3 text-xs" role="alert">{error}<Button variant="ghost" size="sm" onClick={refresh}>{txa('Tekrar dene')}</Button></div> : <div className={mobile ? 'flex snap-x snap-mandatory gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden' : 'divide-y divide-border/60'}>
       {items.map(a => <div key={a.id} className={mobile ? `${items.length > 1 ? 'w-[85%]' : 'w-full'} shrink-0 snap-start` : ''}><AnnouncementSummary item={a} onOpen={() => setSelected(a.id)} /></div>)}
     </div>}<AnnouncementDialog id={selected} onClose={() => setSelected(null)} />
   </section>

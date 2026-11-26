@@ -150,3 +150,16 @@ export function ProgressBar({ value, color = 'var(--tl-p)', className }: { value
     </div>
   )
 }
+
+/** Translation Studio release shown next to the beta badge; bump it with notable studio changes. */
+export const STUDIO_VERSION = '3.4.0'
+
+export function StudioBetaBadge() {
+  return (
+    <span className='tl-beta' title={txa('Çeviri Stüdyosu beta sürümünde; sonuçları yayınlamadan önce kontrol et.')} data-testid='tl-beta-badge'>
+      <span className='tl-beta-word'>Beta</span>
+      <span className='h-3.5 w-px bg-[var(--tl-line2)]' aria-hidden='true' />
+      <span className='font-mono text-[11.5px] font-bold text-[var(--tl-fg2)]'>v{STUDIO_VERSION}</span>
+    </span>
+  )
+}

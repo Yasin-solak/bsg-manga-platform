@@ -110,8 +110,7 @@ export default function BirthDateGatePage() {
           </Button>
 
           <p className="m-0 text-center text-[11px] leading-5 text-muted-foreground">
-            {txa('Bir kez kaydedilir ve sonradan değiştirilemez. {v1} yaşından', { v1: MIN_AGE })}
-            {txa('küçükler BSG Manga\'yı kullanamaz.')}
+            {txa('Bir kez kaydedilir ve sonradan değiştirilemez. {v1} yaşından küçükler BSG Manga\'yı kullanamaz.', { v1: MIN_AGE })}
           </p>
         </form>
       </div>

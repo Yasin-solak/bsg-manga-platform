@@ -10,7 +10,7 @@ export const sayfalar: Record<string, string> = {
   'Baskın seri': 'Dominant series',
   'Başlık en az {v1} karakter olmalı.': 'Title must be at least {v1} characters.',
   'Bildirim sağlayıcısı bulunamadı.': 'Notification provider not found.',
-  'Bir kez kaydedilir ve sonradan değiştirilemez. {v1} yaşından': 'Saved once and can\'t be changed later. Under {v1}',
+  'Bir kez kaydedilir ve sonradan değiştirilemez. {v1} yaşından küçükler BSG Manga\'yı kullanamaz.': 'Saved once and can\'t be changed later. People under {v1} can\'t use BSG Manga.',
   'Bitiş: {v1}': 'Ends: {v1}',
   'Takviye katmanları': 'Boost tiers',
   'Takviye seviyesi ilerledikçe yeni araçlar açılır.': 'New tools open as the boost level grows.',

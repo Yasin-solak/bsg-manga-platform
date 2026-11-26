@@ -38,7 +38,7 @@ export const READER_SCHEMA = {
   },
 }
 
-const SOURCE_NAMES = { ja: 'Japanese', ko: 'Korean', zh: 'Chinese' }
+const SOURCE_NAMES = { ja: 'Japanese', ko: 'Korean', zh: 'Chinese', en: 'English' }
 
 export function readerInstructions(sourceLanguage, language) {
   return [

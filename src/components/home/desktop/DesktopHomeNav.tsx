@@ -3,6 +3,7 @@ import { useT } from '@/i18n/LocaleProvider'
 import { useCommunityAvailability } from '@/contexts/CommunityAvailabilityContext'
 import { formatShopNavRemaining, useShopNavSignal, type ShopNavBadge } from '@/components/layout/useShopNavSignal'
 import { EXPLORE_PATH } from '@/lib/routes'
+import { txa } from '@/i18n/activeLocale'
 // A small, colorless label on the right when the shop has a campaign / discount / season / deal of the day.
 function ShopNavLink({ badge }: { badge: ShopNavBadge | null }) {
   const t = useT()
@@ -15,7 +16,10 @@ function ShopNavLink({ badge }: { badge: ShopNavBadge | null }) {
   )
 }
 
-export function DesktopHomeNav({ username, todayCount }: { username?: string; todayCount: number }) {
+/** Management shortcuts (site admin panel, fansub panels) shown as the last nav group. */
+export type DesktopNavLink = { to: string; label: string }
+
+export function DesktopHomeNav({ username, todayCount, manage = [] }: { username?: string; todayCount: number; manage?: DesktopNavLink[] }) {
   const { enabled: communityEnabled } = useCommunityAvailability()
   const shopBadge = useShopNavSignal()
   const t = useT()
@@ -24,6 +28,7 @@ export function DesktopHomeNav({ username, todayCount }: { username?: string; to
     { label: t('nav.group.library'), items: [['/kutuphane', t('nav.library')], [username ? `/profil/${encodeURIComponent(username)}` : '/giris', t('nav.myProfile')]] },
     { label: t('nav.group.community'), items: [['/fansublar', t('nav.fansubs')], ['/topluluk', t('nav.community')], ['/magaza', t('nav.shop')]] },
     { label: t('nav.group.fun'), items: [['/oyunlar', t('nav.games')], ['/sans', t('nav.lucky')]] },
+    ...(manage.length ? [{ label: txa('Yönetim'), items: manage.map(link => [link.to, link.label]) }] : []),
   ]
   return <nav className="dh-nav" aria-label={t('nav.main')}>{groups.map(group => <div key={group.label}><h2>{group.label}</h2>{group.items.filter(([to]) => communityEnabled || to !== '/topluluk').map(([to, label]) => to === '/magaza' ? <ShopNavLink key={to} badge={shopBadge} /> : <NavLink key={to} to={to} end={to === "/"}>{label}{to === '/yayin-takvimi' && todayCount > 0 && <small>{t('nav.today', { count: todayCount })}</small>}</NavLink>)}</div>)}<div><LocaleSwitchLink /></div></nav>
 }

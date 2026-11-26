@@ -18,3 +18,12 @@ export function formatShortDate(value: string | null) {
   if (Number.isNaN(date.getTime())) return '—'
   return date.toLocaleDateString(intlLocale(), { day: '2-digit', month: 'short', year: 'numeric' })
 }
+
+/** Moves the item at `from` so it ends up at index `to` of the resulting list. */
+export function movePage<T>(list: T[], from: number, to: number): T[] {
+  if (from === to || from < 0 || from >= list.length) return list
+  const next = [...list]
+  const [moved] = next.splice(from, 1)
+  next.splice(Math.max(0, Math.min(next.length, to)), 0, moved)
+  return next
+}

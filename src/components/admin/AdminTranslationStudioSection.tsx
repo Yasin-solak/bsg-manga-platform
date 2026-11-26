@@ -10,7 +10,7 @@ import { confirmDialog } from '@/services/confirmService'
 import { toast } from '@/services/toastService'
 import { toUserFacingErrorMessage } from '@/services/userFacingError'
 import {
-  getTranslationStudioOverview, reviewTranslationContent, setDefaultDailyLimit, setFansubDailyLimit,
+  getTranslationStudioOverview, reviewTranslationContent, setTierMonthlyCredits, setFansubCreditLimit,
   TRANSLATION_ERROR_LABELS, TRANSLATION_STAGE_LABELS, TRANSLATION_TASK_LABELS,
   type TranslationStudioFansubRow, type TranslationStudioFlag, type TranslationStudioOverview,
 } from '@/services/translationAdminService'
@@ -114,7 +114,7 @@ export default function AdminTranslationStudioSection() {
             </AdminSurface>
           </div>
 
-          <FansubTable rows={data.fansubs} defaultLimit={data.defaultLimit} onChanged={() => { void load() }} />
+          <FansubTable rows={data.fansubs} tierLimits={data.tierCredits} creditUsd={data.creditUsd} onChanged={() => { void load() }} />
 
           <div className="grid gap-4 lg:grid-cols-2">
             <AdminSurface className="space-y-2 p-4">
@@ -202,12 +202,16 @@ function DailyChart({ daily }: { daily: TranslationStudioOverview['daily'] }) {
   )
 }
 
-function FansubTable({ rows, defaultLimit, onChanged }: { rows: TranslationStudioFansubRow[], defaultLimit: number, onChanged: () => void }) {
+const TIER_KEYS = [1, 2, 3] as const
+type TierLimits = { 1: number, 2: number, 3: number }
+
+function FansubTable({ rows, tierLimits, creditUsd, onChanged }: { rows: TranslationStudioFansubRow[], tierLimits: TierLimits, creditUsd: number, onChanged: () => void }) {
   const [editing, setEditing] = useState<string | null>(null)
   const [draft, setDraft] = useState('')
-  const [defaultDraft, setDefaultDraft] = useState(String(defaultLimit))
+  const toDrafts = (limits: TierLimits) => ({ 1: String(limits[1]), 2: String(limits[2]), 3: String(limits[3]) })
+  const [tierDrafts, setTierDrafts] = useState(() => toDrafts(tierLimits))
   const [saving, setSaving] = useState(false)
-  useEffect(() => setDefaultDraft(String(defaultLimit)), [defaultLimit])
+  useEffect(() => setTierDrafts(toDrafts(tierLimits)), [tierLimits])
 
   const save = async (action: () => Promise<void>, message: string) => {
     setSaving(true)
@@ -222,24 +226,32 @@ function FansubTable({ rows, defaultLimit, onChanged }: { rows: TranslationStudi
       setSaving(false)
     }
   }
-  const parsedDefault = Number(defaultDraft)
+  const parsedTiers = { 1: Number(tierDrafts[1]), 2: Number(tierDrafts[2]), 3: Number(tierDrafts[3]) }
+  const tiersValid = TIER_KEYS.every((tier) => tierDrafts[tier] !== '' && Number.isInteger(parsedTiers[tier]) && parsedTiers[tier] <= 1000000)
+  const tiersChanged = TIER_KEYS.some((tier) => parsedTiers[tier] !== tierLimits[tier])
   return (
     <AdminSurface className="p-4" data-testid="admin-translation-fansubs">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-semibold">{txa('Fansublar ve günlük sayfa limiti')}</p>
-          <p className="text-xs text-muted-foreground">{txa('Sayfa, ekip için günde bir kez sayılır (tarama + çeviri + yeniden okuma). Gün İstanbul saatine göre döner.')}</p>
+          <p className="text-sm font-semibold">{txa('Fansublar ve aylık yapay zekâ kredisi')}</p>
+          <p className="text-xs text-muted-foreground">{txa("Her tarama ve çeviri gerçek API maliyeti kadar kredi düşer (1 kredi = {v1} $). Ay İstanbul saatine göre 1'inde yenilenir; okur çevirileri ekipten düşmez.", { v1: creditUsd })}</p>
+          <p className="text-xs text-muted-foreground">{txa('Stüdyo takviye seviye 1 ile açılır; aylık kredi seviyeye göre belirlenir. Özel limit her şeyin önüne geçer ve kilitli ekibin stüdyosunu da açar.')}</p>
         </div>
         <form
-          className="flex items-center gap-2"
+          className="flex flex-wrap items-center gap-2"
           onSubmit={(event) => {
             event.preventDefault()
-            if (Number.isInteger(parsedDefault) && parsedDefault >= 0) void save(() => setDefaultDailyLimit(parsedDefault), txa('Varsayılan limit kaydedildi'))
+            if (tiersValid) void save(() => setTierMonthlyCredits(parsedTiers), txa('Seviye kredileri kaydedildi'))
           }}
+          data-testid="admin-translation-tier-limits"
         >
-          <span className="text-xs text-muted-foreground">{txa('Varsayılan')}</span>
-          <Input value={defaultDraft} onChange={(event) => setDefaultDraft(event.target.value.replace(/\D/g, ''))} className="h-8 w-20" inputMode="numeric" data-testid="admin-translation-default-limit" />
-          <Button size="sm" type="submit" disabled={saving || String(defaultLimit) === defaultDraft || !defaultDraft}>{txa('Kaydet')}</Button>
+          {TIER_KEYS.map((tier) => (
+            <label key={tier} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              {txa('Seviye {v1}', { v1: tier })}
+              <Input value={tierDrafts[tier]} onChange={(event) => { const value = event.target.value.replace(/\D/g, ''); setTierDrafts((current) => ({ ...current, [tier]: value })) }} className="h-8 w-20" inputMode="numeric" />
+            </label>
+          ))}
+          <Button size="sm" type="submit" disabled={saving || !tiersValid || !tiersChanged}>{txa('Kaydet')}</Button>
         </form>
       </div>
       <div className="overflow-x-auto">
@@ -247,7 +259,7 @@ function FansubTable({ rows, defaultLimit, onChanged }: { rows: TranslationStudi
           <thead className="text-left text-xs text-muted-foreground">
             <tr>
               <th className="py-2 font-medium">{txa('Fansub')}</th>
-              <th className="font-medium">{txa('Bugün / limit')}</th>
+              <th className="font-medium">{txa('Bu ay / kredi')}</th>
               <th className="text-right font-medium">{txa('Dönem sayfa')}</th>
               <th className="text-right font-medium">{txa('Maliyet')}</th>
               <th className="text-right font-medium">{txa('İş')}</th>
@@ -259,10 +271,15 @@ function FansubTable({ rows, defaultLimit, onChanged }: { rows: TranslationStudi
           </thead>
           <tbody>
             {rows.map((row) => {
-              const ratio = row.dailyLimit ? row.todayPages / row.dailyLimit : 1
+              const ratio = row.monthlyLimit ? row.monthCredits / row.monthlyLimit : 1
               return (
                 <tr key={row.id} className="border-t border-border align-middle">
-                  <td className="py-2 font-medium">{row.name}</td>
+                  <td className="py-2 font-medium">
+                    {row.name}
+                    <span className={cn('ml-1.5 rounded px-1 text-[10px]', row.unlocked ? 'bg-primary/15 text-primary' : 'bg-muted text-muted-foreground')}>
+                      {row.unlocked ? txa('Seviye {v1}', { v1: row.tier }) : txa('kilitli')}
+                    </span>
+                  </td>
                   <td>
                     {editing === row.id ? (
                       <form
@@ -270,23 +287,23 @@ function FansubTable({ rows, defaultLimit, onChanged }: { rows: TranslationStudi
                         onSubmit={(event) => {
                           event.preventDefault()
                           const value = draft.trim() === '' ? null : Number(draft)
-                          if (value === null || (Number.isInteger(value) && value >= 0)) void save(() => setFansubDailyLimit(row.id, value), txa('{v1} limiti kaydedildi', { v1: row.name }))
+                          if (value === null || (Number.isInteger(value) && value >= 0)) void save(() => setFansubCreditLimit(row.id, value), txa('{v1} limiti kaydedildi', { v1: row.name }))
                         }}
                       >
-                        <Input autoFocus value={draft} onChange={(event) => setDraft(event.target.value.replace(/\D/g, ''))} placeholder={txa('{v1} (varsayılan)', { v1: defaultLimit })} className="h-7 w-28" inputMode="numeric" />
+                        <Input autoFocus value={draft} onChange={(event) => setDraft(event.target.value.replace(/\D/g, ''))} placeholder={txa('seviye kredisi')} className="h-7 w-28" inputMode="numeric" />
                         <Button size="sm" type="submit" disabled={saving} className="h-7 px-2"><Check className="size-3.5" /></Button>
                         <button type="button" className="text-xs text-muted-foreground" onClick={() => setEditing(null)}>{txa('Vazgeç')}</button>
                       </form>
                     ) : (
                       <button
                         type="button"
-                        onClick={() => { setEditing(row.id); setDraft(row.customLimit ? String(row.dailyLimit) : '') }}
+                        onClick={() => { setEditing(row.id); setDraft(row.customLimit ? String(row.monthlyLimit) : '') }}
                         className="flex w-44 flex-col gap-1 text-left"
-                        title={txa('Limiti değiştir (boş = varsayılan, 0 = yapay zekâ kapalı)')}
+                        title={txa('Özel aylık kredi (boş = seviye kredisi, 0 = yapay zekâ kapalı)')}
                         data-testid="admin-translation-limit"
                       >
                         <span className="text-xs tabular-nums">
-                          {int(row.todayPages)} / {row.dailyLimit === 0 ? txa('kapalı') : int(row.dailyLimit)}
+                          {int(row.monthCredits)} / {row.monthlyLimit === 0 ? txa('kapalı') : int(row.monthlyLimit)}
                           {row.customLimit && <span className="ml-1.5 rounded bg-primary/15 px-1 text-[10px] text-primary">{txa('özel')}</span>}
                         </span>
                         <span className="h-1.5 w-full rounded-full bg-muted">

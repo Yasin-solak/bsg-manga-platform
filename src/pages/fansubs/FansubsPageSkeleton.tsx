@@ -108,7 +108,7 @@ export function FansubsPageSkeleton({ showFansubRequestAction }: FansubsPageSkel
       </div>
 
       <div className="w-full px-5 py-4">
-        <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_350px]">
+        <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_350px]">
           <main className="space-y-3">
             <div className="space-y-4 pt-1">
               <div className="flex items-end gap-5">
