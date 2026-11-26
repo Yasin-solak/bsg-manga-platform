@@ -38,4 +38,11 @@ assert.match(prerenderScriptSource, /hreflang="en"/, 'the sitemap declares langu
 assert.match(indexHtmlSource, /<!--app-head:start-->/)
 assert.match(indexHtmlSource, /<!--ssr-outlet-->/)
 
+// og:locale follows the page language. It used to be a fixed tr_TR outside the generated block,
+// so English pages declared Turkish to share cards and crawlers.
+const [beforeGeneratedHead] = indexHtmlSource.split('<!--app-head:start-->')
+assert.doesNotMatch(beforeGeneratedHead, /og:locale/, 'og:locale must live inside the generated head block')
+assert.match(metaLibSource, /OG_LOCALE: Record<Locale, string> = \{ en: 'en_US', tr: 'tr_TR' \}/)
+assert.match(metaLibSource, /<meta property="og:locale" content="\$\{OG_LOCALE\[meta\.lang\]\}" \/>/, 'the prerendered head must carry the locale of the page')
+
 console.log('PASS post-build SSR prerender backbone and shared meta source wired')

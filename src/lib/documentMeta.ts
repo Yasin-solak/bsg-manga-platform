@@ -21,7 +21,9 @@ import { lookupEn, txa } from '@/i18n/activeLocale'
 
 export const SITE_NAME = 'BSG Manga'
 export const DEFAULT_DESCRIPTION = 'BSG Manga uzerinde manga, webtoon, fansub ve topluluk akislarini tek yerde kesfet.'
-export const DEFAULT_IMAGE = '/logo.png'
+// Must be a file that exists under public/: a path that is not served falls through to the SPA
+// fallback and share cards get HTML instead of an image.
+export const DEFAULT_IMAGE = '/icons/icon-512.png'
 export const DEFAULT_SITE_ORIGIN = 'https://bsgmanga.pages.dev'
 
 export type DocumentMeta = {
@@ -279,9 +281,13 @@ function escapeHtml(value: string) {
     .replace(/'/g, '&#39;')
 }
 
+/** Open Graph locale of each site language; share cards and crawlers read it per page. */
+export const OG_LOCALE: Record<Locale, string> = { en: 'en_US', tr: 'tr_TR' }
+
 export function renderDocumentHeadTags(meta: ResolvedDocumentMeta) {
   return [
     `<title>${escapeHtml(meta.title)}</title>`,
+    `<meta property="og:locale" content="${OG_LOCALE[meta.lang]}" />`,
     `<meta name="description" content="${escapeHtml(meta.description)}" />`,
     `<meta name="robots" content="${escapeHtml(meta.robots)}" />`,
     `<meta property="og:site_name" content="${escapeHtml(SITE_NAME)}" />`,

@@ -89,7 +89,6 @@ export const yardim: Record<string, string> = {
   'Kullanım': 'Usage',
   'Kurallar ve Politikalar Merkezi': 'Rules and Policies Center',
   'Kurum / Ekip': 'Organization / Team',
-  'Manga Yorumları': 'Manga comments',
   'Merkez': 'Center',
   'Metni Kopyala': 'Copy text',
   'Misafir ve girişli kullanıcılara açık': 'Open to guests and signed-in users',

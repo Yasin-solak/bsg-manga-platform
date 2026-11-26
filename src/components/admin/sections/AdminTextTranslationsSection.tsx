@@ -5,7 +5,7 @@ import { AdminSectionSkeleton } from '@/components/admin/shared/AdminSectionSkel
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { loadEnDictionary, lookupEnDictionary, txa } from '@/i18n/activeLocale'
+import { loadFullEnDictionary, lookupEnDictionary, txa } from '@/i18n/activeLocale'
 import { listAdminI18nTexts, saveAdminI18nText, type AdminI18nTextRow } from '@/services/adminI18nTextService'
 import { toast } from '@/services/toastService'
 
@@ -100,8 +100,9 @@ export default function AdminTextTranslationsSection() {
     setLoading(true)
     setError(null)
     try {
-      // The Turkish panel needs the dictionary too: it shows what is missing.
-      await loadEnDictionary()
+      // The Turkish panel needs the dictionary too: it shows what is missing. Every part is
+      // loaded, because the list covers texts from all panels.
+      await loadFullEnDictionary()
       setRows(groupRows(await listAdminI18nTexts()))
     } catch (loadError) {
       setError(loadError instanceof Error ? txa(loadError.message) : txa('Metinler yüklenemedi.'))

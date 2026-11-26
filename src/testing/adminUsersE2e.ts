@@ -10,6 +10,10 @@ import type {
 } from '@/services/adminUserTypes'
 import { E2E_ADMIN_USER_ID, isE2EModeEnabled } from './e2eMocks'
 
+// Compile-time switch, local on purpose: the bundler folds a constant only inside its own module.
+// In a production build this is `false`, so the fixtures below are dropped (see e2eMocks.ts).
+const E2E_MODE_COMPILED_IN = import.meta.env.DEV || import.meta.env.MODE === 'test'
+
 const HOUR_MS = 60 * 60 * 1000
 const DAY_MS = 24 * HOUR_MS
 
@@ -49,196 +53,199 @@ function avatar(seed: string) {
     return `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(seed)}`
 }
 
-const INITIAL_USERS: AdminManagedUser[] = [
-    {
-        id: E2E_ADMIN_USER_ID,
-        username: 'AylinYonetici',
-        displayName: 'Aylin Yılmaz',
-        avatarUrl: avatar('Aylin Yonetici'),
-        role: 'admin',
-        isBanned: false,
-        isActive: true,
-        level: '50',
-        isVerified: true,
-        lastActivityAt: isoAgo(2 * 60 * 1000),
-        lastSeenAt: isoAgo(30 * 1000),
-        presenceStatus: 'online',
-        trust: trust(98, 'high', ['verified_email', 'mature_account', 'clean_observation']),
-        fansubCount: 1,
-        primaryFansub: { id: '72000000-0000-4000-8000-000000000001', name: 'Akatsuki Scans', slug: 'akatsuki-scans', role: 'admin' },
-        createdAt: isoAgo(520 * DAY_MS),
-        updatedAt: isoAgo(2 * 60 * 1000),
-    },
-    {
-        id: '71000000-0000-4000-8000-000000000002',
-        username: 'MertModerator',
-        displayName: 'Mert Kaya',
-        avatarUrl: avatar('Mert Moderator'),
-        role: 'moderator',
-        isBanned: false,
-        isActive: true,
-        level: '38',
-        isVerified: true,
-        lastActivityAt: isoAgo(4 * 60 * 1000),
-        lastSeenAt: isoAgo(55 * 1000),
-        presenceStatus: 'online',
-        trust: trust(95, 'high', ['verified_email', 'mature_account', 'clean_observation']),
-        fansubCount: 1,
-        primaryFansub: { id: '72000000-0000-4000-8000-000000000002', name: 'One Piece Turkiye', slug: 'one-piece-turkiye', role: 'moderator' },
-        createdAt: isoAgo(410 * DAY_MS),
-        updatedAt: isoAgo(4 * 60 * 1000),
-    },
-    {
-        id: '71000000-0000-4000-8000-000000000003',
-        username: 'ErenOkur',
-        displayName: 'Eren Jaeger',
-        avatarUrl: avatar('Eren Okur'),
-        role: 'user',
-        isBanned: false,
-        isActive: true,
-        level: '27',
-        isVerified: true,
-        lastActivityAt: isoAgo(18 * 60 * 1000),
-        lastSeenAt: isoAgo(4 * 60 * 1000),
-        presenceStatus: 'idle',
-        trust: trust(92, 'high', ['verified_email', 'mature_account', 'clean_observation']),
-        fansubCount: 1,
-        primaryFansub: { id: '72000000-0000-4000-8000-000000000003', name: 'Titan Scans', slug: 'titan-scans', role: 'member' },
-        createdAt: isoAgo(360 * DAY_MS),
-        updatedAt: isoAgo(18 * 60 * 1000),
-    },
-    {
-        id: '71000000-0000-4000-8000-000000000004',
-        username: 'MikasaCizgi',
-        displayName: 'Mikasa Ackerman',
-        avatarUrl: avatar('Mikasa Cizgi'),
-        role: 'user',
-        isBanned: false,
-        isActive: true,
-        level: '45',
-        isVerified: true,
-        lastActivityAt: isoAgo(45 * 60 * 1000),
-        lastSeenAt: isoAgo(45 * 60 * 1000),
-        presenceStatus: 'offline',
-        trust: trust(88, 'high', ['verified_email', 'mature_account', 'clean_observation']),
-        fansubCount: 1,
-        primaryFansub: { id: '72000000-0000-4000-8000-000000000003', name: 'Titan Scans', slug: 'titan-scans', role: 'member' },
-        createdAt: isoAgo(310 * DAY_MS),
-        updatedAt: isoAgo(45 * 60 * 1000),
-    },
-    {
-        id: '71000000-0000-4000-8000-000000000005',
-        username: 'LeviArsiv',
-        displayName: 'Levi Ackerman',
-        avatarUrl: avatar('Levi Arsiv'),
-        role: 'user',
-        isBanned: false,
-        isActive: true,
-        level: '31',
-        isVerified: true,
-        lastActivityAt: isoAgo(3 * HOUR_MS),
-        lastSeenAt: isoAgo(3 * HOUR_MS),
-        presenceStatus: 'offline',
-        trust: trust(76, 'high', ['verified_email', 'mature_account']),
-        fansubCount: 0,
-        createdAt: isoAgo(240 * DAY_MS),
-        updatedAt: isoAgo(3 * HOUR_MS),
-    },
-    {
-        id: '71000000-0000-4000-8000-000000000006',
-        username: 'SaitamaPanel',
-        displayName: 'Saitama Sensei',
-        avatarUrl: avatar('Saitama Panel'),
-        role: 'user',
-        isBanned: false,
-        isActive: true,
-        level: '42',
-        isVerified: true,
-        lastActivityAt: isoAgo(5 * HOUR_MS),
-        lastSeenAt: isoAgo(5 * HOUR_MS),
-        presenceStatus: 'offline',
-        trust: trust(90, 'high', ['verified_email', 'mature_account', 'clean_observation']),
-        fansubCount: 1,
-        primaryFansub: { id: '72000000-0000-4000-8000-000000000004', name: 'One Punch Sub', slug: 'one-punch-sub', role: 'member' },
-        createdAt: isoAgo(190 * DAY_MS),
-        updatedAt: isoAgo(5 * HOUR_MS),
-    },
-    {
-        id: '71000000-0000-4000-8000-000000000007',
-        username: 'GutsBerserk',
-        displayName: 'Guts Berserk',
-        avatarUrl: avatar('Guts Berserk'),
-        role: 'user',
-        isBanned: true,
-        banReason: 'Tekrarlanan topluluk kuralı ihlali',
-        bannedAt: isoAgo(8 * DAY_MS),
-        isActive: false,
-        level: '29',
-        isVerified: false,
-        lastActivityAt: isoAgo(8 * DAY_MS),
-        lastSeenAt: isoAgo(8 * DAY_MS),
-        presenceStatus: 'blocked',
-        trust: trust(0, 'high', ['active_ban', 'confirmed_admin_ban']),
-        fansubCount: 0,
-        createdAt: isoAgo(140 * DAY_MS),
-        updatedAt: isoAgo(8 * DAY_MS),
-    },
-    {
-        id: '71000000-0000-4000-8000-000000000008',
-        username: 'HinataOkuma',
-        displayName: 'Hinata Shoyo',
-        avatarUrl: avatar('Hinata Okuma'),
-        role: 'user',
-        isBanned: false,
-        isActive: true,
-        level: '22',
-        isVerified: true,
-        lastActivityAt: isoAgo(2 * DAY_MS),
-        lastSeenAt: isoAgo(2 * DAY_MS),
-        presenceStatus: 'offline',
-        trust: trust(78, 'medium', ['verified_email', 'account_age_90_days']),
-        fansubCount: 1,
-        primaryFansub: { id: '72000000-0000-4000-8000-000000000005', name: 'Karasuno Fansub', slug: 'karasuno-fansub', role: 'member' },
-        createdAt: isoAgo(95 * DAY_MS),
-        updatedAt: isoAgo(2 * DAY_MS),
-    },
-    {
-        id: '71000000-0000-4000-8000-000000000009',
-        username: 'NezukoYeni',
-        displayName: 'Nezuko Kamado',
-        avatarUrl: avatar('Nezuko Yeni'),
-        role: 'user',
-        isBanned: false,
-        isActive: true,
-        level: '4',
-        isVerified: true,
-        lastActivityAt: isoAgo(35 * 60 * 1000),
-        lastSeenAt: isoAgo(35 * 60 * 1000),
-        presenceStatus: 'offline',
-        trust: trust(70, 'low', ['verified_email', 'new_account']),
-        fansubCount: 0,
-        createdAt: isoAgo(3 * DAY_MS),
-        updatedAt: isoAgo(35 * 60 * 1000),
-    },
-    {
-        id: '71000000-0000-4000-8000-000000000010',
-        username: 'TanjiroBaslangic',
-        // The display name is deliberately absent to keep old payload compatibility in the E2E flow.
-        avatarUrl: avatar('Tanjiro Baslangic'),
-        role: 'user',
-        isBanned: false,
-        isActive: true,
-        level: '2',
-        isVerified: false,
-        lastActivityAt: isoAgo(20 * HOUR_MS),
-        lastSeenAt: isoAgo(20 * HOUR_MS),
-        presenceStatus: 'offline',
-        trust: trust(60, 'low', ['new_account', 'insufficient_observation']),
-        fansubCount: 0,
-        createdAt: isoAgo(5 * DAY_MS),
-        updatedAt: isoAgo(20 * HOUR_MS),
-    },
-]
+// Built on first use, not at module load: see the note on E2E_MODE_COMPILED_IN.
+function createInitialUsers(): AdminManagedUser[] {
+    return [
+        {
+            id: E2E_ADMIN_USER_ID,
+            username: 'AylinYonetici',
+            displayName: 'Aylin Yılmaz',
+            avatarUrl: avatar('Aylin Yonetici'),
+            role: 'admin',
+            isBanned: false,
+            isActive: true,
+            level: '50',
+            isVerified: true,
+            lastActivityAt: isoAgo(2 * 60 * 1000),
+            lastSeenAt: isoAgo(30 * 1000),
+            presenceStatus: 'online',
+            trust: trust(98, 'high', ['verified_email', 'mature_account', 'clean_observation']),
+            fansubCount: 1,
+            primaryFansub: { id: '72000000-0000-4000-8000-000000000001', name: 'Akatsuki Scans', slug: 'akatsuki-scans', role: 'admin' },
+            createdAt: isoAgo(520 * DAY_MS),
+            updatedAt: isoAgo(2 * 60 * 1000),
+        },
+        {
+            id: '71000000-0000-4000-8000-000000000002',
+            username: 'MertModerator',
+            displayName: 'Mert Kaya',
+            avatarUrl: avatar('Mert Moderator'),
+            role: 'moderator',
+            isBanned: false,
+            isActive: true,
+            level: '38',
+            isVerified: true,
+            lastActivityAt: isoAgo(4 * 60 * 1000),
+            lastSeenAt: isoAgo(55 * 1000),
+            presenceStatus: 'online',
+            trust: trust(95, 'high', ['verified_email', 'mature_account', 'clean_observation']),
+            fansubCount: 1,
+            primaryFansub: { id: '72000000-0000-4000-8000-000000000002', name: 'One Piece Turkiye', slug: 'one-piece-turkiye', role: 'moderator' },
+            createdAt: isoAgo(410 * DAY_MS),
+            updatedAt: isoAgo(4 * 60 * 1000),
+        },
+        {
+            id: '71000000-0000-4000-8000-000000000003',
+            username: 'ErenOkur',
+            displayName: 'Eren Jaeger',
+            avatarUrl: avatar('Eren Okur'),
+            role: 'user',
+            isBanned: false,
+            isActive: true,
+            level: '27',
+            isVerified: true,
+            lastActivityAt: isoAgo(18 * 60 * 1000),
+            lastSeenAt: isoAgo(4 * 60 * 1000),
+            presenceStatus: 'idle',
+            trust: trust(92, 'high', ['verified_email', 'mature_account', 'clean_observation']),
+            fansubCount: 1,
+            primaryFansub: { id: '72000000-0000-4000-8000-000000000003', name: 'Titan Scans', slug: 'titan-scans', role: 'member' },
+            createdAt: isoAgo(360 * DAY_MS),
+            updatedAt: isoAgo(18 * 60 * 1000),
+        },
+        {
+            id: '71000000-0000-4000-8000-000000000004',
+            username: 'MikasaCizgi',
+            displayName: 'Mikasa Ackerman',
+            avatarUrl: avatar('Mikasa Cizgi'),
+            role: 'user',
+            isBanned: false,
+            isActive: true,
+            level: '45',
+            isVerified: true,
+            lastActivityAt: isoAgo(45 * 60 * 1000),
+            lastSeenAt: isoAgo(45 * 60 * 1000),
+            presenceStatus: 'offline',
+            trust: trust(88, 'high', ['verified_email', 'mature_account', 'clean_observation']),
+            fansubCount: 1,
+            primaryFansub: { id: '72000000-0000-4000-8000-000000000003', name: 'Titan Scans', slug: 'titan-scans', role: 'member' },
+            createdAt: isoAgo(310 * DAY_MS),
+            updatedAt: isoAgo(45 * 60 * 1000),
+        },
+        {
+            id: '71000000-0000-4000-8000-000000000005',
+            username: 'LeviArsiv',
+            displayName: 'Levi Ackerman',
+            avatarUrl: avatar('Levi Arsiv'),
+            role: 'user',
+            isBanned: false,
+            isActive: true,
+            level: '31',
+            isVerified: true,
+            lastActivityAt: isoAgo(3 * HOUR_MS),
+            lastSeenAt: isoAgo(3 * HOUR_MS),
+            presenceStatus: 'offline',
+            trust: trust(76, 'high', ['verified_email', 'mature_account']),
+            fansubCount: 0,
+            createdAt: isoAgo(240 * DAY_MS),
+            updatedAt: isoAgo(3 * HOUR_MS),
+        },
+        {
+            id: '71000000-0000-4000-8000-000000000006',
+            username: 'SaitamaPanel',
+            displayName: 'Saitama Sensei',
+            avatarUrl: avatar('Saitama Panel'),
+            role: 'user',
+            isBanned: false,
+            isActive: true,
+            level: '42',
+            isVerified: true,
+            lastActivityAt: isoAgo(5 * HOUR_MS),
+            lastSeenAt: isoAgo(5 * HOUR_MS),
+            presenceStatus: 'offline',
+            trust: trust(90, 'high', ['verified_email', 'mature_account', 'clean_observation']),
+            fansubCount: 1,
+            primaryFansub: { id: '72000000-0000-4000-8000-000000000004', name: 'One Punch Sub', slug: 'one-punch-sub', role: 'member' },
+            createdAt: isoAgo(190 * DAY_MS),
+            updatedAt: isoAgo(5 * HOUR_MS),
+        },
+        {
+            id: '71000000-0000-4000-8000-000000000007',
+            username: 'GutsBerserk',
+            displayName: 'Guts Berserk',
+            avatarUrl: avatar('Guts Berserk'),
+            role: 'user',
+            isBanned: true,
+            banReason: 'Tekrarlanan topluluk kuralı ihlali',
+            bannedAt: isoAgo(8 * DAY_MS),
+            isActive: false,
+            level: '29',
+            isVerified: false,
+            lastActivityAt: isoAgo(8 * DAY_MS),
+            lastSeenAt: isoAgo(8 * DAY_MS),
+            presenceStatus: 'blocked',
+            trust: trust(0, 'high', ['active_ban', 'confirmed_admin_ban']),
+            fansubCount: 0,
+            createdAt: isoAgo(140 * DAY_MS),
+            updatedAt: isoAgo(8 * DAY_MS),
+        },
+        {
+            id: '71000000-0000-4000-8000-000000000008',
+            username: 'HinataOkuma',
+            displayName: 'Hinata Shoyo',
+            avatarUrl: avatar('Hinata Okuma'),
+            role: 'user',
+            isBanned: false,
+            isActive: true,
+            level: '22',
+            isVerified: true,
+            lastActivityAt: isoAgo(2 * DAY_MS),
+            lastSeenAt: isoAgo(2 * DAY_MS),
+            presenceStatus: 'offline',
+            trust: trust(78, 'medium', ['verified_email', 'account_age_90_days']),
+            fansubCount: 1,
+            primaryFansub: { id: '72000000-0000-4000-8000-000000000005', name: 'Karasuno Fansub', slug: 'karasuno-fansub', role: 'member' },
+            createdAt: isoAgo(95 * DAY_MS),
+            updatedAt: isoAgo(2 * DAY_MS),
+        },
+        {
+            id: '71000000-0000-4000-8000-000000000009',
+            username: 'NezukoYeni',
+            displayName: 'Nezuko Kamado',
+            avatarUrl: avatar('Nezuko Yeni'),
+            role: 'user',
+            isBanned: false,
+            isActive: true,
+            level: '4',
+            isVerified: true,
+            lastActivityAt: isoAgo(35 * 60 * 1000),
+            lastSeenAt: isoAgo(35 * 60 * 1000),
+            presenceStatus: 'offline',
+            trust: trust(70, 'low', ['verified_email', 'new_account']),
+            fansubCount: 0,
+            createdAt: isoAgo(3 * DAY_MS),
+            updatedAt: isoAgo(35 * 60 * 1000),
+        },
+        {
+            id: '71000000-0000-4000-8000-000000000010',
+            username: 'TanjiroBaslangic',
+            // The display name is deliberately absent to keep old payload compatibility in the E2E flow.
+            avatarUrl: avatar('Tanjiro Baslangic'),
+            role: 'user',
+            isBanned: false,
+            isActive: true,
+            level: '2',
+            isVerified: false,
+            lastActivityAt: isoAgo(20 * HOUR_MS),
+            lastSeenAt: isoAgo(20 * HOUR_MS),
+            presenceStatus: 'offline',
+            trust: trust(60, 'low', ['new_account', 'insufficient_observation']),
+            fansubCount: 0,
+            createdAt: isoAgo(5 * DAY_MS),
+            updatedAt: isoAgo(20 * HOUR_MS),
+        },
+    ]
+}
 
 function e2eProgressionTitle(levelNumber: number) {
     if (levelNumber >= 40) return 'Usta Okur'
@@ -270,11 +277,22 @@ function buildE2EProgression(levelText?: string) {
     }
 }
 
-let runtimeUsers: AdminManagedUser[] = INITIAL_USERS.map((user) => ({
-    ...user,
-    progression: user.progression ? { ...user.progression } : buildE2EProgression(user.level),
-    trust: user.trust ? { ...user.trust } : undefined,
-}))
+let initialUsersCache: AdminManagedUser[] | null = null
+let runtimeUsersCache: AdminManagedUser[] | null = null
+
+function getInitialUsers() {
+    initialUsersCache ??= createInitialUsers()
+    return initialUsersCache
+}
+
+function getRuntimeUsers() {
+    runtimeUsersCache ??= getInitialUsers().map((user) => ({
+        ...user,
+        progression: user.progression ? { ...user.progression } : buildE2EProgression(user.level),
+        trust: user.trust ? { ...user.trust } : undefined,
+    }))
+    return runtimeUsersCache
+}
 const E2E_ADMIN_ACTOR_ID = E2E_ADMIN_USER_ID
 
 function matchesView(user: AdminManagedUser, view: AdminUserListParams['view']) {
@@ -287,11 +305,11 @@ function matchesView(user: AdminManagedUser, view: AdminUserListParams['view']) 
 }
 
 export function getE2EAdminUsersPage(params: AdminUserListParams = {}): AdminPagedResult<AdminManagedUser> | null {
-    if (!isE2EModeEnabled()) return null
+    if (!E2E_MODE_COMPILED_IN || !isE2EModeEnabled()) return null
 
     const search = params.search?.trim().toLocaleLowerCase('tr-TR') || ''
     const limit = Math.max(1, Math.min(params.limit || 20, 60))
-    const filtered = runtimeUsers.filter((user) => {
+    const filtered = getRuntimeUsers().filter((user) => {
         const matchesDisplayName = user.displayName?.toLocaleLowerCase('tr-TR').includes(search) === true
         if (search && !matchesDisplayName && !user.username.toLocaleLowerCase('tr-TR').includes(search) && user.id !== search) return false
         if (!matchesView(user, params.view)) return false
@@ -323,44 +341,44 @@ export function getE2EAdminUsersPage(params: AdminUserListParams = {}): AdminPag
 }
 
 export function getE2EAdminUserOverview(): AdminUserOverview | null {
-    if (!isE2EModeEnabled()) return null
-    const newUsersCurrent = runtimeUsers.filter((user) => Date.now() - new Date(user.createdAt).getTime() <= 7 * DAY_MS).length
+    if (!E2E_MODE_COMPILED_IN || !isE2EModeEnabled()) return null
+    const newUsersCurrent = getRuntimeUsers().filter((user) => Date.now() - new Date(user.createdAt).getTime() <= 7 * DAY_MS).length
 
     return {
         generatedAt: new Date().toISOString(),
-        total: runtimeUsers.length,
-        activeLast30Days: runtimeUsers.filter((user) => !user.isBanned && user.lastActivityAt && Date.now() - new Date(user.lastActivityAt).getTime() <= 30 * DAY_MS).length,
-        onlineNow: runtimeUsers.filter((user) => user.presenceStatus === 'online').length,
-        verified: runtimeUsers.filter((user) => user.isVerified).length,
-        lowTrustReview: runtimeUsers.filter((user) => !user.isBanned && (user.trust?.score || 100) < 60 && user.trust?.confidence !== 'low').length,
+        total: getRuntimeUsers().length,
+        activeLast30Days: getRuntimeUsers().filter((user) => !user.isBanned && user.lastActivityAt && Date.now() - new Date(user.lastActivityAt).getTime() <= 30 * DAY_MS).length,
+        onlineNow: getRuntimeUsers().filter((user) => user.presenceStatus === 'online').length,
+        verified: getRuntimeUsers().filter((user) => user.isVerified).length,
+        lowTrustReview: getRuntimeUsers().filter((user) => !user.isBanned && (user.trust?.score || 100) < 60 && user.trust?.confidence !== 'low').length,
         newUsersCurrent,
         newUsersPrevious: 1,
         newUsersDelta: newUsersCurrent - 1,
         newUsersDeltaPercent: 100 * (newUsersCurrent - 1),
-        active: runtimeUsers.filter((user) => user.isActive && !user.isBanned).length,
-        banned: runtimeUsers.filter((user) => user.isBanned).length,
-        admins: runtimeUsers.filter((user) => user.role === 'admin').length,
-        moderators: runtimeUsers.filter((user) => user.role === 'moderator').length,
+        active: getRuntimeUsers().filter((user) => user.isActive && !user.isBanned).length,
+        banned: getRuntimeUsers().filter((user) => user.isBanned).length,
+        admins: getRuntimeUsers().filter((user) => user.role === 'admin').length,
+        moderators: getRuntimeUsers().filter((user) => user.role === 'moderator').length,
     }
 }
 
 export function getE2EAdminUserById(userId: string): AdminManagedUser | null {
-    if (!isE2EModeEnabled()) return null
-    return runtimeUsers.find((user) => user.id === userId) || null
+    if (!E2E_MODE_COMPILED_IN || !isE2EModeEnabled()) return null
+    return getRuntimeUsers().find((user) => user.id === userId) || null
 }
 
 export function updateE2EAdminUserRole(userId: string, role: AdminUserRole): AdminManagedUser | null {
-    if (!isE2EModeEnabled()) return null
-    const target = runtimeUsers.find((user) => user.id === userId)
+    if (!E2E_MODE_COMPILED_IN || !isE2EModeEnabled()) return null
+    const target = getRuntimeUsers().find((user) => user.id === userId)
     if (!target) throw new Error('Kullanici bulunamadi.')
     if (userId === E2E_ADMIN_ACTOR_ID && role !== 'admin') {
         throw new Error('Kendi admin rolunu dusuremezsin.')
     }
-    const availableAdminCount = runtimeUsers.filter((user) => user.role === 'admin' && user.isActive && !user.isBanned).length
+    const availableAdminCount = getRuntimeUsers().filter((user) => user.role === 'admin' && user.isActive && !user.isBanned).length
     if (target.role === 'admin' && role !== 'admin' && target.isActive && !target.isBanned && availableAdminCount <= 1) {
         throw new Error('Son kullanilabilir admin rolu kaldirilamaz.')
     }
-    runtimeUsers = runtimeUsers.map((user) => user.id === userId ? { ...user, role } : user)
+    runtimeUsersCache = getRuntimeUsers().map((user) => user.id === userId ? { ...user, role } : user)
     return getE2EAdminUserById(userId)
 }
 
@@ -370,13 +388,13 @@ export function setE2EAdminUsersBanState(
     reason?: string,
     banUntil?: string,
 ): AdminUserBulkMutationResult | null {
-    if (!isE2EModeEnabled()) return null
+    if (!E2E_MODE_COMPILED_IN || !isE2EModeEnabled()) return null
     const uniqueIds = [...new Set(userIds)]
-    let availableAdminCount = runtimeUsers.filter((user) => user.role === 'admin' && user.isActive && !user.isBanned).length
+    let availableAdminCount = getRuntimeUsers().filter((user) => user.role === 'admin' && user.isActive && !user.isBanned).length
     const items: AdminUserBulkMutationResult['items'] = []
 
     for (const userId of uniqueIds.sort()) {
-        const target = runtimeUsers.find((user) => user.id === userId)
+        const target = getRuntimeUsers().find((user) => user.id === userId)
         if (!target) {
             items.push({ userId, status: 'not_found' })
             continue
@@ -399,9 +417,9 @@ export function setE2EAdminUsersBanState(
     }
 
     const updatedIds = new Set(items.filter((item) => item.status === 'updated').map((item) => item.userId))
-    runtimeUsers = runtimeUsers.map((user) => {
+    runtimeUsersCache = getRuntimeUsers().map((user) => {
         if (!updatedIds.has(user.id)) return user
-        const baseline = INITIAL_USERS.find((initialUser) => initialUser.id === user.id)?.trust
+        const baseline = getInitialUsers().find((initialUser) => initialUser.id === user.id)?.trust
         const unbannedScore = Math.max(40, (baseline?.score || 60) - 20)
         return {
             ...user,
@@ -422,6 +440,7 @@ export function setE2EAdminUsersBanState(
 }
 
 export function getE2EAdminUserDetail(userId: string): AdminUserDetail | null {
+    if (!E2E_MODE_COMPILED_IN) return null
     const user = getE2EAdminUserById(userId)
     if (!user) return null
 

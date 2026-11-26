@@ -83,10 +83,12 @@ const ContactPage = lazyRoute(() => import('@pages/ContactPage'))
 const LegalRequestCenterPage = lazyRoute(() => import('@pages/LegalRequestCenterPage'))
 const MangaAddPage = lazyRoute(() => import('@pages/MangaAddPage'))
 const ChapterAddPage = lazyRoute(() => import('@pages/ChapterAddPage'))
-const FansubYonetPage = lazyRoute(() => import('@pages/FansubYonetPage'))
-const TranslationStudioPage = lazyRoute(() => import('@pages/translationStudio/TranslationStudioPage'))
+// The three panels carry their own English dictionary part (enPart): it loads with the route,
+// so readers do not download panel text. See i18n/activeLocale.
+const FansubYonetPage = lazyRoute(() => import('@pages/FansubYonetPage'), { enPart: 'manage' })
+const TranslationStudioPage = lazyRoute(() => import('@pages/translationStudio/TranslationStudioPage'), { enPart: 'studio' })
 const FansubTierPage = lazyRoute(() => import('@pages/FansubTierPage'))
-const AdminPage = lazyRoute(() => import('@pages/AdminPage'))
+const AdminPage = lazyRoute(() => import('@pages/AdminPage'), { enPart: 'admin' })
 const AuthPage = lazyRoute(() => import('@pages/AuthPage'))
 const NotFoundPage = lazyRoute(() => import('@pages/NotFoundPage'))
 

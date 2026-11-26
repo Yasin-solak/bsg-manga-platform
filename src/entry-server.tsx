@@ -1,5 +1,8 @@
 import { setEnDictionary } from '@/i18n/activeLocale'
 import { enText } from '@/i18n/messages/enText'
+import { enTextAdmin } from '@/i18n/messages/enTextAdmin'
+import { enTextManage } from '@/i18n/messages/enTextManage'
+import { enTextStudio } from '@/i18n/messages/enTextStudio'
 import { PassThrough } from 'node:stream'
 import { renderToPipeableStream } from 'react-dom/server'
 import { StaticRouter } from 'react-router'
@@ -8,7 +11,8 @@ import AppErrorBoundary from '@/components/common/AppErrorBoundary'
 import { renderDocumentHeadTags, resolveDocumentMetaState } from '@/lib/documentMeta'
 import { preloadAppRouteModules } from './App'
 
-setEnDictionary(enText)
+// The server renders any route, so it holds the core dictionary and every panel part.
+setEnDictionary({ ...enText, ...enTextAdmin, ...enTextManage, ...enTextStudio })
 
 export { localizePathname } from '@/i18n/localizedRoutes'
 
