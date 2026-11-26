@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { ArrowRight, ClockCounterClockwise, PencilSimple, Plus } from '@phosphor-icons/react'
 import {
-  listFansubSeries, listSeriesChapters, openChapterRevision,
+  listFansubSeries, listSeriesChapters, openChapterRevision, reopenPendingChapter,
   type TlFansubSeries, type TlSeriesChapter, type TlSeriesProjectBrief,
 } from '@/services/translationSeriesService'
 import { TL_SOURCE_LANGUAGES } from '@/services/translationStudioService'
@@ -71,6 +71,18 @@ export function SeriesDetailScreen({ fansubId, seriesId, canProject, canEditSeri
       onOpenProject(projectId, chapter.projectId ? 'edit' : 'upload')
     } catch (reason) {
       onToast(toUserFacingErrorMessage(reason, txa('Revizyon açılamadı.')))
+    } finally {
+      setBusyChapter(null)
+    }
+  }, [busyChapter, onOpenProject, onToast])
+
+  const openPending = useCallback(async (chapter: TlSeriesChapter) => {
+    if (busyChapter) return
+    setBusyChapter(chapter.id)
+    try {
+      onOpenProject(await reopenPendingChapter(chapter.id), 'edit')
+    } catch (reason) {
+      onToast(toUserFacingErrorMessage(reason, txa('Bölüm düzenlemeye açılamadı.')))
     } finally {
       setBusyChapter(null)
     }
@@ -157,6 +169,17 @@ export function SeriesDetailScreen({ fansubId, seriesId, canProject, canEditSeri
                 <GhostButton onClick={() => onOpenProject(chapter.revisionProjectId as string, chapter.revisionStage ?? 'edit')} className='h-9 px-3 text-[12.5px]'>
                   <ClockCounterClockwise weight='bold' size={13} />
                   {txa('Revizyonu aç')} · {STAGE_LABEL[chapter.revisionStage ?? ''] ?? txa('Düzenlemede')}
+                </GhostButton>
+              ) : !chapter.isApproved && chapter.projectId ? (
+                <GhostButton
+                  onClick={() => { void openPending(chapter) }}
+                  disabled={!canProject || busyChapter === chapter.id}
+                  className='h-9 px-3 text-[12.5px]'
+                  title={txa('Onay bekleyen bölümün sayfaları gönderdiğin sürümle değişir')}
+                  data-testid='tl-series-edit-pending'
+                >
+                  <PencilSimple weight='bold' size={13} />
+                  {busyChapter === chapter.id ? txa('Açılıyor…') : txa('Stüdyoda düzenle')}
                 </GhostButton>
               ) : chapter.isApproved ? (
                 <GhostButton

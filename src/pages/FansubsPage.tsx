@@ -419,7 +419,7 @@ function FansubsPage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="w-full px-5 py-4">
-        <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_350px]">
+        <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_350px]">
           <div className="space-y-3">
             <FansubsHero
               totalFansubs={fansubs.length}

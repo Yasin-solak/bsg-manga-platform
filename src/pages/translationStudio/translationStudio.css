@@ -61,3 +61,46 @@
 @media (prefers-reduced-motion: reduce) {
   .tl-studio .tl-marching-ants { animation: none; }
 }
+
+/* Beta rozeti: teal-mor-amber gecisli cerceve, uzerinden gecen isik. */
+.tl-studio .tl-beta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 5px 10px;
+  border-radius: 999px;
+  background:
+    linear-gradient(var(--tl-card), var(--tl-card)) padding-box,
+    linear-gradient(120deg, var(--tl-p), oklch(0.72 0.16 300), var(--tl-amber)) border-box;
+  border: 1.5px solid transparent;
+  overflow: hidden;
+  box-shadow: 0 0 18px oklch(0.832 0.074 186.1 / 18%);
+}
+.tl-studio .tl-beta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, oklch(1 0 0 / 22%) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: tl-beta-shine 3.6s ease-in-out infinite;
+  pointer-events: none;
+}
+.tl-studio .tl-beta-word {
+  font-family: 'Source Serif 4', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  background: linear-gradient(120deg, var(--tl-p), oklch(0.78 0.14 300), var(--tl-amber));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@keyframes tl-beta-shine {
+  0%, 55% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tl-studio .tl-beta::after { animation: none; display: none; }
+}

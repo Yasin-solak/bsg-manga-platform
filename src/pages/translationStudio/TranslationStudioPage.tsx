@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { useNavigate } from '@/i18n/router'
 import { ArrowLeft, ArrowRight, CloudCheck, CloudSlash, CloudArrowUp, PaperPlaneTilt, Translate } from '@phosphor-icons/react'
@@ -9,6 +9,7 @@ import { useFansubPermissions } from '@/hooks/useFansubPermissions'
 import { getFansubByIdentifier } from '@/services/fansubService'
 import { isFeatureEnabled } from '@/services/featureFlagService'
 import {
+  getStudioStatus, type TlStudioStatus,
   createProject, createSeriesDraft, getProject, listOpenProjects, listPages, setProjectStage,
   TL_SOURCE_LANGUAGES, TlProjectExistsError, type TlPage, type TlProject, type TlSeries,
 } from '@/services/translationStudioService'
@@ -33,6 +34,9 @@ import { SeriesDetailScreen } from './SeriesDetailScreen'
 import { StudioMySeries } from './StudioMySeries'
 import { toWizardSeries, type TlFansubSeries } from '@/services/translationSeriesService'
 import { GhostButton, PrimaryButton } from './studioUi'
+import { StudioLimitBar, StudioLockedScreen } from './StudioLimitBar'
+import { useStudioStatus } from './useStudioStatus'
+import { buildPathWithQuery, buildPublicFansubPath } from '@/lib/routes'
 import './translationStudio.css'
 import { toUserFacingErrorMessage } from '@/services/userFacingError'
 import { txa } from '@/i18n/activeLocale'
@@ -102,6 +106,8 @@ export default function TranslationStudioPage() {
   // E2E sahte fansubu DB'de yoktur; izin sorgusu yapilmaz (tam erisim).
   const [isMockFansub, setIsMockFansub] = useState(false)
   const [gate, setGate] = useState<'loading' | 'open' | 'closed' | 'missing'>('loading')
+  // Boost tier gate + today's AI allowance (site admins and the E2E fansub skip both).
+  const [initialStatus, setInitialStatus] = useState<TlStudioStatus | null>(null)
   const [drafts, setDrafts] = useState<TlProject[]>([])
   const [draftsLoading, setDraftsLoading] = useState(false)
 
@@ -126,8 +132,18 @@ export default function TranslationStudioPage() {
   // Roles and Permissions: what shows and what can be touched in the studio.
   const { permissions } = useFansubPermissions(fansub?.id, Boolean(currentUser?.id) && !isMockFansub)
   const baseAccess = isSiteAdmin || isMockFansub ? FULL_STUDIO_ACCESS : studioAccessFrom(permissions)
+  const loadStatus = useMemo(
+    () => (fansub && !isMockFansub && gate === 'open' ? () => getStudioStatus(fansub.id) : null),
+    [fansub, gate, isMockFansub],
+  )
+  const { status: studioStatus } = useStudioStatus(loadStatus, initialStatus)
+  // Below boost tier 1 (or after a boost runs out) no new chapter opens and AI is off; existing
+  // work stays open to finish by hand and publish. Derived from the live status, so boosting in
+  // another tab or a lapse shows up without a reload.
+  const locked = !isSiteAdmin && !isMockFansub && studioStatus !== null && !studioStatus.unlocked
   // AI is never used on 18+ series (the server rejects too).
-  const access = project?.isMature ? { ...baseAccess, ai: false } : baseAccess
+  const access = project?.isMature || locked ? { ...baseAccess, ai: false } : baseAccess
+  const boostHref = fansub ? buildPathWithQuery(buildPublicFansubPath({ id: fansub.id, slug: fansub.slug }), { tab: 'takviye' }) : '/'
 
   const showToast = useCallback((message: string) => setToast(message), [])
   useEffect(() => {
@@ -149,7 +165,13 @@ export default function TranslationStudioPage() {
         setFansub(resolved)
         setIsMockFansub(Boolean(mock))
         const enabled = isSiteAdmin || await isFeatureEnabled('translation.studio_v3', false)
-        if (!cancelled) setGate(enabled ? 'open' : 'closed')
+        if (!enabled) { if (!cancelled) setGate('closed'); return }
+        if (mock) { if (!cancelled) setGate('open'); return }
+        // The studio opens at fansub boost tier 1 (the server enforces it on new chapters too).
+        const status = await getStudioStatus(resolved.id).catch(() => null)
+        if (cancelled) return
+        setInitialStatus(status)
+        setGate('open')
       } catch {
         if (!cancelled) setGate('missing')
       }
@@ -276,7 +298,9 @@ export default function TranslationStudioPage() {
   const advanceProject = async (stage: 'scan' | 'edit' | 'publish', path: 'tara' | 'duzenle' | 'yayinla') => {
     if (!project) return
     try {
-      await setProjectStage(project.id, stage)
+      // A project linked to a published chapter keeps its published stage: the chapter list,
+      // the reader language layer and revisions find the chapter's project by that stage.
+      if (!project.chapterId) await setProjectStage(project.id, stage)
       setProject({ ...project, stage })
     } catch {
       // Asama etiketi yalniz "Basla" listesini etkiler; akisi durdurmaz.
@@ -400,6 +424,7 @@ export default function TranslationStudioPage() {
           </nav>
         )}
         <div className='flex-1' />
+        {gate === 'open' && studioStatus && <StudioLimitBar status={studioStatus} boostHref={boostHref} />}
         {project && (screen === 'duzenle' || screen === 'incele' || screen === 'gorevler' || screen === 'yayinla') && (
           <div className='flex flex-none items-center gap-4'>
             {screen === 'duzenle' && (
@@ -461,7 +486,8 @@ export default function TranslationStudioPage() {
                 drafts={drafts}
                 draftsLoading={draftsLoading}
                 onStart={() => go('/yeni/seri')}
-                canStart={access.project}
+                canStart={access.project && !locked}
+                notice={locked && studioStatus ? <StudioLockedScreen status={studioStatus} boostHref={boostHref} variant='card' /> : null}
                 myTasks={myTasks.filter((task) => task.fansubId === fansub.id)}
                 onOpenTask={(task) => go(`/${task.projectId}/duzenle/${task.pageNumber}`)}
                 onOpenDraft={openProject}
@@ -473,14 +499,15 @@ export default function TranslationStudioPage() {
                 key={seriesId}
                 fansubId={fansub.id}
                 seriesId={seriesId}
-                canProject={access.project}
+                canProject={access.project && !locked}
                 canEditSeries={access.project || isSiteAdmin || permissions.has('panel.bolumler')}
                 onNewChapter={startChapterForSeries}
                 onOpenProject={openProjectById}
                 onToast={showToast}
               />
             )}
-            {screen === 'seri' && (
+            {locked && studioStatus && (screen === 'seri' || screen === 'bolum') && <StudioLockedScreen status={studioStatus} boostHref={boostHref} />}
+            {!locked && screen === 'seri' && (
               <StepSeries
                 fansubId={fansub.id}
                 mode={seriesMode}
@@ -494,7 +521,7 @@ export default function TranslationStudioPage() {
                 }}
               />
             )}
-            {screen === 'bolum' && seriesReady && (
+            {!locked && screen === 'bolum' && seriesReady && (
               <>
                 <StepChapter
                   seriesTitle={seriesTitle}

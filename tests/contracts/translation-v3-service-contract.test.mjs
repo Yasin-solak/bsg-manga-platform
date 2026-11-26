@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import {
-  dedupeItems, isFragmentPair, mergeDetectedItems, normalizeAlternatives, normalizeDetectedItems, normalizeDraft, retryAfterMs, routeCost,
+  dedupeItems, detectionRequestFor, isFragmentPair, isSameTextRepeat, matchSourceCase, mergeDetectedItems, sourceLanguageMismatch, watermarkStrokes, normalizeAlternatives, normalizeDetectedItems, normalizeDraft, retryAfterMs, routeCost,
   runRoutes, TranslationAiError,
 } from '../../functions/_shared/translation-ai.js'
 import { planTiles } from '../../functions/api/ceviri/scan.js'
@@ -44,6 +44,7 @@ const items = [
 ]
 assert.deepEqual(orderItems(items, 'ja').map((i) => i.id), ['sag', 'sol', 'alt'])
 assert.deepEqual(orderItems(items, 'ko').map((i) => i.id), ['sol', 'sag', 'alt'])
+assert.deepEqual(orderItems(items, 'en').map((i) => i.id), ['sol', 'sag', 'alt'], 'English pages read left to right')
 assert.equal(suggestedFontSize({ type: 'sfx', source_font_size: null }, 800), 56)
 assert.equal(suggestedFontSize({ type: 'balon', source_font_size: 20 }, 800), 17)
 
@@ -192,6 +193,107 @@ await assert.rejects(runRoutes([{ provider: 'google', model: 'g' }], { GEMINI_AP
   fetchImpl: async () => Response.json({ error: { details: [{ retryDelay: '40s' }] } }, { status: 429 }),
 }), (error) => error.code === 'provider_busy')
 assert.deepEqual(longWait, [], 'a long quota wait is not waited inside the request')
+
+// Claude models get the tile's pixel space; Gemini keeps the 0-1000 grid.
+const pixelTile = { x: 0, y: 1000, width: 720, height: 1024, pageWidth: 720, pageHeight: 4000 }
+assert.equal(detectionRequestFor('google', pixelTile).coordinateSpace, 'unit')
+const claudeRequest = detectionRequestFor('anthropic', pixelTile)
+assert.equal(claudeRequest.coordinateSpace, 'pixel')
+assert.match(claudeRequest.instructions, /720x1024 pixels/)
+assert.match(claudeRequest.instructions, /watermarks/i, 'watermarks are skipped')
+const pixelItems = normalizeDetectedItems({ items: [
+  { type: 'balon', shape: 'elips', text: 'HEY!', left: 100, top: 200, right: 300, bottom: 400, confidence: 0.9, font_px: 20 },
+  { type: 'balon', shape: 'elips', text: 'x', left: 0, top: 0, right: 721, bottom: 10, confidence: 0.9, font_px: 5 },
+] }, pixelTile, 'pixel')
+assert.equal(pixelItems.length, 1, 'a pixel box outside the tile is dropped')
+assert.deepEqual(pixelItems[0].bbox, { x: 100, y: 1200, w: 200, h: 200 }, 'pixel boxes are not rescaled')
+assert.equal(pixelItems[0].fontPx, 20)
+
+// Low-confidence SFX are mostly misread scripts; they are not added.
+const sfxItems = normalizeDetectedItems({ items: [
+  { type: 'sfx', shape: 'yok', text: 'ﾋﾞｸ!', left: 10, top: 10, right: 100, bottom: 100, confidence: 0.4, font_px: 30 },
+  { type: 'sfx', shape: 'yok', text: '또각', left: 200, top: 10, right: 300, bottom: 100, confidence: 0.9, font_px: 30 },
+  { type: 'balon', shape: 'elips', text: '?!', left: 400, top: 10, right: 500, bottom: 100, confidence: 0.4, font_px: 30 },
+] }, tile)
+assert.deepEqual(sfxItems.map((item) => item.sourceText), ['또각', '?!'], 'only low-confidence SFX are dropped')
+
+// A fragment never replaces the full balloon text, even when its box is larger.
+const fullBalloon = { id: 'full', type: 'balon', text: 'FUCK, I SAID\nLET GO!', x: 149, y: 2203, w: 236, h: 108 }
+const fragmentMerge = mergeDetectedItems([fullBalloon], [
+  { type: 'balon', sourceText: 'LET GO!', bbox: { x: 194, y: 2234, w: 266, h: 113 }, edgeCut: false },
+])
+assert.equal(fragmentMerge.insert.length, 0, 'the larger fragment box is not added')
+assert.deepEqual(fragmentMerge.replace, [])
+const fullWins = mergeDetectedItems([{ ...fullBalloon, id: 'part', text: 'LET GO!' }], [
+  { type: 'balon', sourceText: 'FUCK, I SAID\nLET GO!', bbox: { x: 149, y: 2203, w: 236, h: 108 }, edgeCut: false },
+])
+assert.deepEqual(fullWins.replace, ['part'], 'the full text replaces the fragment')
+
+// The same balloon read from two tiles with shifted boxes is one area.
+const repeat = (type, text, x, y, w, h) => ({ type, sourceText: text, bbox: { x, y, w, h } })
+assert.equal(isSameTextRepeat(repeat('balon', 'G-GUYS...!', 274, 3628, 324, 113), repeat('balon', 'G-GUYS...!', 322, 3679, 336, 322)), true)
+assert.equal(isSameTextRepeat(repeat('sfx', '또각', 454, 3374, 144, 184), repeat('sfx', '또각', 360, 3400, 115, 133)), false,
+  'the same SFX drawn twice stays as two areas')
+assert.equal(isSameTextRepeat(repeat('balon', 'HEY!', 0, 0, 100, 100), repeat('balon', 'HEY!', 0, 2000, 100, 100)), false,
+  'distant balloons with equal text stay separate')
+const shiftedRepeat = mergeDetectedItems([{ id: 'first', type: 'balon', text: 'HA, FUCK...', x: 43, y: 1623, w: 259, h: 72 }], [
+  { type: 'balon', sourceText: 'HA, FUCK...', bbox: { x: 79, y: 1665, w: 266, h: 143 }, edgeCut: false },
+])
+assert.deepEqual(shiftedRepeat.replace, ['first'], 'the larger copy replaces the shifted repeat')
+assert.equal(shiftedRepeat.insert.length, 1)
+
+// Second test chapter: overlapping copies of one SFX merge, site ads are marked for erasing,
+// a placeholder for unreadable text becomes an empty area.
+assert.equal(isSameTextRepeat(repeat('sfx', 'HWADEULJJAK', 455, 3082, 165, 100), repeat('sfx', 'HWADEULJJAK', 478, 3122, 162, 100)), true,
+  'overlapping copies of one SFX are a repeat')
+const noisy = normalizeDetectedItems({ items: [
+  { type: 'tabela', shape: 'yok', text: 'READ FIRST AT EXAMPLE-READS.CC', left: 100, top: 10, right: 600, bottom: 60, confidence: 0.9, font_px: 20 },
+  { type: 'balon', shape: 'elips', text: '<UNKNOWN>', left: 100, top: 100, right: 600, bottom: 300, confidence: 0.2, font_px: 20 },
+  { type: 'balon', shape: 'elips', text: 'WAIT...!', left: 100, top: 400, right: 600, bottom: 600, confidence: 0.9, font_px: 20 },
+] }, tile)
+assert.deepEqual(noisy.map((item) => [item.sourceText, item.confidence, item.watermark]),
+  [['READ FIRST AT EXAMPLE-READS.CC', 0.9, true], ['', 0, false], ['WAIT...!', 0.9, false]],
+  'a site address marks the area as a watermark to erase')
+const flagged = normalizeDetectedItems({ items: [
+  { type: 'tabela', shape: 'yok', text: 'FAST - FREE - NO ANNOYING ADS', left: 100, top: 10, right: 600, bottom: 60, confidence: 0.3, font_px: 20, watermark: true },
+  { type: 'sfx', shape: 'yok', text: 'x', left: 100, top: 100, right: 200, bottom: 200, confidence: 0.3, font_px: 20, watermark: false },
+] }, tile)
+assert.deepEqual(flagged.map((item) => item.watermark), [true], 'the model flag marks a watermark; low-confidence SFX are still dropped')
+
+// Watermarks become repair selections in the cleanup layer, padded, clamped and not repeated.
+const strokes = watermarkStrokes([], [{ x: 2, y: 100, w: 300, h: 30 }], 720, 4000)
+assert.deepEqual(strokes, [{ tool: 'secim', mode: 'onar', shape: 'kutu', radius: 1, points: [{ x: 0, y: 94 }, { x: 308, y: 136 }] }])
+assert.equal(watermarkStrokes(strokes, [{ x: 4, y: 102, w: 300, h: 30 }], 720, 4000).length, 0, 'an overlapping tile does not add the same watermark twice')
+assert.equal(watermarkStrokes(strokes, [{ x: 4, y: 2000, w: 300, h: 30 }], 720, 4000).length, 1)
+
+// An all-capitals source is lettered in capitals with Turkish dotted/dotless i.
+assert.equal(matchSourceCase('FUCK, I SAID LET GO!', 'siktir, dedim bırak!', 'tr'), 'SİKTİR, DEDİM BIRAK!')
+assert.equal(matchSourceCase('Hah...', 'Haah...', 'tr'), 'Haah...', 'mixed case source keeps the model casing')
+assert.equal(matchSourceCase('\u3069\u3053\u3078', 'Nereye?', 'tr'), 'Nereye?', 'scripts without case are left alone')
+assert.equal(matchSourceCase('HEY!', 'hey!', 'en'), 'HEY!')
+
+// Dialogue in another script than the source language is reported.
+const dialogue = (text) => ({ type: 'balon', sourceText: text })
+assert.deepEqual(sourceLanguageMismatch('ja', [dialogue('I WAS WONDERING WHERE YOU WERE'), { type: 'sfx', sourceText: '또각' }]),
+  { expected: 'ja', seen: 'en' })
+assert.equal(sourceLanguageMismatch('en', [dialogue('I WAS WONDERING WHERE YOU WERE')]), null)
+assert.equal(sourceLanguageMismatch('ja', [dialogue('HEY')]), null, 'too little text is not judged')
+assert.equal(sourceLanguageMismatch('ko', [dialogue('어디 갔다 왔어? 기다렸잖아 정말')]), null)
+
+// A request adapts per provider; forProvider itself is not sent.
+const adaptedCalls = []
+await runRoutes([{ provider: 'anthropic', model: 'claude-haiku-5-5' }], { ANTHROPIC_API_KEY: 'a' }, {
+  name: 't', schema: { type: 'object' }, instructions: 'unit', text: 'x', maxTokens: 10,
+  forProvider: (provider) => ({ instructions: `${provider}-pixel` }),
+}, {
+  fetchImpl: async (_url, init) => {
+    adaptedCalls.push(JSON.parse(init.body))
+    return new Response(JSON.stringify({ content: [{ type: 'tool_use', input: { v: 1 } }], usage: {} }), { status: 200 })
+  },
+  validate: (data, route) => ({ ...data, provider: route.provider }),
+})
+assert.equal(adaptedCalls[0].system, 'anthropic-pixel')
+assert.equal('forProvider' in adaptedCalls[0], false)
 
 console.log('PASS translation studio v3 service contract (detect, tile, reading order, model routing)')
 

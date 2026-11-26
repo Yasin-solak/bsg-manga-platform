@@ -12,7 +12,9 @@ const num = z.coerce.number()
 
 const overviewSchema = z.object({
   days: num,
-  defaultLimit: num,
+  /** Monthly AI credits per boost tier (tier 1 also unlocks the studio); 1 credit = creditUsd. */
+  tierCredits: z.object({ 1: num, 2: num, 3: num }),
+  creditUsd: num,
   totals: z.object({
     costUsd: num, inputTokens: num, outputTokens: num, jobs: num, failed: num, blocked: num,
     pages: num, todayPages: num, activeFansubs: num, projects: num, published: num, pendingDrafts: num,
@@ -22,7 +24,7 @@ const overviewSchema = z.object({
   errors: z.record(num),
   models: z.array(z.object({ task: z.string(), provider: z.string(), model: z.string(), jobs: num, costUsd: num })),
   fansubs: z.array(z.object({
-    id: z.string().uuid(), name: z.string(), dailyLimit: num, customLimit: z.boolean(), todayPages: num,
+    id: z.string().uuid(), name: z.string(), monthlyLimit: num, monthCredits: num, customLimit: z.boolean(), tier: num, unlocked: z.boolean(), todayPages: num,
     periodPages: num, costUsd: num, jobs: num, failed: num, blocked: num, projects: num, published: num,
     lastActivity: z.string().nullable(),
   })),
@@ -47,15 +49,16 @@ export async function getTranslationStudioOverview(days: number, signal?: AbortS
   return parsed.data
 }
 
-/** Fansub daily page limit; null = back to default, 0 = AI off. */
-export async function setFansubDailyLimit(fansubId: string, limit: number | null): Promise<void> {
-  const { error } = await supabase.rpc('tl_set_fansub_daily_limit', { p_fansub_id: fansubId, p_limit: limit })
+/** A team's own monthly credit limit; null = back to the tier, 0 = AI off. */
+export async function setFansubCreditLimit(fansubId: string, limit: number | null): Promise<void> {
+  const { error } = await supabase.rpc('tl_set_fansub_credit_limit', { p_fansub_id: fansubId, p_limit: limit })
   if (error) throw new Error(txa('Limit kaydedilemedi.'))
 }
 
-export async function setDefaultDailyLimit(limit: number): Promise<void> {
-  const { error } = await supabase.rpc('admin_set_translation_default_limit', { p_limit: limit })
-  if (error) throw new Error(txa('Varsayılan limit kaydedilemedi.'))
+/** Monthly AI credits for boost tiers 1-3 (0-1,000,000 each). */
+export async function setTierMonthlyCredits(limits: { 1: number, 2: number, 3: number }): Promise<void> {
+  const { error } = await supabase.rpc('admin_set_translation_tier_limits', { p_limits: limits })
+  if (error) throw new Error(txa('Seviye kredileri kaydedilemedi.'))
 }
 
 /** Content review: 'mature' makes the series 18+ (AI turns off), 'ok' dismisses the warning. */

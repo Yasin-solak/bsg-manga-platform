@@ -141,7 +141,13 @@ function Layout() {
         return <Navigate to={buildOnboardingExitPath(location.search)} replace />
     }
 
-    if (!loading && currentUser && !currentUser.onboardingCompletedAt && !isOnboardingRoute) {
+    /*
+     * The birth date gate comes FIRST and onboarding must not pull the user off it. Without
+     * `!isBirthDateGate` a brand-new account (no birth date, no onboarding) bounced between the
+     * gate and onboarding forever: each one redirected to the other, so the date could never be
+     * entered and the account could not be used.
+     */
+    if (!loading && currentUser && !currentUser.onboardingCompletedAt && !isOnboardingRoute && !isBirthDateGate) {
         return <Navigate to={onboardingRedirectPath} replace />
     }
 

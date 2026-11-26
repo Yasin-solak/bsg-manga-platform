@@ -1,7 +1,7 @@
 import { assertUploadRateLimit } from '../../_shared/upload-rate-limit.js'
 import { readStudioOcrTile, StudioOcrTileError } from '../../_shared/studio-ocr-tile.js'
 import {
-  DETECTION_INSTRUCTIONS, DETECTION_SCHEMA, mergeDetectedItems, normalizeDetectedItems, runRoutes,
+  DETECTION_INSTRUCTIONS, DETECTION_SCHEMA, detectionRequestFor, LANGUAGE_NAMES, mergeDetectedItems, normalizeDetectedItems, runRoutes, sourceLanguageMismatch, watermarkStrokes,
 } from '../../_shared/translation-ai.js'
 import {
   assertBudget, authenticate, claimJob, errorResponse, finishJob, HttpError, json, loadPageForUser, requireAiAllowed, requireAiPageQuota, requireStudioPermission,
@@ -43,6 +43,30 @@ export function planTiles(width, height, size = MAX_TILE, overlap = 256) {
   return tiles
 }
 
+/**
+ * Watermarks go to the page cleanup layer as repair selections (see watermarkStrokes). The write
+ * is optimistic on the layer version; a concurrent save (an editor open on the page) wins and the
+ * watermark is left for the user to erase. Returns the number of strokes added.
+ */
+async function eraseWatermarks(service, page, boxes) {
+  if (!boxes.length) return 0
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const { data: layer, error } = await timed(service.from('translation_page_cleanup')
+      .select('strokes,version').eq('page_id', page.id).maybeSingle())
+    if (error) return 0
+    const strokes = Array.isArray(layer?.strokes) ? layer.strokes : []
+    const added = watermarkStrokes(strokes, boxes, page.width, page.height)
+    if (!added.length) return 0
+    const next = [...strokes, ...added].slice(-2000)
+    const write = layer
+      ? service.from('translation_page_cleanup').update({ strokes: next }).eq('page_id', page.id).eq('version', layer.version).select('version')
+      : service.from('translation_page_cleanup').insert({ page_id: page.id, strokes: next }).select('version')
+    const { data: saved, error: writeError } = await timed(write)
+    if (!writeError && saved?.length) return added.length
+  }
+  return 0
+}
+
 async function post(request, env, deps) {
   const { db, authUser } = await authenticate(request, env, deps.createClient)
   const body = await readJson(request, ['page_id', 'x', 'y', 'width', 'height'])
@@ -74,11 +98,12 @@ async function post(request, env, deps) {
       name: 'manga_text_items',
       schema: DETECTION_SCHEMA,
       instructions: DETECTION_INSTRUCTIONS,
-      text: `Source language: ${project.source_language}. Return the text areas of this tile.`,
+      forProvider: (provider) => detectionRequestFor(provider, tile),
+      text: `Dialogue language: ${LANGUAGE_NAMES[project.source_language] ?? project.source_language}. Return the text areas of this tile.`,
       image,
       imageDetail: env.TRANSLATION_IMAGE_DETAIL || 'high',
       maxTokens: 6000,
-    }, { fetchImpl: deps.fetch, validate: (data) => normalizeDetectedItems(data, tile) })
+    }, { fetchImpl: deps.fetch, validate: (data, route) => normalizeDetectedItems(data, tile, detectionRequestFor(route.provider, tile).coordinateSpace) })
 
     const { data: existing, error: existingError } = await timed(service.from('translation_items')
       .select('id,type,source_text,bbox_x,bbox_y,bbox_w,bbox_h,manual,source_origin').eq('page_id', pageId))
@@ -89,7 +114,8 @@ async function post(request, env, deps) {
       type: row.type, text: row.source_text ?? '',
       x: row.bbox_x, y: row.bbox_y, w: row.bbox_w, h: row.bbox_h,
     }))
-    const { insert: fresh, replace } = mergeDetectedItems(known, run.value)
+    const textItems = run.value.filter((item) => !item.watermark)
+    const { insert: fresh, replace } = mergeDetectedItems(known, textItems)
     if (replace.length) {
       const { error: replaceError } = await timed(service.from('translation_items').delete()
         .in('id', replace).eq('page_id', pageId).eq('manual', false).eq('source_origin', 'ocr'))
@@ -115,10 +141,12 @@ async function post(request, env, deps) {
       if (error) throw new HttpError(503, 'Bulunan alanlar kaydedilemedi.')
       inserted = data ?? []
     }
+    const erased = await eraseWatermarks(service, page, run.value.filter((item) => item.watermark).map((item) => item.bbox))
     await timed(service.from('translation_pages').update({ scan_stage: 'read', scan_error: null })
       .eq('id', pageId).in('scan_stage', ['uploaded', 'detected', 'read', 'failed']))
     await finishJob(service, claim, { ok: true, route: run.route, usage: run.usage, cost: run.cost })
-    return json({ items: inserted, replaced: replace, model: run.route.model })
+    const languageHint = sourceLanguageMismatch(project.source_language, textItems)
+    return json({ items: inserted, replaced: replace, erased, model: run.route.model, ...(languageHint ? { language_hint: languageHint } : {}) })
   } catch (error) {
     await finishJob(service, claim, { ok: false, error: error?.code ?? error?.message }).catch(() => {})
     throw error

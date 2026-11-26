@@ -38,7 +38,6 @@ export const tamam: Record<string, string> = {
   'Cihazının yerel saatine göre uygulanır. Bildirimler gelmeye devam eder; destekleyen tarayıcılarda bu saatlerde ses ve titreşim kapatılır.': 'Applied by your device\'s local time. Notifications keep coming; in supporting browsers sound and vibration are off during these hours.',
   '@erişilemeyen-etiket': '@unavailable-tag',
   '{v1} yaşındasın —': 'You\'re {v1} —',
-  'küçükler BSG Manga\'yı kullanamaz.': 'under this age can\'t use BSG Manga.',
   'Enter ile gönder · Shift + Enter ile yeni satır': 'Enter to send · Shift + Enter for a new line',
   '“{v1}” bağlantısı kalıcı olarak kapatılsın mı? Katılmış üyeler etkilenmez.': 'Close the “{v1}” link permanently? Members who joined aren\'t affected.',
   'Sonuçları göster ({v1})': 'Show results ({v1})',

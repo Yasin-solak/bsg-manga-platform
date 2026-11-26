@@ -60,7 +60,7 @@ export function ShopHeader() {
 
   return (
     <div className='flex w-full flex-wrap items-center gap-2 md:flex-nowrap' data-testid='shop-header'>
-      <nav aria-label={txa('Mağaza')} className='flex items-center gap-1 lg:hidden'>
+      <nav aria-label={txa('Mağaza')} className='flex min-w-0 max-w-full items-center gap-1 overflow-x-auto [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden'>
         {TABS.map((tab) => {
           const active = tab.match(location.pathname.replace(/\/+$/, '') || '/magaza')
           return (
@@ -69,7 +69,7 @@ export function ShopHeader() {
               to={tab.to}
               aria-current={active ? 'page' : undefined}
               className={cn(
-                'flex h-10 items-center gap-2 rounded-xl px-3.5 text-[13.5px] font-bold transition-colors',
+                'flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-xl px-3.5 text-[13.5px] font-bold transition-colors',
                 active ? 'bg-accent text-foreground' : 'text-muted-foreground hover:bg-accent hover:text-foreground',
               )}
             >

@@ -28,9 +28,9 @@ const INFO: Record<string, Omit<StudioErrorInfo, 'code'>> = {
     get hint() { return txa('Yetişkin serilerde sayfalar yapay zekâya gönderilmez. Alanları ve metinleri editörde elle girebilirsin.') },
     retryable: false,
   },
-  daily_limit: {
-    get title() { return txa('Günlük yapay zekâ hakkı doldu') },
-    get hint() { return txa('Ekibin bugünkü sayfa hakkı bitti; gece yarısı yenilenir. Bu arada alanları editörde elle ekleyip çevirebilirsin.') },
+  credit_limit: {
+    get title() { return txa('Aylık yapay zekâ kredisi bitti') },
+    get hint() { return txa("Ekibin bu ayki kredisi bitti; ayın 1'inde yenilenir. Bu arada alanları editörde elle ekleyip çevirebilirsin.") },
     retryable: false,
   },
   provider_busy: {

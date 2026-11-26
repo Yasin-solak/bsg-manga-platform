@@ -12,7 +12,7 @@ import { txa } from '@/i18n/activeLocale'
  * written only by the /api/ceviri/* Workers (service role).
  */
 
-export type TlSourceLanguage = 'ja' | 'ko' | 'zh'
+export type TlSourceLanguage = 'ja' | 'ko' | 'zh' | 'en'
 export type TlItemType = 'balon' | 'anlatim' | 'sfx' | 'tabela'
 export type TlProjectStage = 'upload' | 'scan' | 'edit' | 'publish' | 'scheduled' | 'published' | 'archived'
 export type TlScanStage = 'none' | 'uploaded' | 'detected' | 'read' | 'suggested' | 'cleaned' | 'failed'
@@ -21,6 +21,7 @@ export const TL_SOURCE_LANGUAGES: Record<TlSourceLanguage, { code: string, label
   ja: { code: 'JA', get label() { return txa('Japonca') } },
   ko: { code: 'KO', get label() { return txa('Korece') } },
   zh: { code: 'ZH', get label() { return txa('Çince') } },
+  en: { code: 'EN', get label() { return txa('İngilizce') } },
 }
 
 const uuid = z.string().uuid()
@@ -35,7 +36,7 @@ function parseRows<T>(schema: z.ZodType<T>, value: unknown, label: string): T {
 // mangas.original_lang historically also contains 'jp'.
 export function normalizeSourceLanguage(value: string | null | undefined): TlSourceLanguage | null {
   if (value === 'ja' || value === 'jp') return 'ja'
-  if (value === 'ko' || value === 'zh') return value
+  if (value === 'ko' || value === 'zh' || value === 'en') return value
   return null
 }
 
@@ -146,12 +147,13 @@ const projectRowSchema = z.object({
   series_draft_id: uuid.nullable(),
   chapter_number: z.coerce.number(),
   chapter_title: z.string().nullable(),
-  source_language: z.enum(['ja', 'ko', 'zh']),
+  source_language: z.enum(['ja', 'ko', 'zh', 'en']),
   target_language: z.string(),
   stage: z.enum(['upload', 'scan', 'edit', 'publish', 'scheduled', 'published', 'archived']),
   version: z.coerce.number(),
   updated_at: z.string(),
   revision_of: uuid.nullable().optional(),
+  chapter_id: uuid.nullable().optional(),
   mangas: z.object({ title: z.string(), cover_image_url: z.string().nullable(), is_mature: z.boolean().nullable().optional() }).nullable().optional(),
   translation_series_drafts: z.object({ title: z.string(), cover_object_key: z.string().nullable(), is_mature: z.boolean().nullable().optional() }).nullable().optional(),
   translation_pages: z.array(z.object({ count: z.number() })).optional(),
@@ -176,9 +178,11 @@ export interface TlProject {
   isMature: boolean
   /** Revision of a published chapter: republishing goes to approval, the old version stays live. */
   revisionOf: string | null
+  /** Chapter this project published; while it awaits moderation, republishing replaces its pages. */
+  chapterId: string | null
 }
 
-const PROJECT_COLUMNS = 'id,fansub_id,manga_id,series_draft_id,chapter_number,chapter_title,source_language,target_language,stage,version,updated_at,revision_of,mangas(title,cover_image_url,is_mature),translation_series_drafts(title,cover_object_key,is_mature),translation_pages(count)'
+const PROJECT_COLUMNS = 'id,fansub_id,manga_id,series_draft_id,chapter_number,chapter_title,source_language,target_language,stage,version,updated_at,revision_of,chapter_id,mangas(title,cover_image_url,is_mature),translation_series_drafts(title,cover_object_key,is_mature),translation_pages(count)'
 
 function toProject(row: z.infer<typeof projectRowSchema>): TlProject {
   return {
@@ -198,6 +202,7 @@ function toProject(row: z.infer<typeof projectRowSchema>): TlProject {
     pageCount: row.translation_pages?.[0]?.count ?? 0,
     isMature: row.mangas?.is_mature === true || row.translation_series_drafts?.is_mature === true,
     revisionOf: row.revision_of ?? null,
+    chapterId: row.chapter_id ?? null,
   }
 }
 
@@ -263,6 +268,7 @@ export async function createProject(input: TlProjectInput): Promise<TlProject> {
     const { data: existing } = await lookup.maybeSingle()
     throw new TlProjectExistsError(existing?.id ?? null)
   }
+  if (error?.code === 'PT403') throw new Error(txa('Çeviri Stüdyosu takviye seviyesi 1 ile açılır.'))
   if (error) throw new Error(txa('Çeviri projesi oluşturulamadı.'))
   return toProject(projectRowSchema.parse(data))
 }
@@ -464,7 +470,12 @@ export async function scanTile(pageId: string, tile: TlTile, signal?: AbortSigna
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ page_id: pageId, ...tile }),
   }, txa('Otomatik tarama'), 90_000, signal)
-  return z.object({ items: z.array(z.object({ id: uuid })).default([]) }).parse(payload)
+  window.dispatchEvent(new Event(TL_AI_USAGE_EVENT))
+  const parsed = z.object({
+    items: z.array(z.object({ id: uuid })).default([]),
+    language_hint: z.object({ expected: z.string(), seen: z.string().nullable() }).optional(),
+  }).parse(payload)
+  return { items: parsed.items, languageHint: parsed.language_hint ? normalizeSourceLanguage(parsed.language_hint.seen) ?? 'unknown' as const : null }
 }
 
 export async function translatePage(pageId: string, signal?: AbortSignal) {
@@ -474,6 +485,7 @@ export async function translatePage(pageId: string, signal?: AbortSignal) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ page_id: pageId }),
   }, txa('Çeviri önerisi'), 120_000, signal)
+  window.dispatchEvent(new Event(TL_AI_USAGE_EVENT))
   return z.object({ translated: z.number().int().default(0) }).passthrough().parse(payload)
 }
 
@@ -564,7 +576,7 @@ const draftRowSchema = z.object({
   fansub_id: uuid,
   title: z.string(),
   original_title: z.string().nullable(),
-  source_language: z.enum(['ja', 'ko', 'zh']),
+  source_language: z.enum(['ja', 'ko', 'zh', 'en']),
   genres: z.array(z.string()),
   cover_object_key: z.string().nullable(),
   created_at: z.string(),
@@ -653,6 +665,38 @@ export async function getAiUsageToday(fansubId: string): Promise<TlAiUsage> {
   const { data, error } = await supabase.rpc('tl_ai_usage_today', { p_fansub_id: fansubId })
   if (error) throw new Error(txa('Günlük kullanım okunamadı.'))
   return aiUsageSchema.parse(data)
+}
+
+const studioStatusSchema = z.object({
+  unlocked: z.boolean(),
+  unlimited: z.boolean(),
+  tier: z.number().int(),
+  power: z.number(),
+  used: z.number(),
+  limit: z.number(),
+  manual_quota: z.boolean(),
+  resets_at: z.string().nullable().optional(),
+  credit_usd: z.coerce.number().optional(),
+  next_tier: z.number().int().nullable(),
+  next_tier_power: z.number().nullable(),
+  next_tier_limit: z.number().nullable(),
+  tier_limits: z.record(z.string(), z.number()),
+  tier_powers: z.record(z.string(), z.number()),
+})
+export type TlStudioStatus = z.infer<typeof studioStatusSchema>
+
+/** Fired after AI work so the limit bar refreshes without waiting for its poll. */
+export const TL_AI_USAGE_EVENT = 'tl:ai-usage-changed'
+
+/**
+ * Studio lock state (opens at fansub boost tier 1 or with a manual quota), today's AI page usage
+ * and what the next boost tier brings.
+ */
+export async function getStudioStatus(fansubId: string): Promise<TlStudioStatus> {
+  uuid.parse(fansubId)
+  const { data, error } = await supabase.rpc('tl_studio_status', { p_fansub_id: fansubId })
+  if (error) throw new Error(txa('Stüdyo durumu okunamadı.'))
+  return studioStatusSchema.parse(data)
 }
 
 /** The rejection reason (optional, at most 500) is stored and sent to the member who opened the request. */

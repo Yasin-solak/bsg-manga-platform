@@ -84,7 +84,8 @@ assert.match(scan, /data-testid='tl-scan-mature'/, 'a clear explanation instead 
 assert.match(scan, /data-testid='tl-scan-error-group'/, 'errors group by reason')
 assert.match(scan, /\['quota_exhausted', 'provider_auth', 'not_configured', 'ai_disabled_mature'(?:, '\w+')*\]\.includes\(info\.code\)\) haltRef\.current = info/, 'the queue stops on a quota/config error')
 assert.match(read('src/pages/translationStudio/StepSeries.tsx'), /data-testid='tl-draft-mature'/, '+18 choice for a new series in the first step')
-assert.match(read('src/pages/translationStudio/TranslationStudioPage.tsx'), /const access = project\?\.isMature \? \{ \.\.\.baseAccess, ai: false \} : baseAccess/)
+// An 18+ project (and a team below boost tier 1) has AI turned off in the studio.
+assert.match(read('src/pages/translationStudio/TranslationStudioPage.tsx'), /const access = project\?\.isMature \|\| locked \? \{ \.\.\.baseAccess, ai: false \} : baseAccess/)
 assert.match(read('src/pages/translationStudio/editor/EditorPanels.tsx'), /disabled=\{rereading \|\| !access\.ai\}/, 're-read is off on a +18 series')
 
 console.log('PASS translation studio +18 AI off and error reasons (DB, worker, classification, UI)')

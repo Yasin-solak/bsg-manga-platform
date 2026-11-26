@@ -144,15 +144,15 @@ export async function requireAiAllowed(db, projectId) {
 }
 
 /**
- * Pilot: daily AI page allowance per fansub (tl_claim_ai_page). The same page on the same day is
- * not counted twice (scan + translate + re-read use one allowance).
+ * Monthly AI credit allowance per fansub (tl_claim_ai_page): credits follow the real cost of each
+ * job; once the month's credits are used up new AI work is refused until the 1st.
  */
 export async function requireAiPageQuota(db, pageId) {
   const { data, error } = await timed(db.rpc('tl_claim_ai_page', { p_page_id: pageId }))
-  if (error) throw new HttpError(503, 'Günlük kullanım hakkı doğrulanamadı.')
+  if (error) throw new HttpError(503, 'Yapay zekâ kredisi doğrulanamadı.')
   if (data?.allowed !== true) {
-    const usage = data ? ` (${data.used}/${data.limit} sayfa)` : ''
-    throw new HttpError(429, `Ekibin bugünkü yapay zekâ sayfa hakkı doldu${usage}. Gece yarısı yenilenir; bu arada elle devam edebilirsin.`, {}, 'daily_limit')
+    const usage = data ? ` (${data.used}/${data.limit} kredi)` : ''
+    throw new HttpError(429, `Ekibin bu ayki yapay zekâ kredisi bitti${usage}. Ayın 1'inde yenilenir; bu arada elle devam edebilirsin.`, {}, 'credit_limit')
   }
 }
 
