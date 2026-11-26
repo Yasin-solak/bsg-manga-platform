@@ -90,9 +90,13 @@ export const E2E_QUERY_PARAM_VALUE = '1'
 export const E2E_MANGA_LIST_LIMIT_DETAIL_ID = 'e2e-manga-list-limit-detail'
 export const E2E_ADMIN_USER_ID = '71000000-0000-4000-8000-000000000001'
 
-function canRunE2EModeInRuntime() {
-    return import.meta.env.DEV || import.meta.env.MODE === 'test'
-}
+/*
+ * Compile-time switch. Vite replaces both expressions with literals, so a production build sees
+ * `false` here; every getter below tests it FIRST so the bundler can drop the rest of the body
+ * and, with it, the fixture data. Keep it the first condition: hiding it behind a function call
+ * (as isE2EModeEnabled does) keeps all fixtures in the production bundle.
+ */
+export const E2E_MODE_COMPILED_IN = import.meta.env.DEV || import.meta.env.MODE === 'test'
 
 function hasE2EQueryParam() {
     if (typeof window === 'undefined') return false
@@ -522,7 +526,7 @@ function createE2EMockMangaListLimitDetail(): MangaListDetail {
 export function getE2EMockReleaseScheduleEntries(
     options: E2EMockReleaseScheduleOptions = {},
 ): E2EMockReleaseScheduleEntry[] | null {
-    if (!isE2EModeEnabled()) return null
+    if (!E2E_MODE_COMPILED_IN || !isE2EModeEnabled()) return null
 
     const entries = window.__BSGMANGA_E2E__?.mockReleaseScheduleEntries
         ?? createDefaultE2EMockReleaseScheduleEntries(createE2ECoverImageUrl)
@@ -546,27 +550,27 @@ export function getE2EMockReleaseScheduleEntries(
 }
 
 export function isE2EModeEnabled() {
-    if (!canRunE2EModeInRuntime()) return false
+    if (!E2E_MODE_COMPILED_IN) return false
     return hasE2EQueryParam()
 }
 
 export function getE2EModeQueryParamEntry(): [string, string] | null {
-    if (!isE2EModeEnabled()) return null
+    if (!E2E_MODE_COMPILED_IN || !isE2EModeEnabled()) return null
     return [E2E_QUERY_PARAM_KEY, E2E_QUERY_PARAM_VALUE]
 }
 
 export function getE2EMockFeatureFlags(): Record<string, boolean> | null {
-    if (!isE2EModeEnabled()) return null
+    if (!E2E_MODE_COMPILED_IN || !isE2EModeEnabled()) return null
     return window.__BSGMANGA_E2E__?.mockFeatureFlags ?? null
 }
 
 export function getE2EMockAuthUser(): E2EMockAuthUser | null {
-    if (!isE2EModeEnabled()) return null
+    if (!E2E_MODE_COMPILED_IN || !isE2EModeEnabled()) return null
     return window.__BSGMANGA_E2E__?.mockAuthUser ?? getDefaultE2EMockAuthUser()
 }
 
 export function getE2EMockStoreData(): E2EMockStoreData | null {
-    if (!isE2EModeEnabled()) return null
+    if (!E2E_MODE_COMPILED_IN || !isE2EModeEnabled()) return null
     const fallback = getDefaultE2EMockStoreData()
     const configured = window.__BSGMANGA_E2E__?.mockStoreData
     if (!configured) return fallback
@@ -578,18 +582,18 @@ export function getE2EMockStoreData(): E2EMockStoreData | null {
 }
 
 export function getE2EMockFansubs(): Fansub[] | null {
-    if (!isE2EModeEnabled()) return null
+    if (!E2E_MODE_COMPILED_IN || !isE2EModeEnabled()) return null
     return window.__BSGMANGA_E2E__?.mockFansubs ?? getDefaultE2EMockFansubs()
 }
 
 export function getE2EMockFansubMangas(fansubId: string): Manga[] | null {
-    if (!isE2EModeEnabled()) return null
+    if (!E2E_MODE_COMPILED_IN || !isE2EModeEnabled()) return null
     const mangaMap = window.__BSGMANGA_E2E__?.mockFansubMangasByFansubId ?? getDefaultE2EMockFansubMangasByFansubId()
     return mangaMap[fansubId] ?? []
 }
 
 export function getE2EMockMangaListDetail(listId: string): MangaListDetail | null {
-    if (!isE2EModeEnabled()) return null
+    if (!E2E_MODE_COMPILED_IN || !isE2EModeEnabled()) return null
     const configuredDetail = window.__BSGMANGA_E2E__?.mockMangaListDetails?.[listId]
     if (configuredDetail) return configuredDetail
     if (listId === E2E_MANGA_LIST_LIMIT_DETAIL_ID) return createE2EMockMangaListLimitDetail()
@@ -597,7 +601,7 @@ export function getE2EMockMangaListDetail(listId: string): MangaListDetail | nul
 }
 
 export function setE2ERuntimeCurrentUser(snapshot: E2ERuntimeCurrentUserSnapshot | null) {
-    if (typeof window === 'undefined' || !isE2EModeEnabled()) return
+    if (!E2E_MODE_COMPILED_IN || typeof window === 'undefined' || !isE2EModeEnabled()) return
 
     window.__BSGMANGA_E2E_RUNTIME__ = {
         currentUser: snapshot

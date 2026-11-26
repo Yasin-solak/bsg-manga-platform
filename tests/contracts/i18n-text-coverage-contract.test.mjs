@@ -36,9 +36,14 @@ for (const file of scanned) {
 assert.equal(missing.length, 0, `Ingilizce karsiligi olmayan metinler:\n${missing.join('\n')}`)
 assert.ok(used > 0)
 
-// The English dictionary is not in the main bundle.
-for (const file of ['src/i18n/activeLocale.ts', 'src/i18n/LocaleProvider.tsx', 'src/lib/documentMeta.ts', 'src/main.tsx']) {
+// The English dictionary is not in the main bundle: neither the core nor a panel part
+// (enTextAdmin / enTextManage / enTextStudio; their split is guarded by i18n-dictionary-parts-contract).
+for (const file of ['src/i18n/activeLocale.ts', 'src/i18n/LocaleProvider.tsx', 'src/lib/documentMeta.ts', 'src/main.tsx', 'src/lib/lazyRoute.ts', 'src/App.tsx']) {
   assert.doesNotMatch(readFileSync(path.join(root, file), 'utf8'), /^import .*messages\/enText/m, `${file} must not load the dictionary statically`)
 }
-assert.match(readFileSync(path.join(root, 'src/i18n/activeLocale.ts'), 'utf8'), /await import\('\.\/messages\/enText'\)/)
+assert.match(
+  readFileSync(path.join(root, 'src/i18n/activeLocale.ts'), 'utf8'),
+  /import\('\.\/messages\/enText'\)/,
+  'the core dictionary must be loaded with a dynamic import',
+)
 console.log(`PASS multi-language text coverage (${used} tx uses, ${keys.size} English texts)`)

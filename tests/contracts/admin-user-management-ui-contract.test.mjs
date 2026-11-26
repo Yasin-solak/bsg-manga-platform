@@ -241,7 +241,9 @@ assert.match(
 const canonicalE2EAdminId = e2eMocks.match(/export const E2E_ADMIN_USER_ID = '([^']+)'/)?.[1]
 assert.match(canonicalE2EAdminId || '', /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i)
 assert.match(e2eMocks, /function getDefaultE2EMockAuthUser\(\)[\s\S]{0,120}?id: E2E_ADMIN_USER_ID/)
-assert.match(adminUsersE2e, /const INITIAL_USERS[\s\S]{0,160}?id: E2E_ADMIN_USER_ID/)
+// The first mock account is the signed-in e2e admin. The list is built by a function (lazy, so a
+// production build can drop it: e2e-mocks-production-strip-contract), not a module-level array.
+assert.match(adminUsersE2e, /function createInitialUsers\(\)[\s\S]{0,200}?id: E2E_ADMIN_USER_ID/)
 assert.match(adminUsersE2e, /const E2E_ADMIN_ACTOR_ID = E2E_ADMIN_USER_ID/)
 assert.match(adminUsersE2e, /displayName: 'Aylin Yılmaz'/)
 assert.match(adminUsersE2e, /matchesDisplayName/)

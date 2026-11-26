@@ -26,6 +26,14 @@ function readGitCommit(): string {
     }
 }
 
+// Both separators: module ids use "/" on Linux (CI) and can use "\" on Windows.
+const REACT_RUNTIME_PACKAGE = /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom|scheduler)[\\/]/
+const SUPABASE_PACKAGE = /[\\/]node_modules[\\/]@supabase[\\/]/
+const UI_LIBRARY_PACKAGE = /[\\/]node_modules[\\/](@radix-ui|lucide-react|@phosphor-icons)[\\/]/
+// Measured on the home page (2026-11-24): 0 gives 169 first-load files, 10 KB gives 97 for
+// 18 KB more gzip, 50 KB gives back the whole saving.
+const UI_CHUNK_MERGE_THRESHOLD_BYTES = 10 * 1024
+
 // https://vite.dev/config/
 export default defineConfig({
     server: { proxy: { '/api/community/files': { target: 'https://bsg-community-media.your-subdomain.workers.dev', changeOrigin: true } } },
@@ -58,28 +66,33 @@ export default defineConfig({
     build: {
         /* Vendor chunks can exceed 500 KB, remove the warning */
         chunkSizeWarningLimit: 600,
-        rollupOptions: {
+        rolldownOptions: {
             output: {
                 /**
-                 * Vendor chunk splitting: libraries split into separate files.
-                 * So when app code changes React/Supabase/UI are not downloaded again.
-                 * The browser cache saves a lot on repeat visits.
+                 * Vendor chunk splitting: the React runtime and the Supabase client go into
+                 * their own files, so an app change does not make browsers download them again.
+                 *
+                 * The package DIRECTORY is matched, not a substring: '@radix-ui/react-*',
+                 * 'lucide-react' and '@phosphor-icons/react' all contain "react", and a substring
+                 * test pulled every icon and Radix primitive used anywhere in the app (admin
+                 * included) into the chunk the first page load has to download.
+                 *
+                 * UI libraries are split by which routes import them (entriesAware), so the first
+                 * load only gets what the shell and the opened page use. Without the merge
+                 * threshold every shared icon becomes its own sub-1 KB file.
                  */
-                manualChunks(id) {
-                    if (id.includes('node_modules')) {
-                        // React ecosystem: change frequency none
-                        if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-                            return 'react-vendor'
-                        }
-                        // Supabase client: heavy but stable
-                        if (id.includes('@supabase')) {
-                            return 'supabase'
-                        }
-                        // UI libraries: Radix, Lucide icons
-                        if (id.includes('@radix-ui') || id.includes('lucide-react')) {
-                            return 'ui-vendor'
-                        }
-                    }
+                codeSplitting: {
+                    groups: [
+                        { name: 'react-vendor', test: REACT_RUNTIME_PACKAGE, priority: 30 },
+                        { name: 'supabase', test: SUPABASE_PACKAGE, priority: 20 },
+                        {
+                            name: 'ui',
+                            test: UI_LIBRARY_PACKAGE,
+                            priority: 10,
+                            entriesAware: true,
+                            entriesAwareMergeThreshold: UI_CHUNK_MERGE_THRESHOLD_BYTES,
+                        },
+                    ],
                 },
             },
         },

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { DEFAULT_LOCALE, LOCALE_TAG, LOCALES, type Locale } from '@/i18n/localizedRoutes'
-import { resolveDocumentMetaState } from '@/lib/documentMeta'
+import { OG_LOCALE, resolveDocumentMetaState } from '@/lib/documentMeta'
 import { txa } from '@/i18n/activeLocale'
 
 function upsertMeta(tagName: string, content: string, attribute: 'name' | 'property' = 'name') {
@@ -61,6 +61,7 @@ export default function AppDocumentMeta() {
     upsertMeta('og:type', meta.type, 'property')
     upsertMeta('og:url', meta.canonicalUrl, 'property')
     upsertMeta('og:site_name', txa('BSG Manga'), 'property')
+    upsertMeta('og:locale', OG_LOCALE[meta.lang], 'property')
     upsertMeta('og:image', meta.imageUrl, 'property')
     upsertMeta('twitter:card', 'summary_large_image')
     upsertMeta('twitter:title', meta.title)

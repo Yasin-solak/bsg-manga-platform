@@ -38,7 +38,6 @@ export const sayfalar: Record<string, string> = {
   'Planlar yükleniyor...': 'Loading plans...',
   'Sana kazandirir': 'What you earn',
   'Seri dağılımı': 'Series distribution',
-  'Seri vitrini': 'Series showcase',
   'Destekçi etkisi': 'Supporter impact',
   'Destekçi kimliği, rozet ve görünürlük katmanları açılır.': 'Supporter identity, badge and visibility tiers open.',
   'Takibe alındı.': 'Followed.',

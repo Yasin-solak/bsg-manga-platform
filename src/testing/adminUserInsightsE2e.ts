@@ -1,6 +1,10 @@
 import type { AdminUserDetailInsights } from '@/services/adminUserTypes'
 import { E2E_ADMIN_USER_ID, isE2EModeEnabled } from './e2eMocks'
 
+// Compile-time switch, local on purpose: the bundler folds a constant only inside its own module.
+// In a production build this is `false`, so the fixtures below are dropped (see e2eMocks.ts).
+const E2E_MODE_COMPILED_IN = import.meta.env.DEV || import.meta.env.MODE === 'test'
+
 const DAY_MS = 24 * 60 * 60 * 1000
 
 function isoDate(value: Date) {
@@ -8,7 +12,7 @@ function isoDate(value: Date) {
 }
 
 export function getE2EAdminUserInsights(_userId: string, activityDays: number): AdminUserDetailInsights | null {
-    if (!isE2EModeEnabled()) return null
+    if (!E2E_MODE_COMPILED_IN || !isE2EModeEnabled()) return null
 
     const now = new Date()
     const daily = Array.from({ length: activityDays }, (_, index) => {
